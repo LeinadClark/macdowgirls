@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Research Fund | UPHSD Molino</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#ffb4a8",
+                    "on-tertiary-container": "#74b3a2",
+                    "outline": "#8e706c",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#221b00",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#fcd400",
+                    "surface": "#fcf9f8",
+                    "tertiary-fixed-dim": "#94d3c1",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#00201a",
+                    "surface-variant": "#e4e2e1",
+                    "on-secondary-container": "#6e5c00",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#afefdd",
+                    "secondary-fixed": "#ffe16d",
+                    "outline-variant": "#e2bfb9",
+                    "secondary": "#705d00",
+                    "primary-container": "#800000",
+                    "surface-container-highest": "#e4e2e1",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#410000",
+                    "primary-fixed": "#ffdad4",
+                    "tertiary-container": "#004539",
+                    "surface-dim": "#dcd9d9",
+                    "primary": "#570000",
+                    "surface-container": "#f0eded",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "on-surface-variant": "#5a413d",
+                    "on-primary-fixed-variant": "#8f0f07",
+                    "inverse-on-surface": "#f3f0f0",
+                    "tertiary": "#002d24",
+                    "background": "#fcf9f8",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1b1c1c",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#eae7e7",
+                    "inverse-surface": "#303030",
+                    "on-secondary-fixed-variant": "#544600",
+                    "on-primary-container": "#ff8371",
+                    "secondary-fixed-dim": "#e9c400",
+                    "on-tertiary-fixed-variant": "#065043",
+                    "on-background": "#1b1c1c",
+                    "surface-container-low": "#f6f3f2",
+                    "surface-tint": "#b22b1d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .serif-italic { font-family: 'Newsreader', serif; font-style: italic; }
+        .glass-header { backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 max-w-full shadow-sm opacity-100">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold font-['Newsreader'] text-red-900 dark:text-red-500 italic tracking-tight">UPHSD Molino</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold hover:text-red-800 transition-colors duration-300" href="#">Campaigns</a>
+<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 transition-colors duration-300" href="#">Departments</a>
+<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 transition-colors duration-300" href="#">Donor Registry</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-md bg-stone-100 text-stone-600 font-medium hover:bg-stone-200 transition-all scale-95 active:duration-75">Sign In</button>
+<button class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md hover:opacity-90 transition-all scale-95 active:duration-75">Start Campaign</button>
+</div>
+</nav>
+<main class="pt-28 pb-20 px-8 max-w-7xl mx-auto">
+<!-- Hero Section: Editorial Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-24">
+<div class="lg:col-span-7">
+<div class="relative group">
+<img alt="Students collaborating in a modern research lab" class="w-full h-[500px] object-cover rounded-tl-xl rounded-br-xl shadow-2xl" data-alt="Group of diverse university students working together in a bright, modern research laboratory with glassware and digital displays, high-end editorial lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc2Gcwjhim2zQ1XQweI3zAN_0rPcGVZXQzLgwAzK3Oiqou4JYtqnqeZTLjhqdPCN7Xy2-LIKjnNKjmtysso1VMB2skHJl59cdiRn9o2NShxGfzMLOtwg5jHqnos3etKTmEMgwKyzsVb21bPLfxldav7347-G4vySsjTKJvz0UQN0EmFFCTUDhUIx6D16HsspbfRhdOL5qRMfo88MXTnkN72sqYcbk0EZu3bXe5hIsYQncNmL0d9zlWb-47nhiA7LcWYXgfblpNDpo"/>
+<div class="absolute -bottom-6 -right-6 bg-secondary-container p-8 rounded-xl shadow-xl max-w-xs hidden md:block">
+<p class="font-headline italic text-2xl text-on-secondary-container mb-2">"Empowering the next generation of scholars."</p>
+<p class="font-label text-xs uppercase tracking-widest text-on-secondary-container/70">— Dean of Research</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col justify-center h-full pt-8 lg:pt-0">
+<nav class="flex items-center gap-2 text-stone-500 mb-6 font-label text-xs tracking-widest uppercase">
+<span>Campaigns</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary font-bold">Academic Funds</span>
+</nav>
+<h1 class="font-headline text-5xl md:text-6xl text-primary mb-6 leading-tight italic">Student Research Fund</h1>
+<p class="text-stone-600 text-lg leading-relaxed mb-8">Supporting groundbreaking undergraduate and graduate inquiries that push the boundaries of knowledge within the UPHSD Molino academic community.</p>
+<!-- Progress Component -->
+<div class="bg-surface-container-low p-8 rounded-xl">
+<div class="flex justify-between items-end mb-4">
+<div>
+<span class="font-headline text-4xl font-bold text-primary">₱ 425,000</span>
+<span class="text-stone-500 font-label ml-2">raised of ₱ 750,000</span>
+</div>
+<span class="font-label font-bold text-secondary text-lg">56%</span>
+</div>
+<!-- Prominent Gold Progress Bar -->
+<div class="w-full h-4 bg-surface-container-high rounded-full overflow-hidden mb-6">
+<div class="h-full bg-secondary-container w-[56%] relative">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/20"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-stone-500 text-xs uppercase tracking-widest font-label">Donors</span>
+<span class="text-xl font-bold text-on-surface">142 Scholars</span>
+</div>
+<div class="flex flex-col">
+<span class="text-stone-500 text-xs uppercase tracking-widest font-label">Days Left</span>
+<span class="text-xl font-bold text-on-surface">18 Days</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Content Grid: Bento Style -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
+<!-- Left: Detailed Description -->
+<div class="lg:col-span-2 space-y-12">
+<section>
+<h3 class="font-headline text-3xl text-primary italic mb-6 border-b border-primary-fixed pb-4">The Anthology of Inquiry</h3>
+<div class="prose prose-stone max-w-none text-stone-700 leading-relaxed space-y-4 font-body">
+<p>The Student Research Fund at UPHSD Molino is more than a financial instrument; it is a testament to our commitment to the intellectual legacy of our institution. In an era of rapid technological and social transition, we believe that students possess the unique vantage point required to identify and solve tomorrow's challenges.</p>
+<p>This fund provides grants for laboratory equipment, archival access, field-work travel, and publication costs. Every contribution ensures that a student’s curiosity is never silenced by a lack of resources.</p>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-high p-8 rounded-xl">
+<span class="material-symbols-outlined text-primary text-4xl mb-4">school</span>
+<h4 class="font-headline text-xl font-bold text-on-surface mb-2">Tuition Assistance</h4>
+<p class="text-sm text-stone-600">Covering the registration fees for major international academic conferences.</p>
+</div>
+<div class="bg-tertiary-container p-8 rounded-xl">
+<span class="material-symbols-outlined text-tertiary-fixed text-4xl mb-4">science</span>
+<h4 class="font-headline text-xl font-bold text-on-tertiary mb-2">Material Grants</h4>
+<p class="text-sm text-on-tertiary/80">Direct funding for specialized software and laboratory consumables.</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-1 rounded-xl overflow-hidden">
+<img alt="Microscope lens and scholarly documents" class="w-full h-[300px] object-cover rounded-lg" data-alt="Extreme close-up of a high-end microscope lens over complex architectural blueprints and scholarly research papers, soft laboratory lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZnppIQN-EHZ4hm5rVnlMP6oflZ4Vmdu3qAAn74-J9JR9TWvdixrkKDr0rStxq88wdWAT4U0nwFQi_KIH2MMNadeYs2lNfi6JCV9tFEvbTQrplvOfSzInab9Gl1dcqdM95LEaOxWBPYb8wEFMqECoLx7nPzxoLED1gWaP-g5llvixilW1ysbp1BMsrptRzsWhcjZCGJNqFKFTZDaYZ7O1wknoyrFN7Xj4DD-JtUiWjS-Tb-Oss6SrmxX-blCpkDYfjY8vIFzhegDU"/>
+</div>
+</div>
+<!-- Right: Pledge Form -->
+<div class="lg:col-span-1">
+<div class="sticky top-28 bg-surface-container-lowest p-8 rounded-xl shadow-xl border border-outline-variant/10">
+<h3 class="font-headline text-2xl text-primary italic mb-2">Pledge Your Support</h3>
+<p class="text-stone-500 text-sm mb-8">Join the registry of institutional patrons.</p>
+<form class="space-y-6">
+<div>
+<label class="block text-xs font-label uppercase tracking-widest text-stone-500 mb-2">Donor Name</label>
+<input class="w-full bg-surface-container-highest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary/20 transition-all text-on-surface placeholder:text-stone-400" placeholder="Hon. Full Name" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-label uppercase tracking-widest text-stone-500 mb-2">Pledge Amount (PHP)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 font-label">₱</span>
+<input class="w-full bg-surface-container-highest border-none rounded-md pl-8 pr-4 py-3 focus:ring-1 focus:ring-primary/20 transition-all text-on-surface placeholder:text-stone-400" placeholder="0.00" type="number"/>
+</div>
+</div>
+<div class="space-y-3">
+<button class="w-full py-4 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all" type="submit">Pledge Now</button>
+<p class="text-[10px] text-center text-stone-400 px-4">By pledging, you agree to the Institutional Heritage terms and will be contacted via archival archives for fulfillment.</p>
+</div>
+</form>
+<div class="mt-8 pt-8 border-t border-stone-100 space-y-4">
+<div class="flex items-center gap-3 text-stone-600">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<span class="text-xs font-medium">Official University Initiative</span>
+</div>
+<div class="flex items-center gap-3 text-stone-600">
+<span class="material-symbols-outlined text-secondary">lock</span>
+<span class="text-xs font-medium">Secure Endowment Process</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-8 mt-auto border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+<div class="flex flex-col items-center md:items-start">
+<span class="font-['Newsreader'] italic text-stone-900 dark:text-stone-100 text-lg mb-1">UPHSD Molino</span>
+<p class="font-['Public_Sans'] text-xs text-stone-500">© 2024 UPHSD Molino. Institutional Heritage.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-stone-400 hover:text-red-900 font-['Public_Sans'] text-xs transition-colors underline-offset-4 hover:underline" href="#">Privacy Policy</a>
+<a class="text-stone-400 hover:text-red-900 font-['Public_Sans'] text-xs transition-colors underline-offset-4 hover:underline" href="#">Terms of Service</a>
+<a class="text-stone-400 hover:text-red-900 font-['Public_Sans'] text-xs transition-colors underline-offset-4 hover:underline" href="#">University Site</a>
+<a class="text-stone-400 hover:text-red-900 font-['Public_Sans'] text-xs transition-colors underline-offset-4 hover:underline" href="#">Contact Archives</a>
+</div>
+</div>
+</footer>
+</body></html>

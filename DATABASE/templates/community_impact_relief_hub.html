@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HeritageImpact | Community Impact</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#fcd400",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-fixed-dim": "#94d3c1",
+                    "surface-tint": "#b22b1d",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#e9c400",
+                    "primary": "#570000",
+                    "on-primary-fixed-variant": "#8f0f07",
+                    "error": "#ba1a1a",
+                    "surface": "#fcf9f8",
+                    "on-tertiary-fixed-variant": "#065043",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#5a413d",
+                    "outline-variant": "#e2bfb9",
+                    "surface-container-high": "#eae7e7",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "surface-container-low": "#f6f3f2",
+                    "inverse-primary": "#ffb4a8",
+                    "tertiary": "#002d24",
+                    "secondary": "#705d00",
+                    "on-primary-container": "#ff8371",
+                    "background": "#fcf9f8",
+                    "surface-container": "#f0eded",
+                    "on-primary-fixed": "#410000",
+                    "on-secondary-fixed": "#221b00",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#6e5c00",
+                    "surface-variant": "#e4e2e1",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#fcf9f8",
+                    "secondary-fixed": "#ffe16d",
+                    "primary-container": "#800000",
+                    "on-background": "#1b1c1c",
+                    "inverse-on-surface": "#f3f0f0",
+                    "surface-container-highest": "#e4e2e1",
+                    "on-surface": "#1b1c1c",
+                    "primary-fixed": "#ffdad4",
+                    "tertiary-container": "#004539",
+                    "on-tertiary-container": "#74b3a2",
+                    "error-container": "#ffdad6",
+                    "outline": "#8e706c",
+                    "on-secondary-fixed-variant": "#544600",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#afefdd",
+                    "on-tertiary-fixed": "#00201a",
+                    "inverse-surface": "#303030"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": [
+                            "Newsreader"
+                    ],
+                    "body": [
+                            "Public Sans"
+                    ],
+                    "label": [
+                            "Public Sans"
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #570000 0%, #800000 100%);
+        }
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(252, 249, 248, 0.95) 30%, rgba(252, 249, 248, 0) 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-xl shadow-sm opacity-95">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-headline italic text-red-900 dark:text-red-100">HeritageImpact</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-stone-600 dark:text-stone-400 hover:text-red-900 dark:hover:text-red-300 transition-colors font-label text-xs uppercase tracking-wider" href="#">Home</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-red-900 dark:hover:text-red-300 transition-colors font-label text-xs uppercase tracking-wider" href="#">About</a>
+<a class="text-red-900 dark:text-red-400 font-bold border-b-2 border-amber-400 font-label text-xs uppercase tracking-wider" href="#">Impact</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-stone-600 hover:bg-stone-200/50 p-2 rounded-full transition-all">search</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label text-xs uppercase tracking-widest font-bold shadow-md hover:scale-[0.98] transition-transform">Donate</button>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Community Service" class="w-full h-full object-cover" data-alt="Group of diverse student volunteers smiling and handing out supplies to community members in a sunlit outdoor neighborhood setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaBWKsyuDHXh3ZapUielwCV621tMeTblwYWQM_98xFavhFAvVE8c5E792gGIVIFA5H0p4V4I_rIFJ4rL146YzYRJ8Q5O4yvhC7IOL4mmeVfk5XVDm3IKhugGZ948vUhXDkT3_8ORhG6Gar0-BCbIZ2oxsnmXxpgRE_BOYTG-PpLQpFpvMXcRDiqdzMHPo8Jy_SB_U6f_XWvLnvF5axIypcJkzZ1Wtz9DqRmJKcQ3XWqq1SU5Xj_wn8Yg6y1OPlrFdND24YUxIzIYY"/>
+<div class="absolute inset-0 hero-overlay"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto px-8 w-full">
+<div class="max-w-2xl">
+<span class="inline-block font-label text-xs uppercase tracking-widest text-primary font-bold mb-4">Our Mission &amp; Spirit</span>
+<h1 class="font-headline text-6xl md:text-7xl text-on-surface leading-tight mb-8 font-extrabold tracking-tight">
+                        Helpers of God in Action: <span class="italic font-normal">Perpetualite Spirit</span> at Work
+                    </h1>
+<div class="flex flex-col sm:flex-row gap-4 items-start">
+<button class="editorial-gradient text-on-primary px-10 py-5 rounded-lg font-label text-sm uppercase tracking-widest font-bold shadow-xl hover:opacity-90 transition-all flex items-center gap-3">
+                            BECOME A HELPER OF GOD
+                            <span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Relief Operations Banner (High Priority Sticky-style) -->
+<div class="absolute bottom-0 right-0 md:right-12 md:bottom-12 z-20 w-full md:w-96 px-4 pb-4 md:px-0 md:pb-0">
+<div class="bg-primary-container text-surface p-8 shadow-2xl rounded-xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-8xl" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline text-2xl mb-3 leading-snug">Relief Operations in Progress. Stand With Those in Need.</h3>
+<a class="inline-flex items-center gap-2 text-secondary-fixed font-label text-xs uppercase tracking-widest font-bold group-hover:gap-4 transition-all" href="#">
+                            Help Now <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Statistics Row -->
+<section class="bg-surface-container-low py-12 relative">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+<div class="space-y-2">
+<p class="font-headline text-5xl font-bold text-primary italic">20+</p>
+<p class="font-label text-xs uppercase tracking-widest text-stone-500 font-bold">Local Chapters</p>
+</div>
+<div class="space-y-2">
+<p class="font-headline text-5xl font-bold text-primary italic">100+</p>
+<p class="font-label text-xs uppercase tracking-widest text-stone-500 font-bold">Dedicated Volunteers</p>
+</div>
+<div class="space-y-2">
+<p class="font-headline text-5xl font-bold text-primary italic">50+</p>
+<p class="font-label text-xs uppercase tracking-widest text-stone-500 font-bold">Seminars &amp; Community Workshops</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Asymmetric Content Section (Bento Inspired) -->
+<section class="max-w-7xl mx-auto px-8 py-24">
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Left: Big Story Card -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-10 rounded-xl shadow-sm space-y-8">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<h2 class="font-headline text-4xl text-on-surface">Education Outreach</h2>
+</div>
+<p class="font-body text-lg text-stone-600 leading-relaxed max-w-2xl">
+                        Our student-led initiatives bring the university's academic excellence into underserved communities. We believe the true Perpetualite spirit is found in the synthesis of knowledge and service.
+                    </p>
+<div class="aspect-video rounded-xl overflow-hidden">
+<img alt="Student Teaching" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" data-alt="University students teaching young children in a rural community classroom setting with warm natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHYZ31AInzDAqf0S3yO-W8BrfnNmZ-7yAhg07eF2vbFEjkJGqdf1crU6Tk5KlcBaaXgsXJvGVpdD91vghEC_2iNynCD-HZeqZv0dpxzaqql4qw-0dCdj0tnTwjXX8lGRbPuh4YL3f7W8i8c15-NDfjBI3MLadWGv4xFysuqi050GCSfn14D1OPkNgLfaLnspnsF1_ZPKR964TfKZJr94RwrZ-kSh5J_hU6oEbFhnAZ3P9unGWvHpDJMNihe5ovb8CZXaIeuCqJkeA"/>
+</div>
+</div>
+<!-- Right: Information Clusters -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<div class="bg-surface-container-high p-8 rounded-xl">
+<span class="font-label text-[10px] uppercase tracking-tighter text-primary-fixed-dim font-black mb-2 block">Focus Area</span>
+<h4 class="font-headline text-2xl mb-4">Heritage Conservation</h4>
+<p class="font-body text-sm text-stone-600 mb-6">Restoring historical landmarks and preserving local narratives for future generations.</p>
+<button class="text-primary font-bold font-label text-xs flex items-center gap-2">VIEW PROJECTS <span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+<div class="bg-white border-l-4 border-secondary-container p-8 rounded-r-xl shadow-sm">
+<h4 class="font-headline text-2xl mb-2">Join the Movement</h4>
+<p class="font-body text-sm text-stone-600 mb-6">Support our mission by volunteering your time or making a tax-deductible contribution.</p>
+<div class="flex flex-col gap-3">
+<button class="bg-secondary-container text-on-secondary-container py-3 rounded-lg font-bold font-label text-xs uppercase tracking-widest text-center">Donate Gold Tier</button>
+<button class="outline outline-1 outline-primary/20 py-3 rounded-lg font-bold font-label text-xs uppercase tracking-widest text-center text-primary">Apply as Volunteer</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Department Highlight -->
+<section class="bg-primary text-white py-24 overflow-hidden relative">
+<div class="max-w-7xl mx-auto px-8 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="font-headline text-5xl mb-8 leading-tight">Interdisciplinary Excellence for Social Change</h2>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-1 h-12 bg-secondary-container"></div>
+<div>
+<h5 class="font-label text-xs uppercase tracking-widest font-bold text-secondary-container mb-1">Nursing &amp; Health</h5>
+<p class="text-stone-300 font-body">Mobile medical clinics providing essential care to remote provincial sectors.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-1 h-12 bg-tertiary-fixed"></div>
+<div>
+<h5 class="font-label text-xs uppercase tracking-widest font-bold text-tertiary-fixed mb-1">Computer Studies</h5>
+<p class="text-stone-300 font-body">Bridging the digital divide through literacy workshops and refurbished tech distribution.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -top-12 -left-12 w-48 h-48 bg-secondary-container/10 rounded-full blur-3xl"></div>
+<img alt="Teamwork" class="rounded-xl shadow-2xl relative z-10 w-full object-cover aspect-square" data-alt="Students from different academic backgrounds collaborating on a project with architectural blueprints and medical equipment on a table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAARZV8ysA7AnLCTBB7d5J2WAWjtSPfcEhku6otGBeVot7STliE7bujmQBj77cMUmfWitrhRIVfUVdniMIK8UYpUaavo0UMZJSgP0YeOX0jkv8jEqS67xu5MaeLput6bl0Zq8RqSpxIt_6R7W3VeiSFMNVXrfwAwZDaY06L4wHCrH9zJ3ND1auca53HpTIIJ9I5lqoI39ieFfgC1cra_BXIEGrAT_OcD5zeS_BCWCxtU77GTd1ijbcjSc1Olzt-2dqZBfO67w9dcNc"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-stone-100 dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-7xl mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="text-xl font-headline text-stone-800 dark:text-stone-200 mb-2">University Heritage Foundation</div>
+<p class="font-body text-sm text-stone-500 dark:text-stone-400">© 2024 University Heritage Foundation. All rights reserved.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-stone-500 dark:text-stone-400 hover:text-red-800 dark:hover:text-red-200 transition-colors font-body text-sm" href="#">Institutional Privacy</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-red-800 dark:hover:text-red-200 transition-colors font-body text-sm underline decoration-amber-400" href="#">Giving Policy</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-red-800 dark:hover:text-red-200 transition-colors font-body text-sm" href="#">Contact Us</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-red-800 dark:hover:text-red-200 transition-colors font-body text-sm" href="#">Accessibility</a>
+</div>
+</div>
+</footer>
+</body></html>

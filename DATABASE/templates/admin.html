@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#ffb4a8",
+                    "on-tertiary-container": "#74b3a2",
+                    "outline": "#8e706c",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#221b00",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#fcd400",
+                    "surface": "#fcf9f8",
+                    "tertiary-fixed-dim": "#94d3c1",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#00201a",
+                    "surface-variant": "#e4e2e1",
+                    "on-secondary-container": "#6e5c00",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#afefdd",
+                    "secondary-fixed": "#ffe16d",
+                    "outline-variant": "#e2bfb9",
+                    "secondary": "#705d00",
+                    "primary-container": "#800000",
+                    "surface-container-highest": "#e4e2e1",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#410000",
+                    "primary-fixed": "#ffdad4",
+                    "tertiary-container": "#004539",
+                    "surface-dim": "#dcd9d9",
+                    "primary": "#570000",
+                    "surface-container": "#f0eded",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "on-surface-variant": "#5a413d",
+                    "on-primary-fixed-variant": "#8f0f07",
+                    "inverse-on-surface": "#f3f0f0",
+                    "tertiary": "#002d24",
+                    "background": "#fcf9f8",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#1b1c1c",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#eae7e7",
+                    "inverse-surface": "#303030",
+                    "on-secondary-fixed-variant": "#544600",
+                    "on-primary-container": "#ff8371",
+                    "secondary-fixed-dim": "#e9c400",
+                    "on-tertiary-fixed-variant": "#065043",
+                    "on-background": "#1b1c1c",
+                    "surface-container-low": "#f6f3f2",
+                    "surface-tint": "#b22b1d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0 32px 32px -4px rgba(27, 28, 28, 0.06);
+        }
+        .glass-header {
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 max-w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold font-['Newsreader'] text-red-900 dark:text-red-500">UPHSD Molino</span>
+<div class="hidden md:flex gap-6">
+<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Dashboard</a>
+<a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Campaigns</a>
+<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Departments</a>
+<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Donor Registry</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-5 py-2 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-md font-medium text-sm transition-transform active:scale-95 duration-75">Start Campaign</button>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="User profile" data-alt="professional headshot of a university administrator in a formal suit with a neutral background and soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4tg8Gcer-eaJYb-N_EBe0W8yDvkVAAS3xV8kAEeOHl-HN0Ga9Nz_0pqeYokYjahNrZJDGnOPsDYdZJREuGTiXYkdfIieWR4l1P2zyJp8FKtsZipyeM3UfbPOSMUk4b4wI849WpiQzrYOQIXeWnWMGiB9bNQAYtlGtU1ZrygFkF4fHhrR2imHij2VHXdyj1dO-c35wZleqnivcHSOXUU0psxz_ihRD1ivs5wTZE_S-WoTvMxwoSqotPcxBzBTO3t9WW3JRS4uscDY"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Internal Layout Anchor) -->
+<aside class="hidden lg:flex h-screen w-64 fixed left-0 top-0 bg-stone-100 dark:bg-stone-900 flex-col py-8 z-40">
+<div class="px-8 mb-10">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="account_balance">account_balance</span>
+</div>
+<span class="text-lg font-black text-red-900 dark:text-red-500 uppercase tracking-tighter">UPHSD</span>
+</div>
+<p class="font-['Public_Sans'] text-[10px] uppercase tracking-widest text-stone-500">Academic Anthology</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Public_Sans'] text-sm uppercase tracking-widest">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 bg-white dark:bg-stone-800 text-red-900 dark:text-red-400 rounded-l-full ml-4 pl-4 py-3 shadow-sm transition-all translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-['Public_Sans'] text-sm uppercase tracking-widest">Campaigns</span>
+</a>
+<a class="flex items-center gap-4 text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+<span class="font-['Public_Sans'] text-sm uppercase tracking-widest">Departments</span>
+</a>
+<a class="flex items-center gap-4 text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-['Public_Sans'] text-sm uppercase tracking-widest">Donor Registry</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-4">
+<button class="w-full py-3 bg-secondary-container text-on-secondary-container font-bold rounded-md flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                New Initiative
+            </button>
+<div class="pt-4 border-t border-stone-200 dark:border-stone-800">
+<a class="flex items-center gap-4 text-stone-500 dark:text-stone-400 hover:text-red-700 pl-4 py-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-xs uppercase tracking-widest">Settings</span>
+</a>
+<a class="flex items-center gap-4 text-stone-500 dark:text-stone-400 hover:text-red-700 pl-4 py-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="text-xs uppercase tracking-widest">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 mt-20 p-8 md:p-12 lg:p-16 bg-surface">
+<div class="max-w-6xl mx-auto">
+<header class="mb-12">
+<h1 class="font-headline italic text-5xl lg:text-6xl text-primary tracking-tight mb-4">Create New Initiative</h1>
+<p class="font-body text-on-surface-variant max-w-2xl leading-relaxed">Transform a vision into a legacy. Document the research, community outreach, or student project that requires the support of the Perpetualite community.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<!-- Form Section -->
+<section class="lg:col-span-7 space-y-8">
+<div class="bg-surface-container-low rounded-xl p-8 editorial-shadow">
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Initiative Title</label>
+<input class="w-full bg-surface-container-highest border-none rounded-md px-4 py-4 focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-stone-400" placeholder="e.g., The Heritage Preservation Project" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Target Goal (PHP)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 font-medium">₱</span>
+<input class="w-full bg-surface-container-highest border-none rounded-md pl-8 pr-4 py-4 focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all" placeholder="50,000" type="number"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Category</label>
+<select class="w-full bg-surface-container-highest border-none rounded-md px-4 py-4 focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all text-on-surface-variant">
+<option>College of Computer Studies</option>
+<option>College of Nursing</option>
+<option>College of Business Administration</option>
+<option>College of Arts and Sciences</option>
+<option>College of Criminology</option>
+<option>Graduate School of Education</option>
+</select>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Description</label>
+<textarea class="w-full bg-surface-container-highest border-none rounded-md px-4 py-4 focus:ring-1 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-stone-400" placeholder="Detail the objectives, impact, and scholarly merit of this initiative..." rows="6"></textarea>
+</div>
+<div class="pt-4 flex items-center justify-end gap-4">
+<button class="px-8 py-3 text-primary font-bold hover:bg-primary-fixed transition-colors rounded-md" type="button">Save Draft</button>
+<button class="px-10 py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-md shadow-md active:scale-95 transition-transform" type="submit">Launch Initiative</button>
+</div>
+</form>
+</div>
+</section>
+<!-- Institutional Guidelines Side Panel -->
+<aside class="lg:col-span-5 space-y-6">
+<div class="relative overflow-hidden rounded-xl h-64 mb-8">
+<img alt="Institutional Heritage" class="w-full h-full object-cover" data-alt="architectural close-up of a classic university building with stone pillars and arched windows at dawn with soft orange light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp3kjSyxNk78MzJ88x3ocyYOkm0qXN3PzRcAf_nx240Yyjoo-XnDCpHanygx5Rwgf5mezYz-i4VfpOPXOMvbBXfRcEGrw71MeGs5GXwBGJSrbFyCz8oNCSfWB6NaLLdW0D5-l8m4rDLnbPI9wD_gsCWHtwg0EbtnQvK5hoom86mSRDCTQ5zTAD32vPzrdAakCA1bmbN8Lw9UmB4kA_KnahMSHN0AB_TUsgLAsShJz1A_yxY6DEJ9MM392T-zZoHUcmyPC67L7QYdk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-6">
+<span class="font-headline italic text-white text-2xl">Institutional Integrity</span>
+</div>
+</div>
+<div class="bg-surface-container-high rounded-xl p-8 space-y-6 border-l-4 border-secondary">
+<h3 class="font-headline text-xl text-primary font-bold">Campaign Guidelines</h3>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="text-xs font-bold text-primary">01</span>
+</div>
+<div>
+<h4 class="font-label text-sm font-bold uppercase tracking-wide mb-1">Academic Alignment</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Initiatives must directly support research, community welfare, or academic infrastructure within the UPHSD mission.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="text-xs font-bold text-primary">02</span>
+</div>
+<div>
+<h4 class="font-label text-sm font-bold uppercase tracking-wide mb-1">Transparent Budgeting</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">All target goals require a line-item breakdown for donor review. Funds are strictly allocated via the Finance Archives.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="text-xs font-bold text-primary">03</span>
+</div>
+<div>
+<h4 class="font-label text-sm font-bold uppercase tracking-wide mb-1">Impact Reporting</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Campaigners are required to provide quarterly updates and a final anthology report upon project completion.</p>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-secondary-container/20 rounded-md border border-secondary/10">
+<p class="text-xs text-secondary font-medium leading-relaxed italic">
+                                "Character Building is Nation Building." Ensure your campaign reflects the values of the Perpetual Help System.
+                            </p>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl border-dashed border-2 border-stone-200 dark:border-stone-800 flex flex-col items-center justify-center text-center space-y-3">
+<span class="material-symbols-outlined text-4xl text-stone-300" data-icon="cloud_upload">cloud_upload</span>
+<p class="text-sm font-medium text-stone-500">Upload Supporting Documentation<br/><span class="text-xs font-normal">(PDF, Project Proposals, Media)</span></p>
+<button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">Select Files</button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-8 mt-auto border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+<div class="flex flex-col items-center md:items-start space-y-2">
+<span class="font-['Newsreader'] italic text-stone-900 dark:text-stone-100 text-xl font-bold">UPHSD Molino</span>
+<p class="font-['Public_Sans'] text-xs text-stone-500">© 2024 UPHSD Molino. Institutional Heritage.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-stone-400 hover:text-red-900 text-xs font-medium underline-offset-4 hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="text-stone-400 hover:text-red-900 text-xs font-medium underline-offset-4 hover:underline transition-all" href="#">Terms of Service</a>
+<a class="text-stone-400 hover:text-red-900 text-xs font-medium underline-offset-4 hover:underline transition-all" href="#">University Site</a>
+<a class="text-stone-400 hover:text-red-900 text-xs font-medium underline-offset-4 hover:underline transition-all" href="#">Contact Archives</a>
+</div>
+</footer>
+</body></html>
