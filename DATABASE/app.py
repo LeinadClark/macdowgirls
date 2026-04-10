@@ -86,14 +86,14 @@ def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     initiatives = Initiative.query.filter_by(status='active').all()
-    return render_template('university_campaign_dashboard.html', initiatives=initiatives)
+    return render_template('dashboard.html', initiatives=initiatives)
 
 @app.route('/campaign/<initiative_id>')
 def campaign_detail(initiative_id):
     if 'user_id' not in session:
         return redirect(url_for('login'))
     initiative = Initiative.query.get_or_404(initiative_id)
-    return render_template('campaign_detail_pledge_form.html', initiative=initiative)
+    return render_template('campaign_pledge_form.html', initiative=initiative)
 
 @app.route('/community-impact')
 def community_impact():
@@ -108,7 +108,7 @@ def donor_registry():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     donors = User.query.filter_by(role='donor').all()
-    return render_template('institutional_donor_registry.html', donors=donors)
+    return render_template('donor_registry.html', donors=donors)
 
 @app.route('/heritage')
 def heritage():
