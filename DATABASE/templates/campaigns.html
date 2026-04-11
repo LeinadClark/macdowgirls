@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-primary": "#ffb4a8", "on-tertiary-container": "#74b3a2",
+            "outline": "#8e706c", "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed": "#221b00", "on-error": "#ffffff",
+            "secondary-container": "#fcd400", "surface": "#fcf9f8",
+            "tertiary-fixed-dim": "#94d3c1", "on-tertiary": "#ffffff",
+            "on-tertiary-fixed": "#00201a", "surface-variant": "#e4e2e1",
+            "on-secondary-container": "#6e5c00", "error-container": "#ffdad6",
+            "tertiary-fixed": "#afefdd", "secondary-fixed": "#ffe16d",
+            "outline-variant": "#e2bfb9", "secondary": "#705d00",
+            "primary-container": "#800000", "surface-container-highest": "#e4e2e1",
+            "on-primary": "#ffffff", "on-primary-fixed": "#410000",
+            "primary-fixed": "#ffdad4", "tertiary-container": "#004539",
+            "surface-dim": "#dcd9d9", "primary": "#570000",
+            "surface-container": "#f0eded", "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8", "on-surface-variant": "#5a413d",
+            "on-primary-fixed-variant": "#8f0f07", "inverse-on-surface": "#f3f0f0",
+            "tertiary": "#002d24", "background": "#fcf9f8",
+            "surface-bright": "#fcf9f8", "on-secondary": "#ffffff",
+            "on-surface": "#1b1c1c", "on-error-container": "#93000a",
+            "surface-container-high": "#eae7e7", "inverse-surface": "#303030",
+            "on-secondary-fixed-variant": "#544600", "on-primary-container": "#ff8371",
+            "secondary-fixed-dim": "#e9c400", "on-tertiary-fixed-variant": "#065043",
+            "on-background": "#1b1c1c", "surface-container-low": "#f6f3f2",
+            "surface-tint": "#b22b1d"
+          },
+          borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+          fontFamily: { "headline": ["Newsreader"], "body": ["Public Sans"], "label": ["Public Sans"] }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .editorial-shadow { box-shadow: 0 32px 32px -4px rgba(27,28,28,0.06); }
+    body { font-family: 'Public Sans', sans-serif; background-color: #fcf9f8; color: #1b1c1c; }
+    h1,h2,h3,.newsreader { font-family: 'Newsreader', serif; }
+
+    #donateModal { display: none; }
+    #donateModal.open { display: flex; }
+    .filter-btn.active { background-color: #570000; color: #ffffff; border-color: #570000; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .campaign-card { animation: fadeUp 0.4s ease both; }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    .progress-bar {
+      background: linear-gradient(90deg, #570000 0%, #b22b1d 50%, #570000 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2.5s infinite linear;
+    }
+
+    #toast { transition: opacity 0.4s ease, transform 0.4s ease; }
+    #toast.hidden  { opacity: 0; transform: translateY(20px); pointer-events: none; }
+    #toast.visible { opacity: 1; transform: translateY(0);    pointer-events: auto; }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+
+<!-- ── TOP NAVIGATION: Connected to Dashboard & Donor Registry ── -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 shadow-sm border-b border-stone-100">
+  <div class="flex items-center gap-12">
+    <!-- Logo links to Dashboard -->
+    <a href="/dashboard" class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900">UPHSD Molino</a>
+    <div class="hidden md:flex items-center space-x-8">
+      <!-- Dashboard link -->
+      <a href="/dashboard" class="text-stone-600 font-medium hover:text-red-800 transition-colors duration-300">Dashboard</a>
+      <!-- Campaigns (active page) -->
+      <a href="/campaigns" class="text-red-900 border-b-2 border-red-900 pb-1 font-semibold transition-colors duration-300">Campaigns</a>
+      <!-- Donor Registry link -->
+      <a href="/donor_registry" class="text-stone-600 font-medium hover:text-red-800 transition-colors duration-300">Donor Registry</a>
+    </div>
+  </div>
+  <div class="flex items-center space-x-4">
+    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, Perpetualite</span>
+    <button onclick="openModal(null)"
+            class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
+      Donate Now
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO SECTION ── -->
+<section class="pt-28 pb-0 px-8 max-w-7xl mx-auto w-full">
+  <div class="relative bg-primary rounded-xl overflow-hidden px-10 py-14 mb-10 editorial-shadow">
+    <div class="absolute inset-0 opacity-5 pointer-events-none flex items-end justify-end pr-8 pb-4">
+      <span class="material-symbols-outlined text-[280px] text-white">volunteer_activism</span>
+    </div>
+    <div class="relative z-10 max-w-2xl">
+      <p class="text-secondary-fixed text-xs uppercase tracking-widest font-bold mb-3">UPHSD Molino · Fundraising Campaigns</p>
+      <h1 class="text-5xl font-bold font-['Newsreader'] italic text-white leading-tight mb-4">Every peso plants<br/>a legacy.</h1>
+      <p class="text-white/80 font-body leading-relaxed mb-8">Support the initiatives that shape tomorrow's leaders. Choose a campaign below and make your contribution count.</p>
+      <div class="flex flex-wrap gap-4">
+        <button onclick="document.getElementById('campaigns-section').scrollIntoView({behavior:'smooth'})"
+                class="px-8 py-3 bg-secondary-container text-on-secondary-container font-bold text-sm uppercase tracking-widest rounded-md hover:brightness-95 active:scale-95 transition-all">
+          Browse Campaigns
+        </button>
+        <button onclick="openModal(null)"
+                class="px-8 py-3 border-2 border-white/40 text-white font-bold text-sm uppercase tracking-widest rounded-md hover:bg-white/10 transition-all">
+          Donate Now
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FILTERS & SORT ── -->
+<section class="px-8 max-w-7xl mx-auto w-full mb-8" id="campaigns-section">
+  <div class="flex flex-wrap gap-3 items-center">
+    <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold mr-2">Filter by:</span>
+    <button class="filter-btn active px-5 py-2 rounded-full border border-stone-300 text-sm font-semibold transition-all" data-filter="all">All</button>
+    <button class="filter-btn px-5 py-2 rounded-full border border-stone-300 text-sm font-semibold text-stone-700 transition-all hover:border-primary hover:text-primary" data-filter="research">Research</button>
+    <button class="filter-btn px-5 py-2 rounded-full border border-stone-300 text-sm font-semibold text-stone-700 transition-all hover:border-primary hover:text-primary" data-filter="scholarship">Scholarship</button>
+    <button class="filter-btn px-5 py-2 rounded-full border border-stone-300 text-sm font-semibold text-stone-700 transition-all hover:border-primary hover:text-primary" data-filter="outreach">Outreach</button>
+    <button class="filter-btn px-5 py-2 rounded-full border border-stone-300 text-sm font-semibold text-stone-700 transition-all hover:border-primary hover:text-primary" data-filter="conservation">Conservation</button>
+    <div class="ml-auto">
+      <select id="sortSelect" class="text-sm border border-stone-300 rounded-lg px-4 py-2 text-stone-700 bg-white focus:outline-none focus:border-primary">
+        <option value="newest">Newest First</option>
+        <option value="progress">Most Funded</option>
+        <option value="urgent">Ending Soon</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- ── CAMPAIGN GRID ── -->
+<main class="px-8 max-w-7xl mx-auto w-full pb-20">
+  <div id="campaignGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+  <div id="noResults" class="hidden text-center py-20">
+    <span class="material-symbols-outlined text-5xl text-stone-300 block mb-4">search_off</span>
+    <p class="text-on-surface-variant italic text-lg">No campaigns match this filter.</p>
+  </div>
+</main>
+
+<!-- ── DONATION MODAL ── -->
+<div id="donateModal" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg relative overflow-hidden">
+    <div class="h-2 w-full bg-gradient-to-r from-primary to-primary-container"></div>
+    <div class="p-8">
+      <button onclick="closeModal()" class="absolute top-6 right-6 text-stone-400 hover:text-stone-700 transition-colors">
+        <span class="material-symbols-outlined text-2xl">close</span>
+      </button>
+      <p class="text-xs uppercase tracking-widest text-on-surface-variant mb-1 font-semibold">Make a Contribution</p>
+      <h2 id="modalTitle" class="text-2xl font-['Newsreader'] font-bold text-primary italic mb-6">Donate to Campaign</h2>
+
+      <div id="campaignSelectorWrap" class="mb-5">
+        <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Select Campaign</label>
+        <select id="campaignSelector" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm text-stone-800 focus:outline-none focus:border-primary bg-stone-50"></select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mb-5">
+        <div>
+          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">First Name</label>
+          <input type="text" id="donorFirst" placeholder="Juan"
+                 class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+        </div>
+        <div>
+          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Last Name</label>
+          <input type="text" id="donorLast" placeholder="Dela Cruz"
+                 class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+        </div>
+      </div>
+      <div class="mb-5">
+        <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Email Address</label>
+        <input type="email" id="donorEmail" placeholder="juan@email.com"
+               class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+      </div>
+
+      <div class="mb-5">
+        <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-3">Donation Amount (₱)</label>
+        <div class="grid grid-cols-4 gap-2 mb-3">
+          <button class="preset-btn py-2 rounded-lg border border-stone-300 text-sm font-bold hover:border-primary hover:text-primary transition-all" data-amount="500">₱500</button>
+          <button class="preset-btn py-2 rounded-lg border border-stone-300 text-sm font-bold hover:border-primary hover:text-primary transition-all" data-amount="1000">₱1,000</button>
+          <button class="preset-btn py-2 rounded-lg border border-stone-300 text-sm font-bold hover:border-primary hover:text-primary transition-all" data-amount="5000">₱5,000</button>
+          <button class="preset-btn py-2 rounded-lg border border-stone-300 text-sm font-bold hover:border-primary hover:text-primary transition-all" data-amount="10000">₱10,000</button>
+        </div>
+        <input type="number" id="customAmount" placeholder="Or enter custom amount" min="1"
+               class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-3">Payment Method</label>
+        <div class="grid grid-cols-3 gap-2">
+          <button class="pay-btn py-3 rounded-lg border-2 border-primary bg-primary/5 text-primary text-xs font-bold transition-all" data-method="GCash">GCash</button>
+          <button class="pay-btn py-3 rounded-lg border border-stone-300 text-stone-600 text-xs font-bold hover:border-primary hover:text-primary transition-all" data-method="Maya">Maya</button>
+          <button class="pay-btn py-3 rounded-lg border border-stone-300 text-stone-600 text-xs font-bold hover:border-primary hover:text-primary transition-all" data-method="Bank Transfer">Bank Transfer</button>
+        </div>
+      </div>
+
+      <button onclick="submitDonation()"
+              class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all">
+        Confirm Donation
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST NOTIFICATION ── -->
+<div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] bg-tertiary-container text-white px-8 py-4 rounded-xl shadow-2xl flex items-center gap-3">
+  <span class="material-symbols-outlined text-secondary-fixed" style="font-variation-settings:'FILL' 1">check_circle</span>
+  <span id="toastMsg" class="font-semibold text-sm">Donation submitted! Thank you.</span>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="w-full py-12 px-8 mt-auto bg-stone-50 border-t border-stone-200">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+    <div class="flex flex-col items-center md:items-start">
+      <span class="font-['Newsreader'] italic text-2xl font-bold text-stone-900 mb-1">UPHSD Molino</span>
+      <p class="font-['Public_Sans'] text-xs text-stone-500 uppercase tracking-widest">© 2026 Institutional Heritage.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-8">
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Privacy Policy</a>
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Terms of Service</a>
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">University Site</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const INITIATIVES = [
+  {
+    id: "camp-001",
+    title: "Kumpas Kalye: Street Music for a Cause",
+    category: "outreach",
+    desc: "A crowdfunding initiative aimed at supporting local street performers and providing musical education to underprivileged youth in Molino.",
+    raised: 45000,
+    goal: 100000,
+    daysLeft: 12,
+    detailUrl: "#"
+  },
+  {
+    id: "camp-002",
+    title: "Project Dunong: CS Research Lab Upgrade",
+    category: "research",
+    desc: "Modernizing our Computer Science facilities with high-performance workstations for advanced database and system design research.",
+    raised: 120000,
+    goal: 150000,
+    daysLeft: 25,
+    detailUrl: "#"
+  },
+  {
+    id: "camp-003",
+    title: "Perpetualite High Honors Scholarship",
+    category: "scholarship",
+    desc: "Supporting the brightest minds who transitioned from the ABM strand to technical degrees like Computer Science.",
+    raised: 200000,
+    goal: 200000,
+    daysLeft: 0,
+    detailUrl: "#"
+  },
+  {
+    id: "camp-004",
+    title: "Green Campus: Molino Conservation",
+    category: "conservation",
+    desc: "Institutional heritage preservation and implementing sustainable waste management across the Molino campus grounds.",
+    raised: 15000,
+    goal: 50000,
+    daysLeft: 45,
+    detailUrl: "#"
+  }
+];
+
+const CAT = {
+  research:     { icon: "science",                tag: "Research Grant",   cls: "bg-tertiary-container text-on-tertiary-container" },
+  scholarship:  { icon: "school",                 tag: "Priority Grant",   cls: "bg-secondary-container text-on-secondary-container" },
+  outreach:     { icon: "volunteer_activism",      tag: "Outreach",         cls: "bg-primary text-on-primary" },
+  conservation: { icon: "conservation_agriculture",tag: "Conservation",      cls: "bg-surface-container-high text-on-surface" }
+};
+
+let activeFilter   = "all";
+let activeCampaign = null;
+let selectedAmount = null;
+let selectedPay    = "GCash";
+
+const pct = (r, g) => g ? Math.min(100, Math.round((r / g) * 100)) : 0;
+const fmt = n => "₱" + Number(n).toLocaleString("en-PH");
+
+function renderCards(data) {
+  const grid  = document.getElementById("campaignGrid");
+  const noRes = document.getElementById("noResults");
+  if (!data.length) { grid.innerHTML = ""; noRes.classList.remove("hidden"); return; }
+  noRes.classList.add("hidden");
+
+  grid.innerHTML = data.map((c, i) => {
+    const p   = pct(c.raised, c.goal);
+    const cfg = CAT[c.category] || { icon: "campaign", tag: c.category, cls: "bg-stone-200 text-stone-700" };
+    return `
+    <div class="campaign-card bg-surface-container-lowest rounded-xl editorial-shadow overflow-hidden flex flex-col group"
+          style="animation-delay:${i * 60}ms">
+      <div class="relative h-44 flex-shrink-0 bg-surface-container-high flex items-center justify-center overflow-hidden">
+        <span class="material-symbols-outlined text-primary/20 transition-transform group-hover:scale-110 duration-500"
+              style="font-size:96px">${cfg.icon}</span>
+        <div class="absolute top-4 left-4">
+          <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${cfg.cls}">${cfg.tag}</span>
+        </div>
+        ${p >= 100 ? `<div class="absolute inset-0 bg-tertiary-container/80 flex items-center justify-center">
+          <span class="text-white font-bold text-lg uppercase tracking-widest">Goal Reached! 🎉</span>
+        </div>` : ''}
+      </div>
+      <div class="p-6 flex flex-col flex-1">
+        <h3 class="text-lg font-['Newsreader'] font-bold text-on-surface mb-2 leading-snug">${c.title}</h3>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-4 flex-1">
+          ${c.desc}
+        </p>
+        <div class="mb-4">
+          <div class="flex justify-between text-xs font-label mb-1">
+            <span class="text-on-surface-variant italic">${p}% funded</span>
+            <span class="font-bold text-primary">${fmt(c.raised)} / ${fmt(c.goal)}</span>
+          </div>
+          <div class="w-full h-2 bg-stone-200 rounded-full overflow-hidden">
+            <div class="h-full progress-bar rounded-full" style="width:${p}%"></div>
+          </div>
+        </div>
+        <div class="flex justify-between text-xs text-on-surface-variant mb-5">
+          <span class="flex items-center gap-1">
+            <span class="material-symbols-outlined text-base">schedule</span>
+            ${c.daysLeft} days left
+          </span>
+          <a href="${c.detailUrl}" class="flex items-center gap-1 text-primary font-semibold hover:underline">
+            <span class="material-symbols-outlined text-base">open_in_new</span>Details
+          </a>
+        </div>
+        <button onclick="openModal('${c.id}')"
+                ${p >= 100 ? 'disabled' : ''}
+                class="w-full py-3 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-xs uppercase tracking-widest rounded-lg hover:shadow-lg active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+          ${p >= 100 ? 'Fully Funded' : 'Donate to This Campaign'}
+        </button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function applyFilter() {
+  let data = activeFilter === "all"
+    ? INITIATIVES
+    : INITIATIVES.filter(c => c.category === activeFilter);
+  const sort = document.getElementById("sortSelect").value;
+  if (sort === "progress") data = [...data].sort((a,b) => pct(b.raised,b.goal) - pct(a.raised,a.goal));
+  if (sort === "urgent")    data = [...data].sort((a,b) => a.daysLeft - b.daysLeft);
+  renderCards(data);
+}
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter = btn.dataset.filter;
+    applyFilter();
+  });
+});
+document.getElementById("sortSelect").addEventListener("change", applyFilter);
+
+function populateSelector(selectedId) {
+  document.getElementById("campaignSelector").innerHTML =
+    INITIATIVES.map(c =>
+      `<option value="${c.id}" ${c.id === selectedId ? "selected":""}>${c.title}</option>`
+    ).join("");
+}
+
+function openModal(campaignId) {
+  activeCampaign = campaignId;
+  populateSelector(campaignId);
+  const wrap    = document.getElementById("campaignSelectorWrap");
+  const title = document.getElementById("modalTitle");
+  if (campaignId) {
+    const c = INITIATIVES.find(x => x.id === campaignId);
+    title.textContent = c ? c.title : "Donate to Campaign";
+    wrap.style.display = "none";
+  } else {
+    title.textContent = "Donate to a Campaign";
+    wrap.style.display = "block";
+  }
+  document.getElementById("donateModal").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("donateModal").classList.remove("open");
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  document.getElementById("toastMsg").textContent = msg;
+  toast.classList.remove("hidden");
+  toast.classList.add("visible");
+  setTimeout(() => {
+    toast.classList.remove("visible");
+    setTimeout(() => toast.classList.add("hidden"), 400);
+  }, 5000);
+}
+
+function submitDonation() {
+  const first = document.getElementById("donorFirst").value;
+  if(!first) { alert("Please enter your name"); return; }
+  showToast(`Thank you for your support, ${first}!`);
+  closeModal();
+}
+
+// Initialize campaigns
+applyFilter();
+</script>
+</body>
+</html>

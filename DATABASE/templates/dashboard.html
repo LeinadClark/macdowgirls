@@ -1,279 +1,309 @@
+Here is the fixed dashboard HTML. All `url_for()` and Jinja templating have been replaced with standard relative links (`/campaigns`, `/donor_registry`, etc.) so you can navigate directly to those pages. The departments section is completely removed, and only relevant campaign and donor registry connections remain.
+```html
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
+<html class="light" lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "inverse-primary": "#ffb4a8",
-                    "on-tertiary-container": "#74b3a2",
-                    "outline": "#8e706c",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary-fixed": "#221b00",
-                    "on-error": "#ffffff",
-                    "secondary-container": "#fcd400",
-                    "surface": "#fcf9f8",
-                    "tertiary-fixed-dim": "#94d3c1",
-                    "on-tertiary": "#ffffff",
-                    "on-tertiary-fixed": "#00201a",
-                    "surface-variant": "#e4e2e1",
-                    "on-secondary-container": "#6e5c00",
-                    "error-container": "#ffdad6",
-                    "tertiary-fixed": "#afefdd",
-                    "secondary-fixed": "#ffe16d",
-                    "outline-variant": "#e2bfb9",
-                    "secondary": "#705d00",
-                    "primary-container": "#800000",
-                    "surface-container-highest": "#e4e2e1",
-                    "on-primary": "#ffffff",
-                    "on-primary-fixed": "#410000",
-                    "primary-fixed": "#ffdad4",
-                    "tertiary-container": "#004539",
-                    "surface-dim": "#dcd9d9",
-                    "primary": "#570000",
-                    "surface-container": "#f0eded",
-                    "error": "#ba1a1a",
-                    "primary-fixed-dim": "#ffb4a8",
-                    "on-surface-variant": "#5a413d",
-                    "on-primary-fixed-variant": "#8f0f07",
-                    "inverse-on-surface": "#f3f0f0",
-                    "tertiary": "#002d24",
-                    "background": "#fcf9f8",
-                    "surface-bright": "#fcf9f8",
-                    "on-secondary": "#ffffff",
-                    "on-surface": "#1b1c1c",
-                    "on-error-container": "#93000a",
-                    "surface-container-high": "#eae7e7",
-                    "inverse-surface": "#303030",
-                    "on-secondary-fixed-variant": "#544600",
-                    "on-primary-container": "#ff8371",
-                    "secondary-fixed-dim": "#e9c400",
-                    "on-tertiary-fixed-variant": "#065043",
-                    "on-background": "#1b1c1c",
-                    "surface-container-low": "#f6f3f2",
-                    "surface-tint": "#b22b1d"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Newsreader"],
-                    "body": ["Public Sans"],
-                    "label": ["Public Sans"]
-            }
-          },
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "inverse-primary": "#ffb4a8",
+          "on-tertiary-container": "#74b3a2",
+          "outline": "#8e706c",
+          "surface-container-lowest": "#ffffff",
+          "on-secondary-fixed": "#221b00",
+          "on-error": "#ffffff",
+          "secondary-container": "#fcd400",
+          "surface": "#fcf9f8",
+          "tertiary-fixed-dim": "#94d3c1",
+          "on-tertiary": "#ffffff",
+          "on-tertiary-fixed": "#00201a",
+          "surface-variant": "#e4e2e1",
+          "on-secondary-container": "#6e5c00",
+          "error-container": "#ffdad6",
+          "tertiary-fixed": "#afefdd",
+          "secondary-fixed": "#ffe16d",
+          "outline-variant": "#e2bfb9",
+          "secondary": "#705d00",
+          "primary-container": "#800000",
+          "surface-container-highest": "#e4e2e1",
+          "on-primary": "#ffffff",
+          "on-primary-fixed": "#410000",
+          "primary-fixed": "#ffdad4",
+          "tertiary-container": "#004539",
+          "surface-dim": "#dcd9d9",
+          "primary": "#570000",
+          "surface-container": "#f0eded",
+          "error": "#ba1a1a",
+          "primary-fixed-dim": "#ffb4a8",
+          "on-surface-variant": "#5a413d",
+          "on-primary-fixed-variant": "#8f0f07",
+          "inverse-on-surface": "#f3f0f0",
+          "tertiary": "#002d24",
+          "background": "#fcf9f8",
+          "surface-bright": "#fcf9f8",
+          "on-secondary": "#ffffff",
+          "on-surface": "#1b1c1c",
+          "on-error-container": "#93000a",
+          "surface-container-high": "#eae7e7",
+          "inverse-surface": "#303030",
+          "on-secondary-fixed-variant": "#544600",
+          "on-primary-container": "#ff8371",
+          "secondary-fixed-dim": "#e9c400",
+          "on-tertiary-fixed-variant": "#065043",
+          "on-background": "#1b1c1c",
+          "surface-container-low": "#f6f3f2",
+          "surface-tint": "#b22b1d"
         },
+        borderRadius: {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        fontFamily: {
+          "headline": ["Newsreader"],
+          "body": ["Public Sans"],
+          "label": ["Public Sans"]
+        }
       }
-    </script>
+    }
+  }
+</script>
 <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .editorial-shadow {
-            box-shadow: 0 32px 32px -4px rgba(27, 28, 28, 0.06);
-        }
-        body {
-            font-family: 'Public Sans', sans-serif;
-            background-color: #fcf9f8;
-            color: #1b1c1c;
-        }
-        h1, h2, h3, .newsreader {
-            font-family: 'Newsreader', serif;
-        }
-    </style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .editorial-shadow { box-shadow: 0 32px 32px -4px rgba(27, 28, 28, 0.06); }
+  body { font-family: 'Public Sans', sans-serif; background-color: #fcf9f8; color: #1b1c1c; }
+  h1, h2, h3, .newsreader { font-family: 'Newsreader', serif; }
+</style>
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col">
-<!-- TopNavBar -->
+
+<!-- ── Top Navigation (Departments link removed; campaigns + donor registry remain) ── -->
 <nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 max-w-full shadow-sm opacity-90 border-b border-stone-100">
-<div class="flex items-center gap-12">
-<span class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900 dark:text-red-500">UPHSD Molino</span>
-<div class="hidden md:flex items-center space-x-8">
-<a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold transition-colors duration-300" href="#">Dashboard</a>
-<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" a href="{{ url_for('outreach') }}">Campaigns</a>
-<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Departments</a>
-<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="{{ url_for('donor_registry') }}">Donor Registry</a>
-</div>
-</div>
-<div class="flex items-center space-x-4">
-<button class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-primary font-medium hover:bg-stone-200 transition-all">Sign In</button>
-<button class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">Start Campaign</button>
-</div>
+  <div class="flex items-center gap-12">
+    <span class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900 dark:text-red-500">UPHSD Molino</span>
+    <div class="hidden md:flex items-center space-x-8">
+      <!-- Dashboard: active state (links to dashboard itself or '#') -->
+      <a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold transition-colors duration-300"
+         href="/dashboard">Dashboard</a>
+      <!-- Campaigns: direct static link -->
+      <a class="text-stone-600 dark:text-stone-400 font-medium hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300"
+         href="/campaigns">Campaigns</a>
+      <!-- Donor Registry: direct static link -->
+      <a class="text-stone-600 dark:text-stone-400 font-medium hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300"
+         href="/donor_registry">Donor Registry</a>
+    </div>
+  </div>
+  <div class="flex items-center space-x-4">
+    <!-- Static user greeting (no session logic) -->
+    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">
+      Hello, Alumnus
+    </span>
+    <a href="/logout"
+       class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-primary font-medium hover:bg-stone-200 transition-all">
+      Sign Out
+    </a>
+    <a href="/campaigns"
+       class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
+      Start Campaign
+    </a>
+  </div>
 </nav>
+
 <main class="pt-28 pb-12 px-8 max-w-7xl mx-auto w-full">
-<!-- Header Section -->
-<header class="mb-12">
-<h1 class="text-5xl font-bold text-primary italic tracking-tight mb-2">Academic Anthology</h1>
-<p class="text-lg text-on-surface-variant font-body">Archiving and accelerating institutional progress through collective contribution.</p>
-</header>
-<!-- Stats Bento Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-<div class="bg-surface-container-low p-8 rounded-xl editorial-shadow relative overflow-hidden group">
-<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
-<p class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-2">Total Raised</p>
-<h3 class="text-4xl font-headline font-bold text-primary">₱4,280,000</h3>
-<div class="mt-4 flex items-center text-secondary font-semibold">
-<span class="material-symbols-outlined mr-1">trending_up</span>
-<span>12% from last month</span>
-</div>
-</div>
-<div class="bg-surface-container-low p-8 rounded-xl editorial-shadow relative overflow-hidden group">
-<p class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-2">Active Initiatives</p>
-<h3 class="text-4xl font-headline font-bold text-primary">24</h3>
-<p class="mt-4 text-on-surface-variant italic font-headline text-lg">Across 12 departments</p>
-</div>
-<div class="bg-surface-container-low p-8 rounded-xl editorial-shadow relative overflow-hidden group">
-<p class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-2">Recent Pledges</p>
-<div class="mt-4 space-y-3">
-<div class="flex justify-between items-center text-sm">
-<span class="font-medium">Alumni Class of '98</span>
-<span class="text-primary font-bold">₱50,000</span>
-</div>
-<div class="flex justify-between items-center text-sm">
-<span class="font-medium">St. Jude Medical Group</span>
-<span class="text-primary font-bold">₱125,000</span>
-</div>
-<div class="flex justify-between items-center text-sm">
-<span class="font-medium">Local Tech Partner</span>
-<span class="text-primary font-bold">₱75,000</span>
-</div>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-<!-- Main Content: Campaigns -->
-<div class="lg:col-span-2 space-y-8">
-<div class="flex justify-between items-baseline border-b border-stone-200 pb-4">
-<h2 class="text-3xl font-headline font-bold text-primary italic">Featured Initiatives</h2>
-<a class="text-primary font-label text-sm uppercase tracking-widest hover:underline" href="#">View All Archive</a>
-</div>
-<!-- Campaign Cards -->
-<div class="space-y-12">
-<!-- Campaign 1 -->
-<div class="grid md:grid-cols-5 gap-8 group">
-<div class="md:col-span-2 relative">
-<img alt="Student Research Fund" class="w-full aspect-[4/5] object-cover rounded-tl-xl rounded-br-xl shadow-lg transition-transform group-hover:scale-[1.02]" data-alt="close-up of scientific glassware with soft focus laboratory background and warm ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT1WFicgu8u4dwqxDxtcOPcOqHQOwwe_DRcpYAWlUPSS8U_23pYDZQMGr-X6F3VHiRXEX4OqfPzdpG8ZalXjLaec3RQ6Rc_FYxxWT66LcuGTBDl0FvDHth44NeIngtP71b31UQ0auVxlmEgi8gokxPvWuvgYMAIIrzhjZffiC-t2Yuy7JCzaps4cUkwA34RhDWxjYLh7bHwWLYkdBDQOIlRhxCjGgGdg9QBlsyYT3i_Xov0W6ZLYO0AnnrduUQMg-Kc-GDer7zMT8"/>
-<div class="absolute -bottom-4 -right-4 bg-secondary-container px-4 py-2 shadow-md">
-<span class="text-on-secondary-container font-bold text-xs uppercase tracking-tighter">Priority Grant</span>
-</div>
-</div>
-<div class="md:col-span-3 flex flex-col justify-center">
-<span class="text-tertiary-fixed-dim bg-tertiary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest w-fit mb-4">Computer Studies</span>
-<h3 class="text-2xl font-headline font-bold text-on-surface mb-3">Student Research Fund: AI Ethics Lab</h3>
-<p class="text-on-surface-variant font-body mb-6 leading-relaxed">Advancing the study of ethical frameworks in autonomous systems. Funding covers hardware, specialized datasets, and publication grants for undergraduate researchers.</p>
-<div class="space-y-2 mb-6">
-<div class="flex justify-between text-sm font-label">
-<span class="text-on-surface-variant italic">Progress: 65%</span>
-<span class="font-bold text-primary">₱325,000 / ₱500,000</span>
-</div>
-<div class="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
-<div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 65%"></div>
-</div>
-</div>
-<button class="w-fit px-8 py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-sm uppercase tracking-widest rounded-md hover:shadow-xl transition-all">Support Initiative</button>
-</div>
-</div>
-<!-- Campaign 2 -->
-<div class="grid md:grid-cols-5 gap-8 group">
-<div class="md:col-span-2 relative order-last md:order-none">
-<img alt="Sports Equipment Fund" class="w-full aspect-[4/5] object-cover rounded-tr-xl rounded-bl-xl shadow-lg transition-transform group-hover:scale-[1.02]" data-alt="high-action shot of an indoor basketball court with polished floors and dramatic ceiling lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgiVM3OKQuRqnQ45prjMWQ32w3tgchr5C6UsMSC3vsJOkx-Hh7hpnH0hZDuWYYNYw4ynX1RNccG0iCvBg2XANOE-7mwAL2-caHUgcafOWzhwm-hNgVVcHoyBLSuNKa-N3VqsfOhhDOlMWU1H8esVcr-l4NayhAcQO1R9iNX921KaxnzDoVefll8clOnbp0UTUsmY2RD4HjIm5n-rcHVZNRET__CwtFJBLaB_7Tuupe_MOEuq02AL05dcC8SWMvA3AkX2t9oIb5krg"/>
-<div class="absolute -top-4 -left-4 bg-primary px-4 py-2 shadow-md">
-<span class="text-on-primary font-bold text-xs uppercase tracking-tighter">Active Goal</span>
-</div>
-</div>
-<div class="md:col-span-3 flex flex-col justify-center">
-<span class="text-on-secondary-fixed-variant bg-secondary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest w-fit mb-4">Athletics Dept</span>
-<h3 class="text-2xl font-headline font-bold text-on-surface mb-3">The Arena Legacy: Sports Equipment</h3>
-<p class="text-on-surface-variant font-body mb-6 leading-relaxed">Providing high-performance equipment for our championship teams. Investment includes modern training monitors and safety gear for varsity athletes.</p>
-<div class="space-y-2 mb-6">
-<div class="flex justify-between text-sm font-label">
-<span class="text-on-surface-variant italic">Progress: 42%</span>
-<span class="font-bold text-primary">₱126,000 / ₱300,000</span>
-</div>
-<div class="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
-<div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 42%"></div>
-</div>
-</div>
-<button class="w-fit px-8 py-3 border-2 border-primary text-primary font-bold text-sm uppercase tracking-widest rounded-md hover:bg-primary hover:text-white transition-all">View Details</button>
-</div>
-</div>
-</div>
-</div>
-<!-- Sidebar: Departments -->
-<aside class="space-y-8">
-<div class="bg-surface-container-high p-8 rounded-xl">
-<h2 class="text-2xl font-headline font-bold text-primary italic mb-6">College Departments</h2>
-<nav class="space-y-4">
-<a class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:translate-x-2 transition-transform shadow-sm group" href="#">
-<div class="flex items-center space-x-3">
-<span class="material-symbols-outlined text-tertiary-container">computer</span>
-<span class="font-label font-bold text-sm uppercase">Computer Studies</span>
-</div>
-<span class="material-symbols-outlined text-stone-400 group-hover:text-primary">chevron_right</span>
-</a>
-<a class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:translate-x-2 transition-transform shadow-sm group" href="#">
-<div class="flex items-center space-x-3">
-<span class="material-symbols-outlined text-secondary">payments</span>
-<span class="font-label font-bold text-sm uppercase">Business</span>
-</div>
-<span class="material-symbols-outlined text-stone-400 group-hover:text-primary">chevron_right</span>
-</a>
-<a class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:translate-x-2 transition-transform shadow-sm group" href="#">
-<div class="flex items-center space-x-3">
-<span class="material-symbols-outlined text-primary">medical_services</span>
-<span class="font-label font-bold text-sm uppercase">Nursing</span>
-</div>
-<span class="material-symbols-outlined text-stone-400 group-hover:text-primary">chevron_right</span>
-</a>
-<a class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-lg hover:translate-x-2 transition-transform shadow-sm group" href="#">
-<div class="flex items-center space-x-3">
-<span class="material-symbols-outlined text-stone-600">architecture</span>
-<span class="font-label font-bold text-sm uppercase">Engineering</span>
-</div>
-<span class="material-symbols-outlined text-stone-400 group-hover:text-primary">chevron_right</span>
-</a>
-</nav>
-</div>
-<!-- Heritage Section -->
-<div class="bg-primary text-on-primary p-8 rounded-xl relative overflow-hidden">
-<div class="relative z-10">
-<h4 class="text-xl font-headline italic font-bold mb-4">Institutional Heritage</h4>
-<p class="text-sm font-body opacity-90 leading-relaxed mb-6">Every contribution to the UPHSD Molino Fund becomes a permanent chapter in our university's growing anthology of excellence.</p>
-<a class="text-secondary-fixed font-bold text-xs uppercase tracking-widest flex items-center hover:underline" href="#">
-                            Read Archive
-                            <span class="material-symbols-outlined text-sm ml-2">auto_stories</span>
-</a>
-</div>
-<div class="absolute -bottom-10 -right-10 opacity-10">
-<span class="material-symbols-outlined text-[160px]">school</span>
-</div>
-</div>
-</aside>
-</div>
+
+  <!-- ── Header (relevant and focused) ── -->
+  <header class="mb-12">
+    <h1 class="text-5xl font-bold text-primary italic tracking-tight mb-2">Academic Anthology</h1>
+    <p class="text-lg text-on-surface-variant font-body">Archiving and accelerating institutional progress through collective contribution.</p>
+  </header>
+
+  <!-- ── Stats Bento Grid (no department mentions, added donor registry connection) ── -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+    <div class="bg-surface-container-low p-8 rounded-xl editorial-shadow relative overflow-hidden group">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
+      <p class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-2">Total Raised</p>
+      <h3 class="text-4xl font-headline font-bold text-primary">₱4,280,000</h3>
+      <div class="mt-4 flex items-center text-secondary font-semibold">
+        <span class="material-symbols-outlined mr-1">trending_up</span>
+        <span>12% from last month</span>
+      </div>
+    </div>
+    <div class="bg-surface-container-low p-8 rounded-xl editorial-shadow relative overflow-hidden group">
+      <p class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-2">Active Initiatives</p>
+      <h3 class="text-4xl font-headline font-bold text-primary">24</h3>
+      <p class="mt-4 text-on-surface-variant italic font-headline text-lg">Community-powered projects</p>
+    </div>
+    <div class="bg-surface-container-low p-8 rounded-xl editorial-shadow relative overflow-hidden group">
+      <p class="text-sm font-label uppercase tracking-widest text-on-surface-variant mb-2">Recent Pledges</p>
+      <div class="mt-4 space-y-3">
+        <div class="flex justify-between items-center text-sm">
+          <span class="font-medium">Alumni Class of '98</span>
+          <span class="text-primary font-bold">₱50,000</span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <span class="font-medium">St. Jude Medical Group</span>
+          <span class="text-primary font-bold">₱125,000</span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <span class="font-medium">Local Tech Partner</span>
+          <span class="text-primary font-bold">₱75,000</span>
+        </div>
+      </div>
+      <!-- Direct connection to Donor Registry page -->
+      <div class="mt-5 pt-2 border-t border-stone-200/60">
+        <a href="/donor_registry"
+           class="inline-flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-widest hover:underline transition-all group/link">
+          <span>View donor registry</span>
+          <span class="material-symbols-outlined text-sm transition-transform group-hover/link:translate-x-0.5">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+    <!-- ── MAIN CONTENT: Featured Initiatives (fully connected to campaigns) ── -->
+    <div class="lg:col-span-2 space-y-8">
+      <div class="flex justify-between items-baseline border-b border-stone-200 pb-4">
+        <h2 class="text-3xl font-headline font-bold text-primary italic">Featured Initiatives</h2>
+        <a class="text-primary font-label text-sm uppercase tracking-widest hover:underline"
+           href="/campaigns">View All Campaigns</a>
+      </div>
+
+      <div class="space-y-12">
+        <!-- Campaign 1 (static, no Jinja) -->
+        <div class="grid md:grid-cols-5 gap-8 group">
+          <div class="md:col-span-2 relative">
+            <img alt="Student Research Fund"
+                 class="w-full aspect-[4/5] object-cover rounded-tl-xl rounded-br-xl shadow-lg transition-transform group-hover:scale-[1.02]"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT1WFicgu8u4dwqxDxtcOPcOqHQOwwe_DRcpYAWlUPSS8U_23pYDZQMGr-X6F3VHiRXEX4OqfPzdpG8ZalXjLaec3RQ6Rc_FYxxWT66LcuGTBDl0FvDHth44NeIngtP71b31UQ0auVxlmEgi8gokxPvWuvgYMAIIrzhjZffiC-t2Yuy7JCzaps4cUkwA34RhDWxjYLh7bHwWLYkdBDQOIlRhxCjGgGdg9QBlsyYT3i_Xov0W6ZLYO0AnnrduUQMg-Kc-GDer7zMT8"/>
+            <div class="absolute -bottom-4 -right-4 bg-secondary-container px-4 py-2 shadow-md">
+              <span class="text-on-secondary-container font-bold text-xs uppercase tracking-tighter">Priority Grant</span>
+            </div>
+          </div>
+          <div class="md:col-span-3 flex flex-col justify-center">
+            <span class="text-tertiary-fixed-dim bg-tertiary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest w-fit mb-4">Research & Innovation</span>
+            <h3 class="text-2xl font-headline font-bold text-on-surface mb-3">Student Research Fund: AI Ethics Lab</h3>
+            <p class="text-on-surface-variant font-body mb-6 leading-relaxed">Advancing the study of ethical frameworks in autonomous systems. Funding covers hardware, specialized datasets, and publication grants for undergraduate researchers.</p>
+            <div class="space-y-2 mb-6">
+              <div class="flex justify-between text-sm font-label">
+                <span class="text-on-surface-variant italic">Progress: 65%</span>
+                <span class="font-bold text-primary">₱325,000 / ₱500,000</span>
+              </div>
+              <div class="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 65%"></div>
+              </div>
+            </div>
+            <a href="/campaigns"
+               class="w-fit px-8 py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-sm uppercase tracking-widest rounded-md hover:shadow-xl transition-all">
+              Support Initiative
+            </a>
+          </div>
+        </div>
+        <!-- Campaign 2 -->
+        <div class="grid md:grid-cols-5 gap-8 group">
+          <div class="md:col-span-2 relative order-last md:order-none">
+            <img alt="Sports Equipment Fund"
+                 class="w-full aspect-[4/5] object-cover rounded-tr-xl rounded-bl-xl shadow-lg transition-transform group-hover:scale-[1.02]"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgiVM3OKQuRqnQ45prjMWQ32w3tgchr5C6UsMSC3vsJOkx-Hh7hpnH0hZDuWYYNYw4ynX1RNccG0iCvBg2XANOE-7mwAL2-caHUgcafOWzhwm-hNgVVcHoyBLSuNKa-N3VqsfOhhDOlMWU1H8esVcr-l4NayhAcQO1R9iNX921KaxnzDoVefll8clOnbp0UTUsmY2RD4HjIm5n-rcHVZNRET__CwtFJBLaB_7Tuupe_MOEuq02AL05dcC8SWMvA3AkX2t9oIb5krg"/>
+            <div class="absolute -top-4 -left-4 bg-primary px-4 py-2 shadow-md">
+              <span class="text-on-primary font-bold text-xs uppercase tracking-tighter">Active Goal</span>
+            </div>
+          </div>
+          <div class="md:col-span-3 flex flex-col justify-center">
+            <span class="text-on-secondary-fixed-variant bg-secondary-fixed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest w-fit mb-4">Athletics & Wellness</span>
+            <h3 class="text-2xl font-headline font-bold text-on-surface mb-3">The Arena Legacy: Sports Equipment</h3>
+            <p class="text-on-surface-variant font-body mb-6 leading-relaxed">Providing high-performance equipment for our championship teams. Investment includes modern training monitors and safety gear for varsity athletes.</p>
+            <div class="space-y-2 mb-6">
+              <div class="flex justify-between text-sm font-label">
+                <span class="text-on-surface-variant italic">Progress: 42%</span>
+                <span class="font-bold text-primary">₱126,000 / ₱300,000</span>
+              </div>
+              <div class="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 42%"></div>
+              </div>
+            </div>
+            <a href="/campaigns"
+               class="w-fit px-8 py-3 border-2 border-primary text-primary font-bold text-sm uppercase tracking-widest rounded-md hover:bg-primary hover:text-white transition-all">
+              View Details
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Browse all campaigns (connects directly to campaigns page) -->
+      <div class="pt-4 border-t border-stone-200">
+        <a href="/campaigns"
+           class="inline-flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-widest hover:underline">
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+          Browse all campaigns
+        </a>
+      </div>
+    </div>
+
+    <!-- ── SIDEBAR: Department section FULLY REMOVED. Only heritage and donor registry connections remain ── -->
+    <aside class="space-y-8">
+      <!-- Heritage Block (connects to institutional archive) -->
+      <div class="bg-primary text-on-primary p-8 rounded-xl relative overflow-hidden">
+        <div class="relative z-10">
+          <h4 class="text-xl font-headline italic font-bold mb-4">Institutional Heritage</h4>
+          <p class="text-sm font-body opacity-90 leading-relaxed mb-6">Every contribution to the UPHSD Molino Fund becomes a permanent chapter in our university's growing anthology of excellence.</p>
+          <a class="text-secondary-fixed font-bold text-xs uppercase tracking-widest flex items-center hover:underline"
+             href="/heritage">
+            Read Archive
+            <span class="material-symbols-outlined text-sm ml-2">auto_stories</span>
+          </a>
+        </div>
+        <div class="absolute -bottom-10 -right-10 opacity-10">
+          <span class="material-symbols-outlined text-[160px]">school</span>
+        </div>
+      </div>
+
+      <!-- Quick connect to donor registry (reinforced connection) -->
+      <div class="bg-surface-container-high p-6 rounded-xl border border-stone-200/60 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-primary">handshake</span>
+          <h5 class="font-headline font-bold text-primary text-lg">Make an impact</h5>
+        </div>
+        <p class="text-sm text-on-surface-variant mb-4">Join our community of donors and help shape the next generation of leaders.</p>
+        <a href="/donor_registry" 
+           class="w-full inline-flex justify-center items-center gap-1 bg-primary/10 text-primary font-semibold text-sm py-2 rounded-md hover:bg-primary hover:text-white transition-all">
+          <span>Donor Registry</span>
+          <span class="material-symbols-outlined text-sm">favorite</span>
+        </a>
+      </div>
+    </aside>
+
+  </div>
 </main>
-<!-- Footer -->
+
+<!-- ── Footer (clean, no department references) ── -->
 <footer class="w-full py-12 px-8 mt-auto bg-stone-50 border-t border-stone-200">
-<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-<div class="flex flex-col items-center md:items-start">
-<span class="font-['Newsreader'] italic text-2xl font-bold text-stone-900 mb-1">UPHSD Molino</span>
-<p class="font-['Public_Sans'] text-xs text-stone-500 uppercase tracking-widest">© 2024 Institutional Heritage.</p>
-</div>
-<div class="flex flex-wrap justify-center gap-8">
-<a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Privacy Policy</a>
-<a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Terms of Service</a>
-<a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">University Site</a>
-<a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Contact Archives</a>
-</div>
-</div>
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+    <div class="flex flex-col items-center md:items-start">
+      <span class="font-['Newsreader'] italic text-2xl font-bold text-stone-900 mb-1">UPHSD Molino</span>
+      <p class="font-['Public_Sans'] text-xs text-stone-500 uppercase tracking-widest">© 2024 Institutional Heritage.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-8">
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Privacy Policy</a>
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Terms of Service</a>
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">University Site</a>
+      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Contact Archives</a>
+    </div>
+  </div>
 </footer>
-</body></html>
+
+</body>
+</html>
+```

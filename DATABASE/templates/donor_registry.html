@@ -1,330 +1,240 @@
 <!DOCTYPE html>
-
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "inverse-primary": "#ffb4a8",
-                    "on-tertiary-container": "#74b3a2",
-                    "outline": "#8e706c",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary-fixed": "#221b00",
-                    "on-error": "#ffffff",
-                    "secondary-container": "#fcd400",
-                    "surface": "#fcf9f8",
-                    "tertiary-fixed-dim": "#94d3c1",
-                    "on-tertiary": "#ffffff",
-                    "on-tertiary-fixed": "#00201a",
-                    "surface-variant": "#e4e2e1",
-                    "on-secondary-container": "#6e5c00",
-                    "error-container": "#ffdad6",
-                    "tertiary-fixed": "#afefdd",
-                    "secondary-fixed": "#ffe16d",
-                    "outline-variant": "#e2bfb9",
-                    "secondary": "#705d00",
-                    "primary-container": "#800000",
-                    "surface-container-highest": "#e4e2e1",
-                    "on-primary": "#ffffff",
-                    "on-primary-fixed": "#410000",
-                    "primary-fixed": "#ffdad4",
-                    "tertiary-container": "#004539",
-                    "surface-dim": "#dcd9d9",
-                    "primary": "#570000",
-                    "surface-container": "#f0eded",
-                    "error": "#ba1a1a",
-                    "primary-fixed-dim": "#ffb4a8",
-                    "on-surface-variant": "#5a413d",
-                    "on-primary-fixed-variant": "#8f0f07",
-                    "inverse-on-surface": "#f3f0f0",
-                    "tertiary": "#002d24",
-                    "background": "#fcf9f8",
-                    "surface-bright": "#fcf9f8",
-                    "on-secondary": "#ffffff",
-                    "on-surface": "#1b1c1c",
-                    "on-error-container": "#93000a",
-                    "surface-container-high": "#eae7e7",
-                    "inverse-surface": "#303030",
-                    "on-secondary-fixed-variant": "#544600",
-                    "on-primary-container": "#ff8371",
-                    "secondary-fixed-dim": "#e9c400",
-                    "on-tertiary-fixed-variant": "#065043",
-                    "on-background": "#1b1c1c",
-                    "surface-container-low": "#f6f3f2",
-                    "surface-tint": "#b22b1d"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Newsreader"],
-                    "body": ["Public Sans"],
-                    "label": ["Public Sans"]
-            }
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#ffb4a8",
+            "on-tertiary-container": "#74b3a2",
+            "outline": "#8e706c",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed": "#221b00",
+            "on-error": "#ffffff",
+            "secondary-container": "#fcd400",
+            "surface": "#fcf9f8",
+            "tertiary-fixed-dim": "#94d3c1",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed": "#00201a",
+            "surface-variant": "#e4e2e1",
+            "on-secondary-container": "#6e5c00",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#afefdd",
+            "secondary-fixed": "#ffe16d",
+            "outline-variant": "#e2bfb9",
+            "secondary": "#705d00",
+            "primary-container": "#800000",
+            "surface-container-highest": "#e4e2e1",
+            "on-primary": "#ffffff",
+            "on-primary-fixed": "#410000",
+            "primary-fixed": "#ffdad4",
+            "tertiary-container": "#004539",
+            "surface-dim": "#dcd9d9",
+            "primary": "#570000",
+            "surface-container": "#f0eded",
+            "error": "#ba1a1a",
+            "primary-fixed-dim": "#ffb4a8",
+            "on-surface-variant": "#5a413d",
+            "on-primary-fixed-variant": "#8f0f07",
+            "inverse-on-surface": "#f3f0f0",
+            "tertiary": "#002d24",
+            "background": "#fcf9f8",
+            "surface-bright": "#fcf9f8",
+            "on-secondary": "#ffffff",
+            "on-surface": "#1b1c1c",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#eae7e7",
+            "inverse-surface": "#303030",
+            "on-secondary-fixed-variant": "#544600",
+            "on-primary-container": "#ff8371",
+            "secondary-fixed-dim": "#e9c400",
+            "on-tertiary-fixed-variant": "#065043",
+            "on-background": "#1b1c1c",
+            "surface-container-low": "#f6f3f2",
+            "surface-tint": "#b22b1d"
           },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "fontFamily": {
+            "headline": ["Newsreader"],
+            "body": ["Public Sans"],
+            "label": ["Public Sans"]
+          }
         },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body { font-family: 'Public Sans', sans-serif; }
-        h1, h2, h3, .newsreader { font-family: 'Newsreader', serif; }
-        .glass-header { backdrop-filter: blur(20px); }
-    </style>
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body { font-family: 'Public Sans', sans-serif; }
+    h1, h2, h3, .newsreader { font-family: 'Newsreader', serif; }
+    .glass-header { backdrop-filter: blur(20px); }
+  </style>
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col">
-<!-- TopNavBar -->
+
 <nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 max-w-full shadow-sm opacity-90 border-b border-stone-200/50">
-<div class="flex items-center gap-8">
-<span class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900 dark:text-red-500">UPHSD Molino</span>
-<div class="hidden md:flex space-x-6">
-<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="{{ url_for('dashboard') }}">Dashboard</a>
-<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Campaigns</a>
-<a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Departments</a>
-<a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold font-['Public_Sans']" href="#">Donor Registry</a>
-</div>
-</div>
-<div class="flex items-center space-x-4">
-<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-md font-medium text-sm transition-transform active:scale-95 duration-75">Start Campaign</button>
-<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high border-2 border-primary-fixed">
-<img alt="User profile" class="w-full h-full object-cover" data-alt="professional portrait of a university administrator in a formal suit against a soft neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNBEnib16fdF0qgPxBhxv4uv8Jh6wvV5H_GhN_7TIIaiSlm_48AkJ8eU6kpFRDd6F-JDDNypoq47yUHGwx8muv1EvHgazVJloNP-3U5856J2m6f3v9psGjGUQlseOH3DoG_PUXCB_FlgHR6b_pEtft665tMQUkqM1qmLMs2rSnTRQd5R63JVtahAixOn_HL_FxZZJJy2sJKsUaGj8dw3O9-bFtX2GZX1kS18phqlbyrG0QpKfygXQ7TNKGOTHKqgGFf6PPCmbAZcY"/>
-</div>
-</div>
+  <div class="flex items-center gap-8">
+    <span class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900 dark:text-red-500">UPHSD Molino</span>
+    <div class="hidden md:flex space-x-6">
+      <a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Campaigns</a>
+      <a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold font-['Public_Sans']" href="#">Donor Registry</a>
+    </div>
+  </div>
+  <div class="flex items-center space-x-4">
+    <button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-md font-medium text-sm transition-transform active:scale-95 duration-75">Start Campaign</button>
+    <div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high border-2 border-primary-fixed">
+      <img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNBEnib16fdF0qgPxBhxv4uv8Jh6wvV5H_GhN_7TIIaiSlm_48AkJ8eU6kpFRDd6F-JDDNypoq47yUHGwx8muv1EvHgazVJloNP-3U5856J2m6f3v9psGjGUQlseOH3DoG_PUXCB_FlgHR6b_pEtft665tMQUkqM1qmLMs2rSnTRQd5R63JVtahAixOn_HL_FxZZJJy2sJKsUaGj8dw3O9-bFtX2GZX1kS18phqlbyrG0QpKfygXQ7TNKGOTHKqgGFf6PPCmbAZcY"/>
+    </div>
+  </div>
 </nav>
-<!-- SideNavBar (Hidden on Mobile) -->
+
 <aside class="hidden lg:flex flex-col py-8 h-screen w-64 fixed left-0 top-0 bg-stone-100 dark:bg-stone-900 z-40 pt-24">
-<div class="px-6 mb-8">
-<h2 class="text-lg font-black text-red-900 dark:text-red-500 font-['Public_Sans'] uppercase tracking-widest">Academic Anthology</h2>
-<p class="text-xs text-stone-500 font-['Public_Sans']">Institutional Heritage</p>
-</div>
-<nav class="flex-grow">
-<ul class="space-y-1">
-<li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span> Dashboard</a></li>
-<li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3" data-icon="payments">payments</span> Campaigns</a></li>
-<li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3" data-icon="account_balance">account_balance</span> Departments</a></li>
-<li class="bg-white dark:bg-stone-800 text-red-900 dark:text-red-400 rounded-l-full ml-4 pl-4 py-3 shadow-sm translate-x-1 flex items-center font-bold"><span class="material-symbols-outlined mr-3" data-icon="group">group</span> Donor Registry</li>
-</ul>
-</nav>
-<div class="mt-auto px-6 space-y-4">
-<button class="w-full bg-secondary-container text-on-secondary-container py-3 rounded-md font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-sm" data-icon="add">add</span> New Initiative
-            </button>
-<div class="pt-4 border-t border-stone-200 dark:border-stone-800">
-<a class="flex items-center text-stone-400 hover:text-red-900 py-2 text-xs uppercase tracking-widest transition-all" href="#"><span class="material-symbols-outlined mr-3 text-sm" data-icon="settings">settings</span> Settings</a>
-<a class="flex items-center text-stone-400 hover:text-red-900 py-2 text-xs uppercase tracking-widest transition-all" href="#"><span class="material-symbols-outlined mr-3 text-sm" data-icon="help">help</span> Support</a>
-</div>
-</div>
+  <div class="px-6 mb-8">
+    <h2 class="text-lg font-black text-red-900 dark:text-red-500 font-['Public_Sans'] uppercase tracking-widest">Academic Anthology</h2>
+    <p class="text-xs text-stone-500 font-['Public_Sans']">Institutional Heritage</p>
+  </div>
+  <nav class="flex-grow">
+    <ul class="space-y-1">
+      <li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3">dashboard</span> Dashboard</a></li>
+      <li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3">payments</span> Campaigns</a></li>
+      <li class="bg-white dark:bg-stone-800 text-red-900 dark:text-red-400 rounded-l-full ml-4 pl-4 py-3 shadow-sm translate-x-1 flex items-center font-bold"><span class="material-symbols-outlined mr-3">group</span> Donor Registry</li>
+    </ul>
+  </nav>
+  <div class="mt-auto px-6 space-y-4">
+    <button class="w-full bg-secondary-container text-on-secondary-container py-3 rounded-md font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-sm">add</span> New Initiative
+    </button>
+    <div class="pt-4 border-t border-stone-200 dark:border-stone-800">
+      <a class="flex items-center text-stone-400 hover:text-red-900 py-2 text-xs uppercase tracking-widest transition-all" href="#"><span class="material-symbols-outlined mr-3 text-sm">settings</span> Settings</a>
+      <a class="flex items-center text-stone-400 hover:text-red-900 py-2 text-xs uppercase tracking-widest transition-all" href="#"><span class="material-symbols-outlined mr-3 text-sm">help</span> Support</a>
+    </div>
+  </div>
 </aside>
-<!-- Main Content Area -->
+
 <main class="lg:ml-64 pt-28 pb-12 px-4 md:px-8 max-w-7xl mx-auto w-full flex-grow">
-<!-- Editorial Header -->
-<header class="mb-12 relative">
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-<div class="max-w-2xl">
-<span class="text-primary font-medium tracking-widest uppercase text-xs mb-2 block">Institutional Archive</span>
-<h1 class="text-5xl md:text-6xl text-on-surface font-headline italic tracking-tight leading-none mb-4">University Donor Registry</h1>
-<p class="text-on-surface-variant text-lg font-body leading-relaxed">A comprehensive anthology of altruism. Track the philanthropic contributions and enduring pledges that shape our academic future.</p>
-</div>
-<div class="flex gap-4">
-<button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-primary hover:bg-surface-container-high transition-colors rounded-md text-sm font-semibold border border-outline-variant/10">
-<span class="material-symbols-outlined" data-icon="download">download</span>
-                        Export Report
-                    </button>
-</div>
-</div>
-<!-- Decorative Bleed Image -->
-<div class="absolute -right-12 -top-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-</header>
-<!-- Search & Filter Controls -->
-<section class="mb-8 bg-surface-container-low p-6 rounded-xl flex flex-col md:flex-row gap-4 items-center">
-<div class="relative w-full md:flex-grow">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
-<input class="w-full pl-12 pr-4 py-3 bg-surface-container-highest border-none focus:ring-1 focus:ring-primary/20 rounded-lg text-sm placeholder:text-stone-400" placeholder="Search by donor name, initiative, or transaction ID..." type="text"/>
-</div>
-<div class="relative w-full md:w-64">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="filter_list">filter_list</span>
-<select class="w-full pl-12 pr-10 py-3 bg-surface-container-highest border-none focus:ring-1 focus:ring-primary/20 rounded-lg text-sm appearance-none cursor-pointer">
-<option>Filter by Department</option>
-<option>College of Nursing</option>
-<option>Business Administration</option>
-<option>Computer Studies</option>
-<option>Arts &amp; Sciences</option>
-</select>
-<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
-</div>
-<button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">Apply Filters</button>
-</section>
-<!-- Table Container -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/5">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-high text-on-surface-variant uppercase text-[10px] tracking-widest font-black">
-<th class="px-8 py-5">Donor Name</th>
-<th class="px-6 py-5">Affiliation</th>
-<th class="px-6 py-5">Initiative</th>
-<th class="px-6 py-5">Amount Pledged</th>
-<th class="px-6 py-5">Date</th>
-<th class="px-8 py-5 text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-stone-100 font-body">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">ES</div>
-<div>
-<span class="block text-on-surface font-semibold text-sm">Elena Santiago, MD</span>
-<span class="text-xs text-stone-400">Class of '92</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-6">
-<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold rounded-full uppercase tracking-tight">Nursing</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-on-surface-variant">Medical Lab Expansion</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm font-bold text-primary">₱750,000.00</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-stone-500">Oct 24, 2024</span>
-</td>
-<td class="px-8 py-6 text-right">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase">
-<span class="w-1 h-1 rounded-full bg-green-600"></span> Fulfilled
-                                </span>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<img alt="User" class="w-10 h-10 rounded-full object-cover" data-alt="executive businessman portrait in corporate office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKGULwO9SA9xAOfQE4pH459qXz5zn8iTqQa5PjbyMIlvqnkmfWjbaX-G6f_w53sEA2w9aBtLLwxWcnLVX91tdrbuVPzr0DeeQ5HLyoRh83oc4A8HDoojCUyr4y6EvTQpqqFChU7kYjC4RCw2vZskzu_mAN5nAphz4pfgjVARcbI3hJL8sixyotnO13qXJJVydXdfyHjQde5WqX3wPaO6KUXLHJK5xGgBbc_qNLGsZ53RxCKM0Z4yze1HN4ckltSN6TBSYF5xM9XvU"/>
-<div>
-<span class="block text-on-surface font-semibold text-sm">Marcus V. Chen</span>
-<span class="text-xs text-stone-400">Corporate Donor</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-6">
-<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded-full uppercase tracking-tight">Business</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-on-surface-variant">Entrepreneurial Hub</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm font-bold text-primary">₱1,200,000.00</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-stone-500">Oct 21, 2024</span>
-</td>
-<td class="px-8 py-6 text-right">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold uppercase">
-<span class="w-1 h-1 rounded-full bg-amber-600"></span> Pending
-                                </span>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed font-bold text-xs">AL</div>
-<div>
-<span class="block text-on-surface font-semibold text-sm">Aria Lumière</span>
-<span class="text-xs text-stone-400">Faculty Member</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-6">
-<span class="px-3 py-1 bg-tertiary-container text-tertiary-fixed text-[10px] font-bold rounded-full uppercase tracking-tight">CS</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-on-surface-variant">AI Ethics Research</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm font-bold text-primary">₱25,000.00</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-stone-500">Oct 18, 2024</span>
-</td>
-<td class="px-8 py-6 text-right">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase">
-<span class="w-1 h-1 rounded-full bg-green-600"></span> Fulfilled
-                                </span>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-stone-600 font-bold text-xs">TC</div>
-<div>
-<span class="block text-on-surface font-semibold text-sm">TechCorp Systems</span>
-<span class="text-xs text-stone-400">Philanthropic Partner</span>
-</div>
-</div>
-</td>
-<td class="px-6 py-6">
-<span class="px-3 py-1 bg-tertiary-container text-tertiary-fixed text-[10px] font-bold rounded-full uppercase tracking-tight">CS</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-on-surface-variant">High-Performance Computing Lab</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm font-bold text-primary">₱5,000,000.00</span>
-</td>
-<td class="px-6 py-6">
-<span class="text-sm text-stone-500">Oct 15, 2024</span>
-</td>
-<td class="px-8 py-6 text-right">
-<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-700 text-[10px] font-bold uppercase">
-<span class="w-1 h-1 rounded-full bg-red-600"></span> Delayed
-                                </span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="px-8 py-4 bg-surface-container-low flex justify-between items-center text-xs text-stone-500 font-bold uppercase tracking-widest">
-<span>Showing 4 of 1,248 entries</span>
-<div class="flex gap-2">
-<button class="px-3 py-1 bg-surface-container-lowest rounded border border-outline-variant/10 hover:bg-white">Prev</button>
-<button class="px-3 py-1 bg-primary text-on-primary rounded">1</button>
-<button class="px-3 py-1 bg-surface-container-lowest rounded border border-outline-variant/10 hover:bg-white">2</button>
-<button class="px-3 py-1 bg-surface-container-lowest rounded border border-outline-variant/10 hover:bg-white">Next</button>
-</div>
-</div>
-</div>
+  <header class="mb-12 relative">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="max-w-2xl">
+        <span class="text-primary font-medium tracking-widest uppercase text-xs mb-2 block">Institutional Archive</span>
+        <h1 class="text-5xl md:text-6xl text-on-surface font-headline italic tracking-tight leading-none mb-4">University Donor Registry</h1>
+        <p class="text-on-surface-variant text-lg font-body leading-relaxed">A comprehensive anthology of altruism. Track the philanthropic contributions and enduring pledges that shape our academic future.</p>
+      </div>
+      <div class="flex gap-4">
+        <button class="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-primary hover:bg-surface-container-high transition-colors rounded-md text-sm font-semibold border border-outline-variant/10">
+          <span class="material-symbols-outlined">download</span> Export Report
+        </button>
+      </div>
+    </div>
+    <div class="absolute -right-12 -top-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+  </header>
+
+  <section class="mb-8 bg-surface-container-low p-6 rounded-xl flex flex-col md:flex-row gap-4 items-center">
+    <div class="relative w-full md:flex-grow">
+      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+      <input class="w-full pl-12 pr-4 py-3 bg-surface-container-highest border-none focus:ring-1 focus:ring-primary/20 rounded-lg text-sm placeholder:text-stone-400" placeholder="Search by donor name, initiative, or transaction ID..." type="text"/>
+    </div>
+    <button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">Apply Filters</button>
+  </section>
+
+  <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/5">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-high text-on-surface-variant uppercase text-[10px] tracking-widest font-black">
+            <th class="px-8 py-5">Donor Name</th>
+            <th class="px-6 py-5">Affiliation</th>
+            <th class="px-6 py-5">Initiative</th>
+            <th class="px-6 py-5">Amount Pledged</th>
+            <th class="px-6 py-5">Date</th>
+            <th class="px-8 py-5 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-stone-100 font-body">
+          <tr class="hover:bg-surface-container-low transition-colors group">
+            <td class="px-8 py-6">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs">ES</div>
+                <div>
+                  <span class="block text-on-surface font-semibold text-sm">Elena Santiago, MD</span>
+                  <span class="text-xs text-stone-400">Class of '92</span>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-6">
+              <span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold rounded-full uppercase tracking-tight">Nursing</span>
+            </td>
+            <td class="px-6 py-6"><span class="text-sm text-on-surface-variant">Medical Lab Expansion</span></td>
+            <td class="px-6 py-6"><span class="text-sm font-bold text-primary">₱750,000.00</span></td>
+            <td class="px-6 py-6"><span class="text-sm text-stone-500">Oct 24, 2024</span></td>
+            <td class="px-8 py-6 text-right">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase">
+                <span class="w-1 h-1 rounded-full bg-green-600"></span> Fulfilled
+              </span>
+            </td>
+          </tr>
+          <tr class="hover:bg-surface-container-low transition-colors group">
+            <td class="px-8 py-6">
+              <div class="flex items-center gap-3">
+                <img alt="User" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKGULwO9SA9xAOfQE4pH459qXz5zn8iTqQa5PjbyMIlvqnkmfWjbaX-G6f_w53sEA2w9aBtLLwxWcnLVX91tdrbuVPzr0DeeQ5HLyoRh83oc4A8HDoojCUyr4y6EvTQpqqFChU7kYjC4RCw2vZskzu_mAN5nAphz4pfgjVARcbI3hJL8sixyotnO13qXJJVydXdfyHjQde5WqX3wPaO6KUXLHJK5xGgBbc_qNLGsZ53RxCKM0Z4yze1HN4ckltSN6TBSYF5xM9XvU"/>
+                <div>
+                  <span class="block text-on-surface font-semibold text-sm">Marcus V. Chen</span>
+                  <span class="text-xs text-stone-400">Corporate Donor</span>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-6">
+              <span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold rounded-full uppercase tracking-tight">Business</span>
+            </td>
+            <td class="px-6 py-6"><span class="text-sm text-on-surface-variant">Entrepreneurial Hub</span></td>
+            <td class="px-6 py-6"><span class="text-sm font-bold text-primary">₱1,200,000.00</span></td>
+            <td class="px-6 py-6"><span class="text-sm text-stone-500">Oct 21, 2024</span></td>
+            <td class="px-8 py-6 text-right">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-bold uppercase">
+                <span class="w-1 h-1 rounded-full bg-amber-600"></span> Pending
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="px-8 py-4 bg-surface-container-low flex justify-between items-center text-xs text-stone-500 font-bold uppercase tracking-widest">
+      <span>Showing 2 of 1,248 entries</span>
+      <div class="flex gap-2">
+        <button class="px-3 py-1 bg-surface-container-lowest rounded border border-outline-variant/10 hover:bg-white">Prev</button>
+        <button class="px-3 py-1 bg-primary text-on-primary rounded">1</button>
+        <button class="px-3 py-1 bg-surface-container-lowest rounded border border-outline-variant/10 hover:bg-white">Next</button>
+      </div>
+    </div>
+  </div>
 </main>
-<!-- Footer -->
+
 <footer class="w-full py-12 px-8 mt-auto border-t border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-950">
-<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-<div class="flex flex-col items-center md:items-start">
-<span class="font-['Newsreader'] italic text-stone-900 dark:text-stone-100 text-xl font-bold">UPHSD Molino</span>
-<p class="font-['Public_Sans'] text-xs text-stone-500 mt-1">© 2024 UPHSD Molino. Institutional Heritage.</p>
-</div>
-<div class="flex gap-8">
-<a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline underline-offset-4" href="#">Privacy Policy</a>
-<a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline underline-offset-4" href="#">Terms of Service</a>
-<a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline underline-offset-4" href="#">University Site</a>
-<a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline underline-offset-4" href="#">Contact Archives</a>
-</div>
-</div>
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+    <div class="flex flex-col items-center md:items-start">
+      <span class="font-['Newsreader'] italic text-stone-900 dark:text-stone-100 text-xl font-bold">UPHSD Molino</span>
+      <p class="font-['Public_Sans'] text-xs text-stone-500 mt-1">© 2026 UPHSD Molino. Institutional Heritage.</p>
+    </div>
+    <div class="flex gap-8">
+      <a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline" href="#">Privacy Policy</a>
+      <a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline" href="#">Terms of Service</a>
+      <a class="text-stone-400 hover:text-red-900 text-xs font-['Public_Sans'] uppercase tracking-widest transition-all hover:underline" href="#">University Site</a>
+    </div>
+  </div>
 </footer>
-</body></html>
+</body>
+</html>

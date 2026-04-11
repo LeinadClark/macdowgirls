@@ -75,7 +75,7 @@ def login():
     """Login / Register Page"""
     error      = request.args.get('error')
     success    = request.args.get('success')
-    active_tab = request.args.get('tab', 'login')  # default to login tab
+    active_tab = request.args.get('tab', 'login')
     return render_template('login_page.html',
                            error=error,
                            success=success,
@@ -87,6 +87,14 @@ def dashboard():
         return redirect(url_for('login'))
     initiatives = Initiative.query.filter_by(status='active').all()
     return render_template('dashboard.html', initiatives=initiatives)
+
+@app.route('/campaigns')
+def campaigns():
+    """Campaigns / Donation Page — lists all active initiatives"""
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    initiatives = Initiative.query.filter_by(status='active').all()
+    return render_template('campaigns.html', initiatives=initiatives)
 
 @app.route('/campaign/<initiative_id>')
 def campaign_detail(initiative_id):
@@ -143,16 +151,13 @@ def do_login():
     email    = request.form.get('email', '').strip()
     password = request.form.get('password', '').strip()
 
-    # Find the user by email
     user = User.query.filter_by(email=email).first()
 
     if user and user.password_hash == password:
-        # ✅ Correct — save to session
         session['user_id']  = user.user_id
         session['role']     = user.role
         session['name']     = user.full_name
 
-        # Redirect based on role
         if user.role == 'admin':
             return redirect(url_for('admin'))
         elif user.role == 'donor':
@@ -160,7 +165,6 @@ def do_login():
         else:
             return redirect(url_for('dashboard'))
     else:
-        # ❌ Wrong credentials
         return redirect(url_for('login',
                                 error='Invalid email or password. Please try again.',
                                 tab='login'))
@@ -174,7 +178,6 @@ def do_register():
     password         = request.form.get('password', '').strip()
     confirm_password = request.form.get('confirm_password', '').strip()
 
-    # --- Validation ---
     if not full_name or not email or not role or not password:
         return redirect(url_for('login',
                                 error='Please fill in all fields.',
@@ -190,27 +193,24 @@ def do_register():
                                 error='Password must be at least 6 characters.',
                                 tab='register'))
 
-    # Check if email already exists
     existing_user = User.query.filter_by(email=email).first()
     if existing_user:
         return redirect(url_for('login',
                                 error='An account with this email already exists. Please sign in.',
                                 tab='register'))
 
-    # --- Create new user ---
     new_user = User(
         user_id       = str(uuid.uuid4()),
         rfid_tag      = None,
         full_name     = full_name,
         email         = email,
-        password_hash = password,   # plain text for now (good enough for school project)
+        password_hash = password,
         role          = role
     )
 
     try:
         db.session.add(new_user)
         db.session.commit()
-        # ✅ Registration success — go to login tab with success message
         return redirect(url_for('login',
                                 success=f'Account created! Welcome, {full_name}. Please sign in.',
                                 tab='login'))
@@ -266,7 +266,6 @@ def donate():
         })
         db.session.commit()
 
-        # POST-COMMIT: Goal met check (outside transaction per diagram)
         initiative = Initiative.query.get(p_initiative_id)
         goal_met   = initiative and initiative.current_amount >= initiative.target_amount
 
