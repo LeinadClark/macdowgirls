@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'helpersofgod_secret_key'
@@ -94,7 +95,9 @@ def campaigns():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     initiatives = Initiative.query.filter_by(status='active').all()
-    return render_template('campaigns.html', initiatives=initiatives)
+    return render_template('campaigns.html',
+                           initiatives=initiatives,
+                           donor_id=session.get('user_id'))
 
 @app.route('/campaign/<initiative_id>')
 def campaign_detail(initiative_id):
@@ -224,6 +227,24 @@ def do_register():
 # API ROUTES
 # -----------------------------------------------
 
+@app.route('/api/initiatives')
+def api_initiatives():
+    """
+    JSON endpoint for fetching real initiative IDs from database
+    """
+    if 'user_id' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+    initiatives = Initiative.query.filter_by(status='active').all()
+    return jsonify([{
+        "id":          i.initiative_id,
+        "title":       i.title,
+        "description": i.description or '',
+        "category":    i.category,
+        "raised":      float(i.current_amount or 0),
+        "goal":        float(i.target_amount or 0),
+        "end_date":    str(i.end_date) if i.end_date else None
+    } for i in initiatives])
+
 @app.route('/user/rfid/<tag>', methods=['GET'])
 def get_user_by_rfid(tag):
     """RFID Simulation Endpoint"""
@@ -239,49 +260,87 @@ def get_user_by_rfid(tag):
 @app.route('/donate', methods=['POST'])
 def donate():
     """
-    Triggers MySQL Stored Procedure 'ProcessDonation'
-    Transaction flow per ERD diagram:
-      BEGIN TRANSACTION
-        STEP 1: INSERT into Donations
-        STEP 2: UPDATE Initiative total
-      COMMIT
-      POST-COMMIT: Check if goal met → update status to 'completed'
+    ✅ FIXED: Save donation directly to database
+    No setup needed - saves immediately when user confirms donation
     """
+    # Check if user is authenticated
+    if 'user_id' not in session:
+        return jsonify({"status": "error", "message": "Not authenticated"}), 401
+    
     data = request.json
-
-    p_donation_id   = str(uuid.uuid4())
-    p_initiative_id = data.get('initiative_id')
-    p_donor_id      = data.get('donor_id')
-    p_amount        = data.get('amount')
-    p_txn_ref       = f"TXN-{uuid.uuid4().hex[:8].upper()}"
-
+    
+    # Get parameters from request
+    initiative_id = data.get('initiative_id')
+    amount = data.get('amount')
+    donor_id = session.get('user_id')  # ✅ Get from session, NOT request
+    
+    # Validation: Check required fields
+    if not initiative_id or not amount:
+        return jsonify({"status": "error", "message": "Missing initiative or amount"}), 400
+    
+    # Validation: Check amount is valid
     try:
-        query = text("CALL ProcessDonation(:d_id, :i_id, :u_id, :amt, :ref)")
-        db.session.execute(query, {
-            "d_id": p_donation_id,
-            "i_id": p_initiative_id,
-            "u_id": p_donor_id,
-            "amt":  p_amount,
-            "ref":  p_txn_ref
-        })
+        amount = float(amount)
+        if amount <= 0:
+            return jsonify({"status": "error", "message": "Amount must be greater than 0"}), 400
+    except (ValueError, TypeError):
+        return jsonify({"status": "error", "message": "Invalid amount"}), 400
+    
+    # Check if initiative exists
+    initiative = Initiative.query.get(initiative_id)
+    if not initiative:
+        return jsonify({"status": "error", "message": "Initiative not found"}), 404
+    
+    try:
+        # Generate IDs and reference
+        donation_id = str(uuid.uuid4())
+        transaction_ref = f"TXN-{uuid.uuid4().hex[:8].upper()}"
+        
+        # ✅ Create donation record
+        donation = Donation(
+            donation_id=donation_id,
+            initiative_id=initiative_id,
+            donor_id=donor_id,
+            amount=amount,
+            transaction_ref=transaction_ref,
+            status='success',
+            created_at=datetime.now()
+        )
+        
+        # Add to database session
+        db.session.add(donation)
+        
+        # ✅ Update initiative current amount
+        initiative.current_amount = float(initiative.current_amount or 0) + amount
+        
+        # ✅ Check if goal is met and update status to 'completed'
+        if initiative.current_amount >= initiative.target_amount:
+            initiative.status = 'completed'
+        
+        # ✅ Commit all changes to database
         db.session.commit()
-
-        initiative = Initiative.query.get(p_initiative_id)
-        goal_met   = initiative and initiative.current_amount >= initiative.target_amount
-
+        
+        # Check if goal was met
+        goal_met = initiative.current_amount >= initiative.target_amount
+        
+        print(f"✅ Donation saved: {donation_id} | Amount: ₱{amount} | Ref: {transaction_ref}")
+        
         return jsonify({
-            "status":   "success",
-            "message":  "Thank you for your blessing",
-            "ref":      p_txn_ref,
-            "goal_met": goal_met
+            "status": "success",
+            "message": "Thank you for your blessing",
+            "ref": transaction_ref,
+            "goal_met": goal_met,
+            "new_total": float(initiative.current_amount),
+            "donation_id": donation_id
         }), 201
-
+        
     except Exception as e:
         db.session.rollback()
+        print(f"❌ Donation error: {str(e)}")
         return jsonify({
-            "status":  "error",
-            "message": "Gift Failed",
-            "detail":  str(e)
+            "status": "error",
+            "message": "Error saving donation to database",
+            "detail": str(e)
         }), 400
 
 @app.route('/create-initiative', methods=['POST'])
