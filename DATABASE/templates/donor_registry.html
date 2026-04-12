@@ -91,8 +91,8 @@
     <span class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900 dark:text-red-500">UPHSD Molino</span>
     <div class="hidden md:flex space-x-6">
       <a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="{{ url_for('dashboard') }}">Dashboard</a>
-      <a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="#">Campaigns</a>
-      <a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold font-['Public_Sans']" href="#">Donor Registry</a>
+      <a class="text-stone-600 dark:text-stone-400 font-medium font-['Public_Sans'] hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300" href="{{ url_for('campaigns') }}">Campaigns</a>
+      <a class="text-red-900 dark:text-red-500 border-b-2 border-red-900 dark:border-red-500 pb-1 font-semibold font-['Public_Sans']" href="{{ url_for('donor_registry') }}">Donor Registry</a>
     </div>
   </div>
   <div class="flex items-center space-x-4">
@@ -110,9 +110,9 @@
   </div>
   <nav class="flex-grow">
     <ul class="space-y-1">
-      <li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3">dashboard</span> Dashboard</a></li>
-      <li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="#"><span class="material-symbols-outlined mr-3">payments</span> Campaigns</a></li>
-      <li class="bg-white dark:bg-stone-800 text-red-900 dark:text-red-400 rounded-l-full ml-4 pl-4 py-3 shadow-sm translate-x-1 flex items-center font-bold"><span class="material-symbols-outlined mr-3">group</span> Donor Registry</li>
+      <li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="{{ url_for('dashboard') }}"><span class="material-symbols-outlined mr-3">dashboard</span> Dashboard</a></li>
+      <li><a class="flex items-center text-stone-500 dark:text-stone-400 hover:text-red-700 pl-8 py-3 transition-all" href="{{ url_for('campaigns') }}"><span class="material-symbols-outlined mr-3">payments</span> Campaigns</a></li>
+      <li><a href="{{ url_for('donor_registry') }}" class="bg-white dark:bg-stone-800 text-red-900 dark:text-red-400 rounded-l-full ml-4 pl-4 py-3 shadow-sm translate-x-1 flex items-center font-bold"><span class="material-symbols-outlined mr-3">group</span> Donor Registry</a></li>
     </ul>
   </nav>
   <div class="mt-auto px-6 space-y-4">

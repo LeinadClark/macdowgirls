@@ -101,7 +101,7 @@ Here is the fixed dashboard HTML. All `url_for()` and Jinja templating have been
          href="/campaigns">Campaigns</a>
       <!-- Donor Registry: direct static link -->
       <a class="text-stone-600 dark:text-stone-400 font-medium hover:text-red-800 dark:hover:text-red-400 transition-colors duration-300"
-         href="/donor_registry">Donor Registry</a>
+         href="{{ url_for('donor_registry') }}">Donor Registry</a>
     </div>
   </div>
   <div class="flex items-center space-x-4">
@@ -162,7 +162,7 @@ Here is the fixed dashboard HTML. All `url_for()` and Jinja templating have been
       </div>
       <!-- Direct connection to Donor Registry page -->
       <div class="mt-5 pt-2 border-t border-stone-200/60">
-        <a href="/donor_registry"
+        <a href="{{ url_for('donor_registry') }}"
            class="inline-flex items-center gap-1 text-primary text-xs font-bold uppercase tracking-widest hover:underline transition-all group/link">
           <span>View donor registry</span>
           <span class="material-symbols-outlined text-sm transition-transform group-hover/link:translate-x-0.5">arrow_forward</span>
@@ -277,7 +277,7 @@ Here is the fixed dashboard HTML. All `url_for()` and Jinja templating have been
           <h5 class="font-headline font-bold text-primary text-lg">Make an impact</h5>
         </div>
         <p class="text-sm text-on-surface-variant mb-4">Join our community of donors and help shape the next generation of leaders.</p>
-        <a href="/donor_registry" 
+        <a href="{{ url_for('donor_registry') }}"
            class="w-full inline-flex justify-center items-center gap-1 bg-primary/10 text-primary font-semibold text-sm py-2 rounded-md hover:bg-primary hover:text-white transition-all">
           <span>Donor Registry</span>
           <span class="material-symbols-outlined text-sm">favorite</span>
