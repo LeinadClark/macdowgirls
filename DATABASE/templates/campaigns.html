@@ -76,13 +76,17 @@
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col">
 
-<!-- ── TOP NAVIGATION ── -->
+<!-- ── TOP NAVIGATION: Connected to Dashboard & Donor Registry ── -->
 <nav class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 shadow-sm border-b border-stone-100">
   <div class="flex items-center gap-12">
+    <!-- Logo links to Dashboard -->
     <a href="/dashboard" class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900">UPHSD Molino</a>
     <div class="hidden md:flex items-center space-x-8">
+      <!-- Dashboard link -->
       <a href="/dashboard" class="text-stone-600 font-medium hover:text-red-800 transition-colors duration-300">Dashboard</a>
+      <!-- Campaigns (active page) -->
       <a href="/campaigns" class="text-red-900 border-b-2 border-red-900 pb-1 font-semibold transition-colors duration-300">Campaigns</a>
+      <!-- Donor Registry link -->
       <a href="/donor_registry" class="text-stone-600 font-medium hover:text-red-800 transition-colors duration-300">Donor Registry</a>
     </div>
   </div>
@@ -156,9 +160,8 @@
         <span class="material-symbols-outlined text-2xl">close</span>
       </button>
       <p class="text-xs uppercase tracking-widest text-on-surface-variant mb-1 font-semibold">Make a Contribution</p>
-      <h2 id="modalTitle" class="text-2xl font-['Newsreader'] font-bold text-primary italic mb-6">Donate to a Campaign</h2>
+      <h2 id="modalTitle" class="text-2xl font-['Newsreader'] font-bold text-primary italic mb-6">Donate to Campaign</h2>
 
-      <!-- SELECT CAMPAIGN — always visible -->
       <div id="campaignSelectorWrap" class="mb-5">
         <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Select Campaign</label>
         <select id="campaignSelector" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm text-stone-800 focus:outline-none focus:border-primary bg-stone-50"></select>
@@ -203,8 +206,8 @@
         </div>
       </div>
 
-      <button id="submitBtn" onclick="submitDonation()"
-              class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+      <button onclick="submitDonation()"
+              class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all">
         Confirm Donation
       </button>
     </div>
@@ -233,45 +236,54 @@
 </footer>
 
 <script>
-// ✅ AUTOMATICALLY FETCH INITIATIVES FROM DATABASE API
-let dbInitiatives = [];
-let displayInitiatives = [];
-
-async function loadInitiativesFromDatabase() {
-  try {
-    const res = await fetch('/api/initiatives');
-    const data = await res.json();
-    
-    if (res.ok && Array.isArray(data)) {
-      dbInitiatives = data;
-      console.log("✅ Initiatives loaded from database:", dbInitiatives);
-      
-      // Create display version with both real IDs and display info
-      displayInitiatives = dbInitiatives.map((init, index) => ({
-        id: init.id,  // ✅ REAL DATABASE UUID
-        title: init.title,
-        category: init.category,
-        desc: init.description,
-        raised: init.raised,
-        goal: init.goal,
-        daysLeft: 30,
-        detailUrl: "#"
-      }));
-      
-      applyFilter();
-    } else {
-      console.error("❌ Failed to load initiatives");
-    }
-  } catch (e) {
-    console.error("❌ Error loading initiatives:", e);
+const INITIATIVES = [
+  {
+    id: "camp-001",
+    title: "Kumpas Kalye: Street Music for a Cause",
+    category: "outreach",
+    desc: "A crowdfunding initiative aimed at supporting local street performers and providing musical education to underprivileged youth in Molino.",
+    raised: 45000,
+    goal: 100000,
+    daysLeft: 12,
+    detailUrl: "#"
+  },
+  {
+    id: "camp-002",
+    title: "Project Dunong: CS Research Lab Upgrade",
+    category: "research",
+    desc: "Modernizing our Computer Science facilities with high-performance workstations for advanced database and system design research.",
+    raised: 120000,
+    goal: 150000,
+    daysLeft: 25,
+    detailUrl: "#"
+  },
+  {
+    id: "camp-003",
+    title: "Perpetualite High Honors Scholarship",
+    category: "scholarship",
+    desc: "Supporting the brightest minds who transitioned from the ABM strand to technical degrees like Computer Science.",
+    raised: 200000,
+    goal: 200000,
+    daysLeft: 0,
+    detailUrl: "#"
+  },
+  {
+    id: "camp-004",
+    title: "Green Campus: Molino Conservation",
+    category: "conservation",
+    desc: "Institutional heritage preservation and implementing sustainable waste management across the Molino campus grounds.",
+    raised: 15000,
+    goal: 50000,
+    daysLeft: 45,
+    detailUrl: "#"
   }
-}
+];
 
 const CAT = {
-  research:     { icon: "science",                 tag: "Research Grant",  cls: "bg-tertiary-container text-on-tertiary-container" },
-  scholarship:  { icon: "school",                  tag: "Priority Grant",  cls: "bg-secondary-container text-on-secondary-container" },
-  outreach:     { icon: "volunteer_activism",       tag: "Outreach",        cls: "bg-primary text-on-primary" },
-  conservation: { icon: "conservation_agriculture", tag: "Conservation",    cls: "bg-surface-container-high text-on-surface" }
+  research:     { icon: "science",                tag: "Research Grant",   cls: "bg-tertiary-container text-on-tertiary-container" },
+  scholarship:  { icon: "school",                 tag: "Priority Grant",   cls: "bg-secondary-container text-on-secondary-container" },
+  outreach:     { icon: "volunteer_activism",      tag: "Outreach",         cls: "bg-primary text-on-primary" },
+  conservation: { icon: "conservation_agriculture",tag: "Conservation",      cls: "bg-surface-container-high text-on-surface" }
 };
 
 let activeFilter   = "all";
@@ -339,11 +351,11 @@ function renderCards(data) {
 
 function applyFilter() {
   let data = activeFilter === "all"
-    ? displayInitiatives
-    : displayInitiatives.filter(c => c.category === activeFilter);
+    ? INITIATIVES
+    : INITIATIVES.filter(c => c.category === activeFilter);
   const sort = document.getElementById("sortSelect").value;
   if (sort === "progress") data = [...data].sort((a,b) => pct(b.raised,b.goal) - pct(a.raised,a.goal));
-  if (sort === "urgent")   data = [...data].sort((a,b) => a.daysLeft - b.daysLeft);
+  if (sort === "urgent")    data = [...data].sort((a,b) => a.daysLeft - b.daysLeft);
   renderCards(data);
 }
 
@@ -357,50 +369,26 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 });
 document.getElementById("sortSelect").addEventListener("change", applyFilter);
 
-// ── Preset amount buttons ──
-document.querySelectorAll(".preset-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".preset-btn").forEach(b =>
-      b.classList.remove("border-primary","text-primary","bg-primary/5"));
-    btn.classList.add("border-primary","text-primary","bg-primary/5");
-    selectedAmount = parseFloat(btn.dataset.amount);
-    document.getElementById("customAmount").value = selectedAmount;
-  });
-});
-
-// ── Payment method buttons ──
-document.querySelectorAll(".pay-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".pay-btn").forEach(b => {
-      b.classList.remove("border-2","border-primary","bg-primary/5","text-primary");
-      b.classList.add("border","border-stone-300","text-stone-600");
-    });
-    btn.classList.add("border-2","border-primary","bg-primary/5","text-primary");
-    btn.classList.remove("border","border-stone-300","text-stone-600");
-    selectedPay = btn.dataset.method;
-  });
-});
-
 function populateSelector(selectedId) {
   document.getElementById("campaignSelector").innerHTML =
-    displayInitiatives.map(c =>
-      `<option value="${c.id}" ${c.id === selectedId ? "selected" : ""}>${c.title}</option>`
+    INITIATIVES.map(c =>
+      `<option value="${c.id}" ${c.id === selectedId ? "selected":""}>${c.title}</option>`
     ).join("");
 }
 
 function openModal(campaignId) {
   activeCampaign = campaignId;
   populateSelector(campaignId);
-  document.getElementById("campaignSelectorWrap").style.display = "block";
-  document.getElementById("modalTitle").textContent = "Donate to a Campaign";
-  // Reset form
-  document.getElementById("donorFirst").value   = "";
-  document.getElementById("donorLast").value    = "";
-  document.getElementById("donorEmail").value   = "";
-  document.getElementById("customAmount").value = "";
-  selectedAmount = null;
-  document.querySelectorAll(".preset-btn").forEach(b =>
-    b.classList.remove("border-primary","text-primary","bg-primary/5"));
+  const wrap    = document.getElementById("campaignSelectorWrap");
+  const title = document.getElementById("modalTitle");
+  if (campaignId) {
+    const c = INITIATIVES.find(x => x.id === campaignId);
+    title.textContent = c ? c.title : "Donate to Campaign";
+    wrap.style.display = "none";
+  } else {
+    title.textContent = "Donate to a Campaign";
+    wrap.style.display = "block";
+  }
   document.getElementById("donateModal").classList.add("open");
 }
 
@@ -419,64 +407,15 @@ function showToast(msg) {
   }, 5000);
 }
 
-// ✅ SUBMIT DONATION WITH REAL DATABASE IDs
-async function submitDonation() {
-  const first     = document.getElementById("donorFirst").value.trim();
-  const customVal = parseFloat(document.getElementById("customAmount").value);
-  const amount    = !isNaN(customVal) && customVal > 0 ? customVal : selectedAmount;
-  const selectedId = document.getElementById("campaignSelector").value || activeCampaign;
-
-  // Validation
-  if (!first)                 { alert("❌ Please enter your first name."); return; }
-  if (!amount || amount <= 0) { alert("❌ Please enter a valid amount."); return; }
-  if (!selectedId)             { alert("❌ Please select a campaign."); return; }
-
-  const btn = document.getElementById("submitBtn");
-  btn.disabled = true;
-  btn.textContent = "Processing…";
-
-  try {
-    // ✅ Send REAL database UUID to backend
-    const res = await fetch("/donate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        initiative_id: selectedId,  // ✅ This is the REAL database UUID
-        amount: amount
-      })
-    });
-
-    const result = await res.json();
-
-    if (res.ok && result.status === "success") {
-      // ✅ Donation saved to phpMyAdmin database
-      closeModal();
-      showToast(`✅ Thank you, ${first}! Donation of ₱${amount.toLocaleString()} saved! Ref: ${result.ref}`);
-      console.log("✅ Donation saved to database:", result);
-      
-      // Reload to show updated totals
-      setTimeout(() => window.location.reload(), 2000);
-    } else {
-      alert(`❌ Error: ${result.message || 'Failed to save donation'}`);
-      console.error("❌ Error:", result);
-    }
-
-  } catch (e) {
-    console.error("❌ Network error:", e);
-    alert("❌ Network error. Please try again.");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Confirm Donation";
-  }
+function submitDonation() {
+  const first = document.getElementById("donorFirst").value;
+  if(!first) { alert("Please enter your name"); return; }
+  showToast(`Thank you for your support, ${first}!`);
+  closeModal();
 }
 
-// ✅ Load initiatives from database on page load
-window.addEventListener('DOMContentLoaded', () => {
-  console.log("✅ Page loaded, fetching initiatives...");
-  loadInitiativesFromDatabase();
-});
+// Initialize campaigns
+applyFilter();
 </script>
 </body>
 </html>
