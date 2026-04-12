@@ -236,48 +236,33 @@
 </footer>
 
 <script>
-const INITIATIVES = [
-  {
-    id: "camp-001",
-    title: "Kumpas Kalye: Street Music for a Cause",
-    category: "outreach",
-    desc: "A crowdfunding initiative aimed at supporting local street performers and providing musical education to underprivileged youth in Molino.",
-    raised: 45000,
-    goal: 100000,
-    daysLeft: 12,
-    detailUrl: "#"
-  },
-  {
-    id: "camp-002",
-    title: "Project Dunong: CS Research Lab Upgrade",
-    category: "research",
-    desc: "Modernizing our Computer Science facilities with high-performance workstations for advanced database and system design research.",
-    raised: 120000,
-    goal: 150000,
-    daysLeft: 25,
-    detailUrl: "#"
-  },
-  {
-    id: "camp-003",
-    title: "Perpetualite High Honors Scholarship",
-    category: "scholarship",
-    desc: "Supporting the brightest minds who transitioned from the ABM strand to technical degrees like Computer Science.",
-    raised: 200000,
-    goal: 200000,
-    daysLeft: 0,
-    detailUrl: "#"
-  },
-  {
-    id: "camp-004",
-    title: "Green Campus: Molino Conservation",
-    category: "conservation",
-    desc: "Institutional heritage preservation and implementing sustainable waste management across the Molino campus grounds.",
-    raised: 15000,
-    goal: 50000,
-    daysLeft: 45,
-    detailUrl: "#"
+let INITIATIVES = [];
+
+async function loadInitiatives() {
+  try {
+    const res = await fetch('/api/initiatives');
+    if (res.ok) {
+      const data = await res.json();
+      INITIATIVES = data.map(d => {
+        const end = d.end_date ? new Date(d.end_date) : new Date();
+        const days = Math.max(0, Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24)));
+        return {
+          id: d.id,
+          title: d.title,
+          category: d.category || "outreach",
+          desc: d.description,
+          raised: parseFloat(d.raised),
+          goal: parseFloat(d.goal),
+          daysLeft: d.end_date ? days : 30,
+          detailUrl: `/campaign/${d.id}`
+        };
+      });
+      applyFilter();
+    }
+  } catch (err) {
+    console.error("Failed to fetch campaigns", err);
   }
-];
+}
 
 const CAT = {
   research:     { icon: "science",                tag: "Research Grant",   cls: "bg-tertiary-container text-on-tertiary-container" },
@@ -407,15 +392,56 @@ function showToast(msg) {
   }, 5000);
 }
 
-function submitDonation() {
+async function submitDonation() {
   const first = document.getElementById("donorFirst").value;
   if(!first) { alert("Please enter your name"); return; }
-  showToast(`Thank you for your support, ${first}!`);
-  closeModal();
+
+  const amountInput = document.getElementById("customAmount").value;
+  if(!amountInput || parseFloat(amountInput) <= 0) {
+    alert("Please enter a valid donation amount.");
+    return;
+  }
+
+  const initiativeId = activeCampaign || document.getElementById("campaignSelector").value;
+  if (!initiativeId) {
+    alert("Please select a campaign.");
+    return;
+  }
+
+  try {
+    const response = await fetch('/donate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        initiative_id: initiativeId,
+        amount: parseFloat(amountInput)
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      showToast(data.message || `Thank you for your support, ${first}!`);
+      closeModal();
+      loadInitiatives(); // Refresh progress bars with new DB values
+    } else {
+      alert("Error: " + (data.message || "Could not process donation."));
+    }
+  } catch (error) {
+    console.error("Donation error:", error);
+    alert("An error occurred while submitting the donation.");
+  }
 }
 
+// Wire up preset amount buttons
+document.querySelectorAll(".preset-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    document.getElementById("customAmount").value = e.target.dataset.amount;
+  });
+});
+
 // Initialize campaigns
-applyFilter();
+loadInitiatives();
 </script>
 </body>
 </html>
