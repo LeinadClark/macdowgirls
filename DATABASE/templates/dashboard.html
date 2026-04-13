@@ -408,6 +408,23 @@
           <input type="email" id="sug_email" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
         </div>
         <div>
+          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Campaign Image</label>
+          <div id="sugImageDrop" class="border-2 border-dashed border-stone-300 rounded-lg p-6 text-center cursor-pointer hover:bg-stone-50 transition-colors" onclick="document.getElementById('sug_image').click()">
+            <input type="file" id="sug_image" accept="image/png, image/jpeg" class="hidden" onchange="previewSugImage(this)">
+            <div id="sugImagePrompt">
+              <span class="material-symbols-outlined text-stone-300 text-3xl mb-2 block">add_photo_alternate</span>
+              <p class="text-sm text-stone-500 font-medium">Click to upload image</p>
+              <p class="text-xs text-stone-400 mt-1">JPG or PNG, max 5MB</p>
+            </div>
+            <div id="sugImagePreviewContainer" class="hidden relative inline-block">
+              <img id="sugImagePreview" class="max-h-32 mx-auto rounded-md object-cover shadow-sm" />
+              <button type="button" onclick="removeSugImage(event)" class="absolute -top-3 -right-3 bg-white text-stone-500 hover:text-red-600 hover:bg-red-50 border border-stone-200 rounded-full w-8 h-8 flex items-center justify-center shadow-md transition-colors" title="Remove image">
+                <span class="material-symbols-outlined text-lg">close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
           <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Campaign Title *</label>
           <input type="text" id="sug_title" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
         </div>
@@ -546,27 +563,62 @@ function closeSuggestionModal() {
   document.getElementById('suggestionModal').style.display = 'none';
   document.getElementById('suggestionModal').classList.add('hidden');
 }
+
+function previewSugImage(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File is too large. Max 5MB.');
+      input.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('sugImagePreview').src = e.target.result;
+      document.getElementById('sugImagePreviewContainer').classList.remove('hidden');
+      document.getElementById('sugImagePrompt').classList.add('hidden');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function removeSugImage(e) {
+  e.stopPropagation();
+  document.getElementById('sug_image').value = '';
+  document.getElementById('sugImagePreview').src = '';
+  document.getElementById('sugImagePreviewContainer').classList.add('hidden');
+  document.getElementById('sugImagePrompt').classList.remove('hidden');
+}
+
 document.getElementById('suggestionForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const payload = {
-    full_name: document.getElementById('sug_name').value.trim(),
-    email: document.getElementById('sug_email').value.trim(),
-    title: document.getElementById('sug_title').value.trim(),
-    description: document.getElementById('sug_desc').value.trim(),
-    category: document.getElementById('sug_category').value,
-    target_amount: parseFloat(document.getElementById('sug_target').value)
-  };
+  
+  const formData = new FormData();
+  formData.append('full_name', document.getElementById('sug_name').value.trim());
+  formData.append('email', document.getElementById('sug_email').value.trim());
+  formData.append('title', document.getElementById('sug_title').value.trim());
+  formData.append('description', document.getElementById('sug_desc').value.trim());
+  formData.append('category', document.getElementById('sug_category').value);
+  formData.append('target_amount', parseFloat(document.getElementById('sug_target').value));
+  
+  const imageFile = document.getElementById('sug_image').files[0];
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+
   try {
     const res = await fetch('/api/suggest-campaign', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: formData
     });
     const data = await res.json();
     if (res.ok) {
       alert(data.message);
       closeSuggestionModal();
       document.getElementById('suggestionForm').reset();
+      document.getElementById('sugImagePreviewContainer').classList.add('hidden');
+      document.getElementById('sugImagePreview').src = '';
+      document.getElementById('sugImagePrompt').classList.remove('hidden');
     } else {
       alert('Error: ' + data.message);
     }
