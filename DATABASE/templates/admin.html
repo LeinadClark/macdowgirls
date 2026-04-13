@@ -30,9 +30,12 @@
 </nav>
 
 <main class="max-w-7xl mx-auto px-6 py-12">
-  <div class="mb-8">
-    <h1 class="text-4xl font-bold text-primary italic">Admin Dashboard</h1>
-    <p class="text-stone-500">Manage campaigns, donors, suggestions, updates, and milestones.</p>
+  <div class="mb-8 flex justify-between items-center">
+    <div>
+      <h1 class="text-4xl font-bold text-primary italic">Admin Dashboard</h1>
+      <p class="text-stone-500">Manage campaigns, donors, suggestions, updates, and milestones.</p>
+    </div>
+    <button onclick="location.reload()" class="bg-stone-200 hover:bg-stone-300 px-4 py-2 rounded-lg text-sm font-semibold transition">⟳ Refresh Data</button>
   </div>
 
   <!-- Stats -->
@@ -40,7 +43,7 @@
     <div class="bg-white p-6 rounded-xl border border-stone-200"><p class="text-xs uppercase font-bold text-stone-400">Total Initiatives</p><p class="text-3xl font-bold">{{ initiatives|length }}</p></div>
     <div class="bg-white p-6 rounded-xl border border-stone-200"><p class="text-xs uppercase font-bold text-stone-400">Total Donors</p><p class="text-3xl font-bold">{{ donors|length }}</p></div>
     <div class="bg-white p-6 rounded-xl border border-stone-200"><p class="text-xs uppercase font-bold text-stone-400">Total Donations</p><p class="text-3xl font-bold">{{ donations|length }}</p></div>
-    <div class="bg-white p-6 rounded-xl border border-stone-200"><p class="text-xs uppercase font-bold text-stone-400">Pending Suggestions</p><p class="text-3xl font-bold">{{ suggestions|selectattr('status', 'equalto', 'pending')|list|length }}</p></div>
+    <div class="bg-white p-6 rounded-xl border border-stone-200"><p class="text-xs uppercase font-bold text-stone-400">Pending Suggestions</p><p class="text-3xl font-bold">{{ suggestions|selectattr('status', 'in', ['pending','threshold_met'])|list|length }}</p></div>
   </div>
 
   <!-- ================== CAMPAIGN SUGGESTIONS ================== -->
@@ -48,24 +51,64 @@
     <h2 class="text-2xl font-bold text-primary italic mb-6">Campaign Suggestions</h2>
     <div class="bg-white rounded-xl border border-stone-200 overflow-hidden">
       <table class="min-w-full divide-y divide-stone-200">
-        <thead class="bg-stone-50"><tr><th class="px-6 py-3 text-left text-xs font-bold uppercase">Date</th><th>Submitted by</th><th>Title</th><th>Target</th><th>Status</th><th class="text-right">Actions</th></tr></thead>
-        <tbody>
+        <thead class="bg-stone-50"><tr>
+          <th class="px-6 py-3 text-left text-xs font-bold uppercase">Date</th>
+          <th class="px-6 py-3 text-left text-xs font-bold uppercase">Submitted by</th>
+          <th class="px-6 py-3 text-left text-xs font-bold uppercase">Title</th>
+          <th class="px-6 py-3 text-left text-xs font-bold uppercase">Target</th>
+          <th class="px-6 py-3 text-left text-xs font-bold uppercase">Signatures</th>
+          <th class="px-6 py-3 text-left text-xs font-bold uppercase">Status</th>
+          <th class="px-6 py-3 text-right text-xs font-bold uppercase">Actions</th>
+        </tr></thead>
+        <tbody class="divide-y divide-stone-100">
           {% for sug in suggestions %}
           <tr>
-            <td class="px-6 py-4 text-sm">{{ sug.created_at.strftime('%b %d, %Y') if sug.created_at else '—' }}</td>
-            <td class="px-6 py-4"><div class="font-medium">{{ sug.full_name }}</div><div class="text-xs text-stone-400">{{ sug.email }}</div></td>
-            <td class="px-6 py-4 font-semibold">{{ sug.title }}</td>
-            <td class="px-6 py-4">₱{{ "{:,.2f}".format(sug.target_amount) }}</td>
-            <td class="px-6 py-4"><span class="px-2 py-1 rounded-full text-xs font-bold uppercase {% if sug.status == 'pending' %}bg-amber-100 text-amber-700{% elif sug.status == 'approved' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">{{ sug.status }}</span></td>
+            <td class="px-6 py-4 text-sm text-stone-500">{{ sug.created_at.strftime('%b %d, %Y') if sug.created_at else '—' }}</td>
+            <td class="px-6 py-4">
+              <div class="font-medium text-sm">{{ sug.full_name }}</div>
+              <div class="text-xs text-stone-400">{{ sug.email }}</div>
+            </td>
+            <td class="px-6 py-4 font-semibold text-sm">{{ sug.title }}</td>
+            <td class="px-6 py-4 text-sm">₱{{ "{:,.2f}".format(sug.target_amount) }}</td>
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-2">
+                <div class="w-24 h-2 bg-stone-100 rounded-full overflow-hidden">
+                  {% set sig_pct = [((sug.signature_count / sug.required_signatures) * 100)|round|int, 100]|min %}
+                  <div class="h-full rounded-full {% if sig_pct >= 100 %}bg-green-500{% else %}bg-amber-400{% endif %}"
+                       style="width:{{ sig_pct }}%"></div>
+                </div>
+                <span class="text-xs font-semibold text-stone-600 whitespace-nowrap">
+                  {{ sug.signature_count }} / {{ sug.required_signatures }}
+                </span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-1 rounded-full text-xs font-bold uppercase
+                {% if sug.status == 'pending' %}bg-amber-100 text-amber-700
+                {% elif sug.status == 'threshold_met' %}bg-blue-100 text-blue-700
+                {% elif sug.status == 'approved' %}bg-green-100 text-green-700
+                {% elif sug.status == 'rejected' %}bg-red-100 text-red-700
+                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                {% if sug.status == 'threshold_met' %}✅ Ready{% else %}{{ sug.status }}{% endif %}
+              </span>
+            </td>
             <td class="px-6 py-4 text-right space-x-2">
-              {% if sug.status == 'pending' %}
-              <button onclick="reviewSuggestion('{{ sug.suggestion_id }}', 'approve')" class="text-green-600 hover:text-green-800 text-sm font-semibold">Approve</button>
-              <button onclick="reviewSuggestion('{{ sug.suggestion_id }}', 'reject')" class="text-red-600 hover:text-red-800 text-sm font-semibold">Reject</button>
+              {% if sug.status in ('pending', 'threshold_met') %}
+                <button onclick="reviewSuggestion('{{ sug.suggestion_id }}', 'approve')"
+                        class="text-green-600 hover:text-green-800 text-sm font-semibold">Approve</button>
+                <button onclick="reviewSuggestion('{{ sug.suggestion_id }}', 'reject')"
+                        class="text-red-600 hover:text-red-800 text-sm font-semibold">Reject</button>
+              {% elif sug.status == 'rejected' %}
+                <button onclick="undoReject('{{ sug.suggestion_id }}')"
+                        class="text-amber-600 hover:text-amber-800 text-sm font-semibold">↩️ Undo Reject</button>
               {% endif %}
-              <button onclick="viewSuggestionDetails('{{ sug.suggestion_id }}')" class="text-primary text-sm font-semibold">Details</button>
+              <button onclick="viewSuggestionDetails('{{ sug.suggestion_id }}')"
+                      class="text-primary text-sm font-semibold">Details</button>
             </td>
           </tr>
-          {% else %} <tr><td colspan="6" class="px-6 py-12 text-center text-stone-400">No campaign suggestions yet.</td></tr> {% endfor %}
+          {% else %}
+          <tr><td colspan="7" class="px-6 py-12 text-center text-stone-400 italic">No campaign suggestions yet.</td></tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
@@ -111,26 +154,325 @@
 </main>
 
 <!-- Modal for suggestion details -->
-<div id="suggestionDetailModal" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden"><div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6"><h3 class="font-headline text-xl font-bold text-primary mb-4">Suggestion Details</h3><div id="detailContent"></div><div class="mt-4"><label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Admin Notes</label><textarea id="adminNotes" rows="2" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm"></textarea></div><div class="flex justify-end gap-3 mt-6"><button onclick="closeDetailModal()" class="px-4 py-2 border rounded-lg text-stone-600">Cancel</button><button id="actionApproveBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hidden">Approve</button><button id="actionRejectBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hidden">Reject</button></div></div></div>
+<div id="suggestionDetailModal" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+    <h3 class="font-headline text-xl font-bold text-primary mb-4">Suggestion Details</h3>
+    <div id="detailContent"></div>
+    <div class="mt-4">
+      <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Admin Notes</label>
+      <textarea id="adminNotes" rows="2" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm"></textarea>
+    </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button onclick="closeDetailModal()" class="px-4 py-2 border rounded-lg text-stone-600">Cancel</button>
+      <button id="actionApproveBtn" onclick="doApprove()" class="px-4 py-2 bg-green-600 text-white rounded-lg hidden">Approve → Create Initiative</button>
+      <button id="actionRejectBtn"  onclick="doReject()"  class="px-4 py-2 bg-red-600 text-white rounded-lg hidden">Reject</button>
+      <button id="actionUndoBtn"    onclick="doUndoReject()" class="px-4 py-2 bg-amber-600 text-white rounded-lg hidden">↩️ Undo Reject</button>
+    </div>
+  </div>
+</div>
 
 <script>
+// -------------------- FIXED: Always fetch latest data before approve/reject/undo --------------------
 let currentSuggestionId = null;
-function viewSuggestionDetails(id) { currentSuggestionId = id; fetch(`/api/admin/suggestions/${id}`).then(res=>res.json()).then(data=>{ document.getElementById('detailContent').innerHTML = `<p><strong>Title:</strong> ${data.title}</p><p><strong>Description:</strong> ${data.description}</p><p><strong>Category:</strong> ${data.category}</p><p><strong>Target:</strong> ₱${data.target_amount.toLocaleString()}</p><p><strong>Submitted by:</strong> ${data.full_name} (${data.email})</p><p><strong>Status:</strong> ${data.status}</p>${data.admin_notes ? `<p><strong>Admin Notes:</strong> ${data.admin_notes}</p>` : ''}`; if (data.status === 'pending') { document.getElementById('actionApproveBtn').classList.remove('hidden'); document.getElementById('actionRejectBtn').classList.remove('hidden'); } else { document.getElementById('actionApproveBtn').classList.add('hidden'); document.getElementById('actionRejectBtn').classList.add('hidden'); } document.getElementById('suggestionDetailModal').style.display = 'flex'; }); }
-function closeDetailModal() { document.getElementById('suggestionDetailModal').style.display = 'none'; }
-function reviewSuggestion(id, action) { const notes = document.getElementById('adminNotes').value; fetch(`/api/admin/suggestions/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action, admin_notes: notes }) }).then(()=>location.reload()); }
+let currentSuggestionData = null;
 
-// Updates
-async function loadUpdates() { const res = await fetch('/api/updates'); const updates = await res.json(); document.getElementById('updatesTableBody').innerHTML = updates.map(u => `<tr><td class="px-6 py-4">${u.content.substring(0,80)}${u.content.length>80?'…':''}</td><td class="px-6 py-4 text-sm text-stone-500">${u.created_at}</td><td class="px-6 py-4 text-right"><button onclick="deleteUpdate('${u.id}')" class="text-red-600 text-sm">Delete</button></td></tr>`).join(''); }
-async function createUpdate() { const initiative_id = document.getElementById('update_initiative').value || null; const content = document.getElementById('update_content').value.trim(); const image_url = document.getElementById('update_image').value.trim(); if(!content) return alert('Content required'); const res = await fetch('/api/admin/updates', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ initiative_id, content, image_url }) }); if(res.ok){ alert('✅ Update posted!'); document.getElementById('update_content').value=''; document.getElementById('update_image').value=''; loadUpdates(); } else alert('❌ Failed to post update'); }
-async function deleteUpdate(id) { if(confirm('Delete this update?')){ await fetch(`/api/admin/updates/${id}`, { method: 'DELETE' }); loadUpdates(); } }
+async function reviewSuggestion(id, action) {
+  currentSuggestionId = id;
+  // Fetch the absolute latest data from the server
+  try {
+    const res = await fetch(`/api/admin/suggestions/${id}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    currentSuggestionData = data;
 
-// Milestones
-async function loadMilestones() { const res = await fetch('/api/milestones'); const milestones = await res.json(); document.getElementById('milestonesTableBody').innerHTML = milestones.map(m => `<tr><td class="px-6 py-4 font-semibold">${m.title}</td><td class="px-6 py-4 text-sm">${m.description||'—'}</td><td class="px-6 py-4"><span class="px-2 py-1 rounded-full text-xs ${m.is_completed?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${m.is_completed?'Completed':'In Progress'}</span></td><td class="px-6 py-4 text-right space-x-2"><button onclick="toggleMilestoneStatus('${m.id}', ${!m.is_completed})" class="text-blue-600 text-sm">${m.is_completed?'Mark Pending':'Mark Done'}</button><button onclick="deleteMilestone('${m.id}')" class="text-red-600 text-sm">Delete</button></td></tr>`).join(''); }
-async function createMilestone() { const initiative_id = document.getElementById('milestone_initiative').value || null; const title = document.getElementById('milestone_title').value.trim(); const description = document.getElementById('milestone_desc').value.trim(); const is_completed = document.getElementById('milestone_completed').checked; if(!title) return alert('Title required'); const res = await fetch('/api/admin/milestones', { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ initiative_id, title, description, is_completed }) }); if(res.ok){ alert('🏆 Milestone added!'); document.getElementById('milestone_title').value=''; document.getElementById('milestone_desc').value=''; document.getElementById('milestone_completed').checked=false; loadMilestones(); } else alert('❌ Failed to add milestone'); }
-async function toggleMilestoneStatus(id, newStatus) { await fetch(`/api/admin/milestones/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ is_completed: newStatus }) }); loadMilestones(); }
-async function deleteMilestone(id) { if(confirm('Delete this milestone?')){ await fetch(`/api/admin/milestones/${id}`, { method: 'DELETE' }); loadMilestones(); } }
+    if (action === 'approve') {
+      if (data.signature_count >= data.required_signatures) {
+        await doApprove();
+      } else {
+        alert(`❌ Cannot approve: only ${data.signature_count} out of ${data.required_signatures} signatures collected.`);
+      }
+    } else if (action === 'reject') {
+      await doReject();
+    }
+  } catch (err) {
+    alert('Failed to fetch suggestion data: ' + err.message);
+  }
+}
 
-loadUpdates(); loadMilestones();
+async function doApprove() {
+  if (!currentSuggestionData) {
+    alert('No suggestion data loaded. Please refresh and try again.');
+    return;
+  }
+  const have = currentSuggestionData.signature_count;
+  const needed = currentSuggestionData.required_signatures;
+  if (have < needed) {
+    alert(`❌ Still not enough signatures: ${have}/${needed}. Refresh the page if signatures were added recently.`);
+    return;
+  }
+
+  const notes = document.getElementById('adminNotes').value;
+  const approveBtn = document.getElementById('actionApproveBtn');
+  const originalText = approveBtn ? approveBtn.innerText : 'Approve';
+  if (approveBtn) {
+    approveBtn.disabled = true;
+    approveBtn.innerText = 'Processing...';
+  }
+
+  try {
+    const res = await fetch(`/api/admin/suggestions/${currentSuggestionId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'approve', admin_notes: notes })
+    });
+    const result = await res.json();
+    if (result.status === 'success') {
+      alert('✅ Petition approved! Initiative has been created.');
+      location.reload();
+    } else {
+      alert('❌ Backend error: ' + (result.message || 'Unknown error'));
+    }
+  } catch (err) {
+    alert('Network error: ' + err.message);
+  } finally {
+    if (approveBtn) {
+      approveBtn.disabled = false;
+      approveBtn.innerText = originalText;
+    }
+  }
+}
+
+async function doReject() {
+  const notes = document.getElementById('adminNotes').value;
+  const rejectBtn = document.getElementById('actionRejectBtn');
+  if (rejectBtn) {
+    rejectBtn.disabled = true;
+    rejectBtn.innerText = 'Rejecting...';
+  }
+  try {
+    const res = await fetch(`/api/admin/suggestions/${currentSuggestionId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'reject', admin_notes: notes })
+    });
+    const result = await res.json();
+    if (result.status === 'success') {
+      alert('Suggestion rejected.');
+      location.reload();
+    } else {
+      alert('Reject failed: ' + result.message);
+    }
+  } catch (err) {
+    alert('Network error: ' + err.message);
+  } finally {
+    if (rejectBtn) {
+      rejectBtn.disabled = false;
+      rejectBtn.innerText = 'Reject';
+    }
+  }
+}
+
+// New function: Undo a rejected suggestion
+async function undoReject(id) {
+  if (!confirm('Undo the rejection? This will restore the suggestion to its previous state (pending or ready).')) return;
+  currentSuggestionId = id;
+  try {
+    const res = await fetch(`/api/admin/suggestions/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'undo_reject' })
+    });
+    const result = await res.json();
+    if (result.status === 'success') {
+      alert('✅ Rejection undone. Suggestion is now pending again.');
+      location.reload();
+    } else {
+      alert('❌ Failed to undo: ' + (result.message || 'Unknown error'));
+    }
+  } catch (err) {
+    alert('Network error: ' + err.message);
+  }
+}
+
+// Also allow undo from the modal if the suggestion is rejected
+async function doUndoReject() {
+  if (!currentSuggestionId) return;
+  await undoReject(currentSuggestionId);
+}
+
+// View details modal (also fetches fresh data)
+async function viewSuggestionDetails(id) {
+  currentSuggestionId = id;
+  try {
+    const res = await fetch(`/api/admin/suggestions/${id}`);
+    const data = await res.json();
+    currentSuggestionData = data;
+
+    const sigPct = Math.min(100, Math.round((data.signature_count / data.required_signatures) * 100));
+    const thresholdMet = data.signature_count >= data.required_signatures;
+    document.getElementById('detailContent').innerHTML = `
+      <div class="space-y-2 text-sm">
+        <p><strong>Title:</strong> ${escapeHtml(data.title)}</p>
+        <p><strong>Description:</strong> ${escapeHtml(data.description)}</p>
+        <p><strong>Category:</strong> ${escapeHtml(data.category)}</p>
+        <p><strong>Target:</strong> ₱${Number(data.target_amount).toLocaleString()}</p>
+        <p><strong>Submitted by:</strong> ${escapeHtml(data.full_name)} (${escapeHtml(data.email)})</p>
+        <p><strong>Status:</strong> <span class="font-bold ${thresholdMet ? 'text-green-600' : 'text-amber-600'}">${data.status}</span></p>
+        <div class="mt-3">
+          <p class="text-xs font-bold uppercase tracking-widest text-stone-500 mb-1">Signature Progress</p>
+          <div class="flex items-center gap-3">
+            <div class="flex-1 h-3 bg-stone-100 rounded-full overflow-hidden">
+              <div class="h-full rounded-full transition-all ${thresholdMet ? 'bg-green-500' : 'bg-amber-400'}" style="width:${sigPct}%"></div>
+            </div>
+            <span class="text-sm font-bold whitespace-nowrap ${thresholdMet ? 'text-green-600' : 'text-stone-600'}">
+              ${data.signature_count} / ${data.required_signatures}
+            </span>
+          </div>
+          ${thresholdMet
+            ? '<p class="text-xs text-green-600 font-semibold mt-1">✅ Signature threshold met — ready for approval.</p>'
+            : `<p class="text-xs text-amber-600 mt-1">⚠️ Needs ${data.required_signatures - data.signature_count} more signatures before approval.</p>`}
+        </div>
+        ${data.admin_notes ? `<p class="mt-2"><strong>Admin Notes:</strong> ${escapeHtml(data.admin_notes)}</p>` : ''}
+      </div>`;
+
+    const approveBtn = document.getElementById('actionApproveBtn');
+    const rejectBtn = document.getElementById('actionRejectBtn');
+    const undoBtn = document.getElementById('actionUndoBtn');
+    
+    // Hide all first
+    approveBtn.classList.add('hidden');
+    rejectBtn.classList.add('hidden');
+    undoBtn.classList.add('hidden');
+    
+    if (data.status === 'pending' || data.status === 'threshold_met') {
+      rejectBtn.classList.remove('hidden');
+      approveBtn.classList.remove('hidden');
+      approveBtn.disabled = !thresholdMet;
+      approveBtn.title = thresholdMet ? '' : 'Not enough signatures yet';
+      approveBtn.classList.toggle('opacity-40', !thresholdMet);
+      approveBtn.classList.toggle('cursor-not-allowed', !thresholdMet);
+    } else if (data.status === 'rejected') {
+      undoBtn.classList.remove('hidden');
+    }
+    // For approved, no action buttons shown (already approved)
+    
+    document.getElementById('suggestionDetailModal').style.display = 'flex';
+  } catch (err) {
+    alert('Failed to load suggestion details: ' + err.message);
+  }
+}
+
+function closeDetailModal() {
+  document.getElementById('suggestionDetailModal').style.display = 'none';
+  document.getElementById('adminNotes').value = '';
+}
+
+// Helper to escape HTML and prevent XSS
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+    return c;
+  });
+}
+
+// -------------------- UPDATES & MILESTONES (unchanged, working) --------------------
+async function loadUpdates() {
+  const res = await fetch('/api/updates');
+  const updates = await res.json();
+  document.getElementById('updatesTableBody').innerHTML = updates.map(u => `
+    <tr>
+      <td class="px-6 py-4">${escapeHtml(u.content.substring(0,80))}${u.content.length>80?'…':''}</td>
+      <td class="px-6 py-4 text-sm text-stone-500">${u.created_at}</td>
+      <td class="px-6 py-4 text-right"><button onclick="deleteUpdate('${u.id}')" class="text-red-600 text-sm">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+async function createUpdate() {
+  const initiative_id = document.getElementById('update_initiative').value || null;
+  const content = document.getElementById('update_content').value.trim();
+  const image_url = document.getElementById('update_image').value.trim();
+  if (!content) return alert('Content required');
+  const res = await fetch('/api/admin/updates', {
+    method: 'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ initiative_id, content, image_url })
+  });
+  if (res.ok) {
+    alert('✅ Update posted!');
+    document.getElementById('update_content').value='';
+    document.getElementById('update_image').value='';
+    loadUpdates();
+  } else alert('❌ Failed to post update');
+}
+
+async function deleteUpdate(id) {
+  if (confirm('Delete this update?')) {
+    await fetch(`/api/admin/updates/${id}`, { method: 'DELETE' });
+    loadUpdates();
+  }
+}
+
+async function loadMilestones() {
+  const res = await fetch('/api/milestones');
+  const milestones = await res.json();
+  document.getElementById('milestonesTableBody').innerHTML = milestones.map(m => `
+    <tr>
+      <td class="px-6 py-4 font-semibold">${escapeHtml(m.title)}</td>
+      <td class="px-6 py-4 text-sm">${escapeHtml(m.description)||'—'}</td>
+      <td class="px-6 py-4"><span class="px-2 py-1 rounded-full text-xs ${m.is_completed?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${m.is_completed?'Completed':'In Progress'}</span></td>
+      <td class="px-6 py-4 text-right space-x-2">
+        <button onclick="toggleMilestoneStatus('${m.id}', ${!m.is_completed})" class="text-blue-600 text-sm">${m.is_completed?'Mark Pending':'Mark Done'}</button>
+        <button onclick="deleteMilestone('${m.id}')" class="text-red-600 text-sm">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function createMilestone() {
+  const initiative_id = document.getElementById('milestone_initiative').value || null;
+  const title = document.getElementById('milestone_title').value.trim();
+  const description = document.getElementById('milestone_desc').value.trim();
+  const is_completed = document.getElementById('milestone_completed').checked;
+  if (!title) return alert('Title required');
+  const res = await fetch('/api/admin/milestones', {
+    method: 'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ initiative_id, title, description, is_completed })
+  });
+  if (res.ok) {
+    alert('🏆 Milestone added!');
+    document.getElementById('milestone_title').value='';
+    document.getElementById('milestone_desc').value='';
+    document.getElementById('milestone_completed').checked=false;
+    loadMilestones();
+  } else alert('❌ Failed to add milestone');
+}
+
+async function toggleMilestoneStatus(id, newStatus) {
+  await fetch(`/api/admin/milestones/${id}`, {
+    method: 'PUT',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ is_completed: newStatus })
+  });
+  loadMilestones();
+}
+
+async function deleteMilestone(id) {
+  if (confirm('Delete this milestone?')) {
+    await fetch(`/api/admin/milestones/${id}`, { method: 'DELETE' });
+    loadMilestones();
+  }
+}
+
+// Initial load
+loadUpdates();
+loadMilestones();
 </script>
 </body>
 </html>

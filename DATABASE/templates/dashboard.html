@@ -203,6 +203,23 @@
         </div>
       </section>
 
+      <!-- Petition Progress -->
+      <section>
+        <div class="flex justify-between items-baseline border-b border-stone-200 pb-4 mb-6">
+          <h2 class="text-3xl font-headline font-bold text-primary italic">Petition Progress</h2>
+          <button onclick="openPetition()" class="text-primary font-label text-sm uppercase tracking-widest hover:underline flex items-center gap-1">
+            <span class="material-symbols-outlined text-base">front_hand</span> Sign a Petition
+          </button>
+        </div>
+        <div id="petitionProgressList" class="space-y-4">
+          <div class="bg-white p-5 rounded-xl border border-stone-200 animate-pulse">
+            <div class="h-3 bg-stone-100 rounded w-2/3 mb-3"></div>
+            <div class="h-2 bg-stone-100 rounded w-full mb-2"></div>
+            <div class="h-2 bg-stone-100 rounded w-1/2"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- Recent Updates Feed -->
       <section>
         <div class="flex justify-between items-baseline border-b border-stone-200 pb-4 mb-6">
@@ -331,52 +348,90 @@
 
 <!-- ── PETITION MODAL ── -->
 <div id="petitionModal" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-  <div class="bg-white rounded-xl shadow-2xl w-full max-w-md relative overflow-hidden">
-    <div class="h-2 w-full bg-gradient-to-r from-secondary to-secondary-container"></div>
-    <div class="p-8">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg relative overflow-hidden flex flex-col" style="max-height:92vh;">
+    <div class="h-2 w-full bg-gradient-to-r from-secondary to-secondary-container flex-shrink-0"></div>
+
+    <!-- Header -->
+    <div class="px-8 pt-7 pb-4 flex-shrink-0 border-b border-stone-100">
       <button onclick="closePetition()" class="absolute top-6 right-6 text-stone-400 hover:text-stone-700 transition-colors">
         <span class="material-symbols-outlined text-2xl">close</span>
       </button>
-      <div class="flex items-center gap-3 mb-2">
+      <div class="flex items-center gap-3 mb-1">
         <span class="material-symbols-outlined text-primary text-3xl">front_hand</span>
         <div>
           <p class="text-xs uppercase tracking-widest text-stone-400 font-bold">Community Voice</p>
           <h2 class="text-2xl font-['Newsreader'] font-bold text-primary italic">Sign the Petition</h2>
         </div>
       </div>
-      <div class="bg-stone-50 rounded-xl p-4 mb-6 mt-4 border border-stone-200">
-        <p class="text-sm font-bold text-stone-700 mb-1">We, the students and faculty of UPHSD Molino, call for:</p>
-        <ul class="text-sm text-stone-600 space-y-1 list-disc list-inside">
-          <li>Increased institutional support for student-led initiatives</li>
-          <li>Transparent fund management & public campaign reporting</li>
-          <li>Expanded community outreach programs in Molino</li>
-        </ul>
-        <p id="signaturesCount" class="text-xs font-bold text-primary mt-3 uppercase tracking-widest">Loading signatures...</p>
-      </div>
-      <div class="space-y-4 mb-6">
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Full Name <span class="text-red-500">*</span></label>
-          <input type="text" id="petitionName" placeholder="Juan Dela Cruz" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Email Address <span class="text-red-500">*</span></label>
-          <input type="email" id="petitionEmail" placeholder="juan@email.com" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Role</label>
-          <select id="petitionRole" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm text-stone-800 focus:outline-none focus:border-primary bg-stone-50">
-            <option value="student">Student</option>
-            <option value="faculty">Faculty</option>
-            <option value="alumni">Alumni</option>
-            <option value="community">Community Member</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Message (Optional)</label>
-          <textarea id="petitionMessage" placeholder="Share why you support this cause..." rows="3" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary resize-none"></textarea>
+      <p class="text-sm text-stone-500 mt-1">Choose a campaign suggestion below, then add your signature to help it reach admin review.</p>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="overflow-y-auto flex-1 px-8 py-6 space-y-6">
+
+      <!-- STEP 1: Pick a campaign suggestion -->
+      <div id="petition-step-pick">
+        <p class="text-xs uppercase tracking-widest font-bold text-stone-400 mb-3">Step 1 — Choose a Campaign to Support</p>
+        <div id="petitionSuggestionList" class="space-y-3">
+          <p class="text-stone-400 italic text-sm text-center py-4">Loading open petitions…</p>
         </div>
       </div>
-      <button onclick="submitPetition()" class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
+
+      <!-- Selected campaign banner (hidden until picked) -->
+      <div id="petition-selected-banner" class="hidden rounded-xl border-2 border-primary bg-primary/5 px-5 py-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex-1">
+            <p class="text-[10px] uppercase tracking-widest font-bold text-stone-400 mb-0.5">Signing for</p>
+            <p id="petition-selected-title" class="font-bold text-stone-800 text-sm leading-snug"></p>
+            <div class="flex items-center gap-2 mt-2">
+              <div class="flex-1 h-1.5 bg-stone-200 rounded-full overflow-hidden">
+                <div id="petition-selected-bar" class="h-full rounded-full bg-amber-400 transition-all"></div>
+              </div>
+              <span id="petition-selected-count" class="text-xs font-bold text-stone-500 whitespace-nowrap"></span>
+            </div>
+          </div>
+          <button onclick="clearPetitionSelection()" class="text-stone-300 hover:text-stone-500 mt-0.5">
+            <span class="material-symbols-outlined text-base">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Signer info -->
+      <div id="petition-step-sign">
+        <p class="text-xs uppercase tracking-widest font-bold text-stone-400 mb-3">Step 2 — Your Details</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Full Name <span class="text-red-500">*</span></label>
+            <input type="text" id="petitionName" placeholder="Juan Dela Cruz"
+                   class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Email Address <span class="text-red-500">*</span></label>
+            <input type="email" id="petitionEmail" placeholder="juan@email.com"
+                   class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"/>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Role</label>
+            <select id="petitionRole" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm text-stone-800 focus:outline-none focus:border-primary bg-stone-50">
+              <option value="student">Student</option>
+              <option value="faculty">Faculty</option>
+              <option value="alumni">Alumni</option>
+              <option value="community">Community Member</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Message (Optional)</label>
+            <textarea id="petitionMessage" placeholder="Share why you support this campaign…" rows="2"
+                      class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky footer -->
+    <div class="px-8 pb-7 pt-4 flex-shrink-0 border-t border-stone-100">
+      <button onclick="submitPetition()"
+              class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
         <span class="material-symbols-outlined text-base">front_hand</span>
         Add My Signature
       </button>
@@ -388,50 +443,101 @@
 <div id="suggestionModal" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm p-4 hidden">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg relative overflow-hidden max-h-[90vh] flex flex-col">
     <div class="h-2 w-full bg-gradient-to-r from-primary to-primary-container"></div>
-    <div class="p-6 overflow-y-auto">
+    <div class="p-6 overflow-y-auto flex-1">
       <button onclick="closeSuggestionModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-700">
         <span class="material-symbols-outlined">close</span>
       </button>
-      <div class="flex items-center gap-3 mb-4">
-        <span class="material-symbols-outlined text-primary text-3xl">campaign</span>
-        <h2 class="text-2xl font-['Newsreader'] font-bold text-primary italic">Suggest a Campaign</h2>
-      </div>
-      <p class="text-sm text-stone-600 mb-6">Your idea can become a real fundraising initiative. Fill out the form below — our admin team will review it.</p>
 
-      <form id="suggestionForm" class="space-y-4">
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Full Name *</label>
-          <input type="text" id="sug_name" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
+      <!-- Tab bar -->
+      <div class="flex gap-2 mb-6 border-b border-stone-200">
+        <button id="tab-open" onclick="switchTab('open')"
+                class="tab-btn pb-2 text-sm font-bold text-primary border-b-2 border-primary">Open Petitions</button>
+        <button id="tab-new" onclick="switchTab('new')"
+                class="tab-btn pb-2 text-sm font-semibold text-stone-400 border-b-2 border-transparent ml-4">Suggest New Campaign</button>
+      </div>
+
+      <!-- OPEN PETITIONS TAB -->
+      <div id="pane-open">
+        <p class="text-sm text-stone-500 mb-4">These suggestions are collecting signatures. Sign one to help it reach admin review!</p>
+        <div id="openSuggestionsList" class="space-y-4">
+          <p class="text-stone-400 italic text-sm text-center py-6">Loading open petitions…</p>
         </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Email *</label>
-          <input type="email" id="sug_email" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Campaign Title *</label>
-          <input type="text" id="sug_title" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Description *</label>
-          <textarea id="sug_desc" rows="3" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required></textarea>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Category *</label>
-          <select id="sug_category" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
-            <option value="research">Research</option>
-            <option value="outreach">Outreach</option>
-            <option value="conservation">Conservation</option>
-            <option value="scholarship">Scholarship</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Target Amount (₱) *</label>
-          <input type="number" id="sug_target" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" step="1" min="1" required>
-        </div>
-        <button type="submit" class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all">
-          Submit Suggestion
+      </div>
+
+      <!-- SIGN MODAL (inline, shown when user clicks Sign) -->
+      <div id="pane-sign" class="hidden">
+        <button onclick="backToList()" class="flex items-center gap-1 text-xs text-stone-500 hover:text-primary mb-4 transition-colors">
+          <span class="material-symbols-outlined text-sm">arrow_back</span> Back to petitions
         </button>
-      </form>
+        <div id="sign-campaign-info" class="mb-4 p-4 bg-stone-50 rounded-xl border border-stone-200 text-sm"></div>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-1">Full Name *</label>
+            <input type="text" id="sign_name" class="w-full border border-stone-300 rounded-lg px-4 py-2 text-sm" required>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-1">Email *</label>
+            <input type="email" id="sign_email" class="w-full border border-stone-300 rounded-lg px-4 py-2 text-sm" required>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-1">Role</label>
+            <select id="sign_role" class="w-full border border-stone-300 rounded-lg px-4 py-2 text-sm bg-stone-50">
+              <option value="student">Student</option>
+              <option value="faculty">Faculty</option>
+              <option value="alumni">Alumni</option>
+              <option value="community">Community Member</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-1">Message (optional)</label>
+            <textarea id="sign_message" rows="2" class="w-full border border-stone-300 rounded-lg px-4 py-2 text-sm resize-none"></textarea>
+          </div>
+          <button onclick="submitSignature()"
+                  class="w-full py-3 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-base">front_hand</span> Sign This Petition
+          </button>
+        </div>
+      </div>
+
+      <!-- NEW SUGGESTION TAB -->
+      <div id="pane-new" class="hidden">
+        <p class="text-sm text-stone-600 mb-4">Your idea can become a real fundraising initiative. Once it collects enough signatures, our admin team can approve it.</p>
+        <form id="suggestionForm" class="space-y-4">
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Full Name *</label>
+            <input type="text" id="sug_name" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Email *</label>
+            <input type="email" id="sug_email" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Campaign Title *</label>
+            <input type="text" id="sug_title" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Description *</label>
+            <textarea id="sug_desc" rows="3" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required></textarea>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Category *</label>
+            <select id="sug_category" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" required>
+              <option value="research">Research</option>
+              <option value="outreach">Outreach</option>
+              <option value="conservation">Conservation</option>
+              <option value="scholarship">Scholarship</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-widest font-semibold text-stone-500 mb-2">Target Amount (₱) *</label>
+            <input type="number" id="sug_target" class="w-full border border-stone-300 rounded-lg px-4 py-3 text-sm" step="1" min="1" required>
+          </div>
+          <button type="submit" class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm uppercase tracking-widest rounded-lg hover:shadow-xl active:scale-95 transition-all">
+            Submit Suggestion
+          </button>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
@@ -459,21 +565,170 @@
 </footer>
 
 <script>
-/* ── PETITION MODAL ── */
-async function updateSignatureCount() {
+/* ────────────────────────────────────────────────
+   SHARED STATE
+──────────────────────────────────────────────── */
+let allSuggestions      = [];   // cached from /api/suggestions
+let selectedSuggestionId = null;
+
+const CAT_COLORS = {
+  research:     'bg-teal-100 text-teal-700',
+  scholarship:  'bg-yellow-100 text-yellow-700',
+  outreach:     'bg-red-100 text-red-700',
+  conservation: 'bg-green-100 text-green-700',
+};
+
+/* ────────────────────────────────────────────────
+   FETCH SUGGESTIONS (shared by modal + progress)
+──────────────────────────────────────────────── */
+async function fetchSuggestions() {
   try {
-    const res = await fetch('/api/petition/count');
-    const data = await res.json();
-    const count = data.count;
-    document.getElementById('signaturesCount').innerHTML = `${count} people have signed · Be the next!`;
-  } catch (err) {
-    console.error('Failed to fetch signature count', err);
-  }
+    const res = await fetch('/api/suggestions');
+    allSuggestions = res.ok ? await res.json() : [];
+  } catch { allSuggestions = []; }
 }
 
-function openPetition() {
-  updateSignatureCount();
+/* ────────────────────────────────────────────────
+   PETITION PROGRESS — dashboard section
+──────────────────────────────────────────────── */
+function renderPetitionProgress() {
+  const container = document.getElementById('petitionProgressList');
+  if (!allSuggestions.length) {
+    container.innerHTML = `
+      <div class="bg-white p-6 rounded-xl border border-stone-200 text-center">
+        <span class="material-symbols-outlined text-4xl text-stone-200 block mb-2">campaign</span>
+        <p class="text-stone-400 italic text-sm">No active petitions right now.</p>
+        <button onclick="openCampaignSuggestionModal()"
+                class="mt-3 px-4 py-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-primary hover:text-white transition-all">
+          Suggest a Campaign
+        </button>
+      </div>`;
+    return;
+  }
+  container.innerHTML = allSuggestions.map(s => {
+    const pct     = Math.min(100, Math.round((s.signature_count / s.required_signatures) * 100));
+    const met     = s.signature_count >= s.required_signatures;
+    const catCls  = CAT_COLORS[s.category] || 'bg-stone-100 text-stone-600';
+    const barCls  = met ? 'bg-green-500' : (pct >= 60 ? 'bg-amber-400' : 'bg-red-400');
+    return `
+    <div class="bg-white p-5 rounded-xl border ${met ? 'border-green-200' : 'border-stone-200'} shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex items-start justify-between gap-3 mb-3">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <span class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full ${catCls}">${s.category}</span>
+            ${met
+              ? '<span class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">✅ Ready for Review</span>'
+              : ''}
+          </div>
+          <h4 class="font-['Newsreader'] font-bold text-stone-800 text-base leading-snug truncate">${s.title}</h4>
+          <p class="text-xs text-stone-500 mt-0.5 line-clamp-1">${s.description}</p>
+        </div>
+        <span class="text-2xl font-bold ${met ? 'text-green-600' : 'text-primary'} whitespace-nowrap">${pct}%</span>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="w-full h-2.5 bg-stone-100 rounded-full overflow-hidden mb-2">
+        <div class="h-full rounded-full transition-all duration-700 ${barCls}" style="width:${pct}%"></div>
+      </div>
+      <div class="flex justify-between items-center text-xs text-stone-500 mb-4">
+        <span><strong class="text-stone-700">${s.signature_count}</strong> signatures collected</span>
+        <span>Goal: <strong class="text-stone-700">${s.required_signatures}</strong></span>
+      </div>
+
+      ${!met
+        ? `<button onclick="openPetitionFor('${s.suggestion_id}')"
+                   class="w-full py-2.5 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-xs uppercase tracking-widest rounded-lg hover:shadow active:scale-95 transition-all flex items-center justify-center gap-2">
+             <span class="material-symbols-outlined text-sm">front_hand</span> Sign This Petition
+           </button>`
+        : `<div class="w-full py-2.5 bg-green-50 border border-green-200 text-green-700 font-bold text-xs uppercase tracking-widest rounded-lg text-center">
+             Threshold Reached — Awaiting Admin Approval
+           </div>`}
+    </div>`;
+  }).join('');
+}
+
+/* ────────────────────────────────────────────────
+   PETITION MODAL
+──────────────────────────────────────────────── */
+function renderPetitionModalList() {
+  const list = document.getElementById('petitionSuggestionList');
+  if (!allSuggestions.length) {
+    list.innerHTML = `<p class="text-stone-400 italic text-sm text-center py-4">No open petitions right now.</p>`;
+    return;
+  }
+  list.innerHTML = allSuggestions.map(s => {
+    const pct    = Math.min(100, Math.round((s.signature_count / s.required_signatures) * 100));
+    const met    = s.signature_count >= s.required_signatures;
+    const catCls = CAT_COLORS[s.category] || 'bg-stone-100 text-stone-600';
+    const barCls = met ? 'bg-green-500' : 'bg-amber-400';
+    const isSelected = s.suggestion_id === selectedSuggestionId;
+    return `
+    <div id="sug-card-${s.suggestion_id}"
+         onclick="${met ? '' : `selectPetitionSuggestion('${s.suggestion_id}','${s.title.replace(/'/g,"\\'")}',${s.signature_count},${s.required_signatures})`}"
+         class="rounded-xl border-2 p-4 transition-all cursor-pointer
+           ${met ? 'border-stone-200 bg-stone-50 opacity-60 cursor-not-allowed'
+                 : isSelected ? 'border-primary bg-primary/5'
+                              : 'border-stone-200 bg-white hover:border-primary/50'}">
+      <div class="flex items-start gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <span class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full ${catCls}">${s.category}</span>
+            ${met ? '<span class="text-[10px] font-bold text-green-600">✅ Threshold Met</span>' : ''}
+          </div>
+          <p class="font-bold text-sm text-stone-800 leading-snug">${s.title}</p>
+          <p class="text-xs text-stone-500 mt-0.5 line-clamp-2">${s.description}</p>
+        </div>
+        ${!met && isSelected
+          ? '<span class="material-symbols-outlined text-primary text-xl flex-shrink-0 mt-1" style="font-variation-settings:\'FILL\' 1">check_circle</span>'
+          : ''}
+      </div>
+      <div class="mt-3 flex items-center gap-2">
+        <div class="flex-1 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+          <div class="h-full rounded-full ${barCls}" style="width:${pct}%"></div>
+        </div>
+        <span class="text-xs font-bold whitespace-nowrap ${met ? 'text-green-600' : 'text-stone-500'}">${s.signature_count}/${s.required_signatures}</span>
+      </div>
+      ${!met ? `<p class="text-[10px] text-stone-400 mt-1">${s.required_signatures - s.signature_count} more needed</p>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectPetitionSuggestion(id, title, count, required) {
+  selectedSuggestionId = id;
+  // Update banner
+  const pct = Math.min(100, Math.round((count / required) * 100));
+  document.getElementById('petition-selected-title').textContent = title;
+  document.getElementById('petition-selected-bar').style.width   = pct + '%';
+  document.getElementById('petition-selected-count').textContent = `${count} / ${required} signatures`;
+  document.getElementById('petition-selected-banner').classList.remove('hidden');
+  // Re-render list to reflect selection highlight
+  renderPetitionModalList();
+}
+
+function clearPetitionSelection() {
+  selectedSuggestionId = null;
+  document.getElementById('petition-selected-banner').classList.add('hidden');
+  renderPetitionModalList();
+}
+
+async function openPetition() {
+  if (!allSuggestions.length) await fetchSuggestions();
+  selectedSuggestionId = null;
+  document.getElementById('petition-selected-banner').classList.add('hidden');
+  // Pre-fill user info
+  const userName  = "{{ session.get('name', '') }}";
+  const userEmail = "{{ user_email }}";
+  if (userName)  document.getElementById('petitionName').value  = userName;
+  if (userEmail) document.getElementById('petitionEmail').value = userEmail;
+  renderPetitionModalList();
   document.getElementById("petitionModal").classList.add("open");
+}
+
+// Called from progress section Sign button — pre-selects the campaign
+async function openPetitionFor(suggestionId) {
+  await openPetition();
+  const s = allSuggestions.find(x => x.suggestion_id === suggestionId);
+  if (s) selectPetitionSuggestion(s.suggestion_id, s.title, s.signature_count, s.required_signatures);
 }
 
 function closePetition() {
@@ -484,29 +739,24 @@ function showPetitionToast(msg) {
   const toast = document.getElementById("petitionToast");
   document.getElementById("petitionToastMsg").textContent = msg;
   toast.classList.remove("hidden"); toast.classList.add("visible");
-  setTimeout(() => {
-    toast.classList.remove("visible");
-    setTimeout(() => toast.classList.add("hidden"), 400);
-  }, 5000);
+  setTimeout(() => { toast.classList.remove("visible"); setTimeout(() => toast.classList.add("hidden"), 400); }, 5000);
 }
 
 async function submitPetition() {
-  const name  = document.getElementById("petitionName").value.trim();
-  const email = document.getElementById("petitionEmail").value.trim();
-  const role  = document.getElementById("petitionRole").value;
+  if (!selectedSuggestionId) {
+    alert("Please select a campaign petition to sign first.");
+    return;
+  }
+  const name    = document.getElementById("petitionName").value.trim();
+  const email   = document.getElementById("petitionEmail").value.trim();
+  const role    = document.getElementById("petitionRole").value;
   const message = document.getElementById("petitionMessage").value.trim();
 
-  if (!name || !email) {
-    alert("Please fill in your name and email.");
-    return;
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert("Please enter a valid email address.");
-    return;
-  }
+  if (!name || !email) { alert("Please fill in your name and email."); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Please enter a valid email address."); return; }
 
   try {
-    const res = await fetch('/api/petition/sign', {
+    const res = await fetch(`/api/suggestions/${selectedSuggestionId}/sign`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ full_name: name, email, role, message })
@@ -515,65 +765,166 @@ async function submitPetition() {
     if (res.ok) {
       closePetition();
       showPetitionToast(data.message);
-      document.getElementById("petitionName").value = "";
-      document.getElementById("petitionEmail").value = "";
+      document.getElementById("petitionName").value    = "";
+      document.getElementById("petitionEmail").value   = "";
       document.getElementById("petitionMessage").value = "";
-    } else {
-      alert(data.message);
-    }
-  } catch (err) {
-    alert("Network error. Please try again.");
-  }
+      selectedSuggestionId = null;
+      // Refresh suggestions so counts update everywhere
+      await fetchSuggestions();
+      renderPetitionProgress();
+    } else { alert(data.message); }
+  } catch (err) { alert("Network error. Please try again."); }
 }
 
-document.getElementById("petitionModal").addEventListener("click", function(e) {
-  if (e.target === this) closePetition();
-});
+document.getElementById("petitionModal").addEventListener("click", function(e) { if (e.target === this) closePetition(); });
 
-// Load initial count when page loads
-updateSignatureCount();
-
-/* ── CAMPAIGN SUGGESTION MODAL ── */
+/* ────────────────────────────────────────────────
+   CAMPAIGN SUGGESTION MODAL
+──────────────────────────────────────────────── */
 function openCampaignSuggestionModal() {
-  const userName = "{{ session.get('name', '') }}";
+  const userName  = "{{ session.get('name', '') }}";
   const userEmail = "{{ user_email }}";
-  if (userName) document.getElementById('sug_name').value = userName;
+  if (userName)  document.getElementById('sug_name').value  = userName;
   if (userEmail) document.getElementById('sug_email').value = userEmail;
+  switchTab('open');
   document.getElementById('suggestionModal').style.display = 'flex';
-  document.getElementById('suggestionModal').classList.remove('hidden');
+  renderSuggestionModalOpenList();
 }
+
 function closeSuggestionModal() {
   document.getElementById('suggestionModal').style.display = 'none';
-  document.getElementById('suggestionModal').classList.add('hidden');
 }
+
+function switchTab(tab) {
+  ['open', 'new'].forEach(t => {
+    document.getElementById(`pane-${t}`).classList.toggle('hidden', t !== tab);
+    const btn = document.getElementById(`tab-${t}`);
+    if (btn) {
+      btn.classList.toggle('text-primary', t === tab);
+      btn.classList.toggle('border-primary', t === tab);
+      btn.classList.toggle('text-stone-400', t !== tab);
+      btn.classList.toggle('border-transparent', t !== tab);
+    }
+  });
+  document.getElementById('pane-sign').classList.add('hidden');
+}
+
+function renderSuggestionModalOpenList() {
+  const list = document.getElementById('openSuggestionsList');
+  if (!allSuggestions.length) {
+    list.innerHTML = `<p class="text-stone-400 italic text-sm text-center py-6">No open petitions right now. Be the first to suggest one!</p>`;
+    return;
+  }
+  list.innerHTML = allSuggestions.map(s => {
+    const pct    = Math.min(100, Math.round((s.signature_count / s.required_signatures) * 100));
+    const met    = s.signature_count >= s.required_signatures;
+    const catCls = CAT_COLORS[s.category] || 'bg-stone-100 text-stone-600';
+    return `
+    <div class="border border-stone-200 rounded-xl p-4 bg-stone-50">
+      <div class="flex justify-between items-start mb-1">
+        <p class="font-bold text-sm text-stone-800 leading-snug flex-1 mr-2">${s.title}</p>
+        <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${catCls} whitespace-nowrap">${s.category}</span>
+      </div>
+      <p class="text-xs text-stone-500 mb-3 leading-relaxed line-clamp-2">${s.description}</p>
+      <div class="flex items-center gap-2 mb-3">
+        <div class="flex-1 h-2 bg-stone-200 rounded-full overflow-hidden">
+          <div class="h-full rounded-full ${met ? 'bg-green-500' : 'bg-amber-400'}" style="width:${pct}%"></div>
+        </div>
+        <span class="text-xs font-bold whitespace-nowrap ${met ? 'text-green-600' : 'text-stone-500'}">${s.signature_count}/${s.required_signatures}</span>
+      </div>
+      ${!met
+        ? `<button onclick="openSignPane('${s.suggestion_id}', \`${s.title.replace(/`/g, '\\`')}\`, ${s.signature_count}, ${s.required_signatures})"
+                   class="w-full py-2 bg-gradient-to-r from-primary to-primary-container text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:shadow active:scale-95 transition-all">
+             ✍️ Sign This Petition
+           </button>`
+        : `<div class="w-full py-2 bg-green-50 border border-green-200 text-green-700 text-xs font-bold uppercase tracking-widest rounded-lg text-center">Threshold Reached</div>`}
+    </div>`;
+  }).join('');
+}
+
+let activeSuggestionId = null;
+
+function openSignPane(id, title, count, required) {
+  activeSuggestionId = id;
+  const pct = Math.min(100, Math.round((count / required) * 100));
+  document.getElementById('sign-campaign-info').innerHTML = `
+    <p class="font-bold text-stone-800 mb-1">${title}</p>
+    <div class="flex items-center gap-2 mt-2">
+      <div class="flex-1 h-1.5 bg-stone-200 rounded-full overflow-hidden">
+        <div class="h-full bg-amber-400 rounded-full" style="width:${pct}%"></div>
+      </div>
+      <span class="text-xs font-bold text-stone-500">${count} / ${required}</span>
+    </div>`;
+  const userName  = "{{ session.get('name', '') }}";
+  const userEmail = "{{ user_email }}";
+  if (userName)  document.getElementById('sign_name').value  = userName;
+  if (userEmail) document.getElementById('sign_email').value = userEmail;
+  document.getElementById('pane-open').classList.add('hidden');
+  document.getElementById('pane-sign').classList.remove('hidden');
+}
+
+function backToList() {
+  document.getElementById('pane-sign').classList.add('hidden');
+  document.getElementById('pane-open').classList.remove('hidden');
+}
+
+async function submitSignature() {
+  const name    = document.getElementById('sign_name').value.trim();
+  const email   = document.getElementById('sign_email').value.trim();
+  const role    = document.getElementById('sign_role').value;
+  const message = document.getElementById('sign_message').value.trim();
+  if (!name || !email) { alert('Please fill in your name and email.'); return; }
+  try {
+    const res = await fetch(`/api/suggestions/${activeSuggestionId}/sign`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ full_name: name, email, role, message })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      backToList();
+      showPetitionToast(data.message);
+      document.getElementById('sign_message').value = '';
+      await fetchSuggestions();
+      renderSuggestionModalOpenList();
+      renderPetitionProgress();
+    } else { alert(data.message); }
+  } catch (err) { alert('Network error. Please try again.'); }
+}
+
+/* ── SUGGEST NEW CAMPAIGN form ── */
 document.getElementById('suggestionForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const payload = {
-    full_name: document.getElementById('sug_name').value.trim(),
-    email: document.getElementById('sug_email').value.trim(),
-    title: document.getElementById('sug_title').value.trim(),
-    description: document.getElementById('sug_desc').value.trim(),
-    category: document.getElementById('sug_category').value,
+    full_name:     document.getElementById('sug_name').value.trim(),
+    email:         document.getElementById('sug_email').value.trim(),
+    title:         document.getElementById('sug_title').value.trim(),
+    description:   document.getElementById('sug_desc').value.trim(),
+    category:      document.getElementById('sug_category').value,
     target_amount: parseFloat(document.getElementById('sug_target').value)
   };
   try {
-    const res = await fetch('/api/suggest-campaign', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res  = await fetch('/api/suggest-campaign', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
     const data = await res.json();
     if (res.ok) {
-      alert(data.message);
+      showPetitionToast(data.message);
       closeSuggestionModal();
       document.getElementById('suggestionForm').reset();
-    } else {
-      alert('Error: ' + data.message);
-    }
-  } catch (err) {
-    alert('Network error. Please try again.');
-  }
+      await fetchSuggestions();
+      renderPetitionProgress();
+    } else { alert('Error: ' + data.message); }
+  } catch (err) { alert('Network error. Please try again.'); }
 });
+
+/* ────────────────────────────────────────────────
+   INIT
+──────────────────────────────────────────────── */
+(async () => {
+  await fetchSuggestions();
+  renderPetitionProgress();
+})();
 </script>
 </body>
 </html>
