@@ -113,7 +113,8 @@
       </div>
   </div>
   <div class="flex items-center space-x-4">
-    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, Perpetualite</span>
+    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, {{ session.get('name', 'Perpetualite') }}</span>
+    <a href="/logout" class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-primary font-medium hover:bg-stone-200 transition-all">Sign Out</a>
     <button onclick="openModal(null)"
             class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
       Donate Now
