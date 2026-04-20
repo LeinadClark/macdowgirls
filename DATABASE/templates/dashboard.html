@@ -137,7 +137,10 @@
   <div class="flex items-center space-x-4">
     <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, {{ session.get('name', 'Perpetualite') }}</span>
     <a href="/logout" class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-primary font-medium hover:bg-stone-200 transition-all">Sign Out</a>
-    <a href="/campaigns" class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">Donate Now</a>
+    <button onclick="openModal(null)"
+            class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
+      Donate Now
+    </button>
   </div>
 </nav>
 
@@ -512,7 +515,7 @@
             </div>
             <h4 class="text-xl font-bold italic text-white mb-3" style="font-family:'Newsreader',serif;">Institutional Heritage</h4>
             <p class="text-sm text-white/60 leading-relaxed mb-5">Every contribution becomes a permanent chapter in our university's anthology of excellence.</p>
-            <a href="/heritage"
+            <a href="{{ url_for('archives') }}"
                class="inline-flex items-center gap-2 text-[#fcd400] text-xs font-bold uppercase tracking-widest hover:underline transition-all">
               Read Archive
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -727,6 +730,8 @@
   <span id="petitionToastMsg" class="font-semibold text-sm">Thank you for signing!</span>
 </div>
 
+{% include 'donation_modal.html' %}
+
 <!-- ── Footer ── -->
 <footer class="w-full py-10 px-8 mt-auto bg-white border-t border-stone-100">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
@@ -735,10 +740,10 @@
       <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold mt-1">© 2026 Institutional Heritage</p>
     </div>
     <div class="flex flex-wrap justify-center gap-8">
-      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">Privacy Policy</a>
-      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">Terms of Service</a>
-      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">University Site</a>
-      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">Contact Archives</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="{{ url_for('legal_and_support') }}#privacy">Privacy Policy</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="{{ url_for('legal_and_support') }}#terms">Terms of Service</a>
+
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="{{ url_for('legal_and_support') }}#archives">Contact Archives</a>
     </div>
   </div>
 </footer>

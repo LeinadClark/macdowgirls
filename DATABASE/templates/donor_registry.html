@@ -73,6 +73,11 @@
       background-color: #fef2f2;
       border-left-color: #570000;
     }
+
+    /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #f6f3f2; }
+  ::-webkit-scrollbar-thumb { background: #e2bfb9; border-radius: 4px; }
   </style>
 </head>
 
@@ -94,7 +99,10 @@
     <div class="flex items-center space-x-4">
     <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, {{ session.get('name', 'Perpetualite') }}</span>
       <a href="/logout" class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-maroon font-medium hover:bg-stone-200 transition-all">Sign Out</a>
-      <a href="/campaigns" class="px-6 py-2 rounded-md bg-gradient-to-br from-maroon to-primary-container text-white font-semibold shadow-md active:scale-95 transition-all hover:shadow-lg hover:shadow-maroon/20">Donate Now</a>
+      <button onclick="openModal(null)"
+              class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
+        Donate Now
+      </button>
     </div>
   </nav>
 
@@ -296,7 +304,7 @@
         </div>
         <p class="text-xs text-stone-500 italic">"Every contribution shapes our shared legacy."</p>
       </div>
-      <a href="/heritage" class="text-[11px] font-bold text-maroon hover:text-maroon-light uppercase tracking-widest flex items-center gap-1 transition-all">
+      <a href="{{ url_for('archives') }}" class="text-[11px] font-bold text-maroon hover:text-maroon-light uppercase tracking-widest flex items-center gap-1 transition-all">
         Explore Heritage Archive
         <span class="material-symbols-outlined text-sm">arrow_forward</span>
       </a>
@@ -304,18 +312,21 @@
 
   </main>
 
-  <footer class="w-full py-12 px-8 bg-white border-t border-stone-200 mt-20">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-      <div class="flex flex-col items-center md:items-start">
-        <span class="serif italic text-xl font-bold text-maroon">Helpers of God</span>
-        <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold mt-1">© 2026 Institutional Heritage</p>
-      </div>
-      <div class="flex gap-8">
-        <a href="#" class="text-[10px] font-bold text-stone-400 hover:text-maroon uppercase tracking-widest transition-colors">Privacy Policy</a>
-        <a href="#" class="text-[10px] font-bold text-stone-400 hover:text-maroon uppercase tracking-widest transition-colors">Terms of Service</a>
-      </div>
+{% include 'donation_modal.html' %}
+
+  <footer class="w-full py-10 px-8 mt-auto bg-white border-t border-stone-100">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex flex-col items-center md:items-start">
+      <span class="font-['Newsreader'] italic text-xl font-bold text-stone-900">Helpers of God</span>
+      <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold mt-1">© 2026 Institutional Heritage</p>
     </div>
-  </footer>
+    <div class="flex flex-wrap justify-center gap-8">
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="{{ url_for('legal_and_support') }}#privacy">Privacy Policy</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="{{ url_for('legal_and_support') }}#terms">Terms of Service</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="{{ url_for('legal_and_support') }}#archives">Contact Archives</a>
+    </div>
+  </div>
+</footer>
 
 <script>
   function filterTable() {

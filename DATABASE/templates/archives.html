@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UPHSD Molino Archive</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#1b1c1c",
+                    "on-secondary-fixed": "#221b00",
+                    "background": "#fcf9f8",
+                    "outline": "#8e706c",
+                    "surface-variant": "#e4e2e1",
+                    "surface-container": "#f0eded",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#eae7e7",
+                    "inverse-primary": "#ffb4a8",
+                    "tertiary": "#002d24",
+                    "tertiary-fixed-dim": "#94d3c1",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#705d00",
+                    "on-primary-fixed-variant": "#8f0f07",
+                    "on-tertiary-container": "#74b3a2",
+                    "on-secondary-container": "#6e5c00",
+                    "surface-tint": "#b22b1d",
+                    "primary-container": "#800000",
+                    "outline-variant": "#e2bfb9",
+                    "on-primary-fixed": "#410000",
+                    "secondary-fixed-dim": "#e9c400",
+                    "secondary-container": "#fcd400",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "primary-fixed": "#ffdad4",
+                    "on-tertiary-fixed-variant": "#065043",
+                    "on-primary-container": "#ff8371",
+                    "surface-container-low": "#f6f3f2",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f3f0f0",
+                    "on-background": "#1b1c1c",
+                    "surface-dim": "#dcd9d9",
+                    "surface-bright": "#fcf9f8",
+                    "secondary-fixed": "#ffe16d",
+                    "tertiary-container": "#004539",
+                    "on-tertiary-fixed": "#00201a",
+                    "tertiary-fixed": "#afefdd",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fcf9f8",
+                    "primary": "#570000",
+                    "on-surface-variant": "#5a413d",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#544600",
+                    "inverse-surface": "#303030",
+                    "surface-container-highest": "#e4e2e1",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(135deg, #570000 0%, #800000 100%);
+        }
+        .glass-header {
+            backdrop-filter: blur(20px);
+        }
+
+        /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #f6f3f2; }
+  ::-webkit-scrollbar-thumb { background: #e2bfb9; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 shadow-sm border-b border-stone-100">
+  <div class="flex items-center gap-12">
+    <a href="/dashboard" class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900">Helpers of God</a>
+    
+  </div>
+  <div class="flex items-center space-x-4">
+    
+    <button onclick="openModal(null)"
+            class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
+      Donate Now
+    </button>
+    
+  </div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 overflow-hidden">
+<div class="max-w-screen-2xl mx-auto px-8 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7">
+<span class="inline-block py-1 px-3 bg-primary-fixed text-on-primary-fixed-variant rounded text-xs font-bold tracking-widest uppercase mb-6">Established 1975</span>
+<h1 class="font-headline text-7xl md:text-8xl text-primary leading-[0.9] tracking-tight mb-8 italic">
+                            The Heritage Archive
+                        </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-xl leading-relaxed mb-10">
+                            A curated repository of institutional progress and communal altruism. We document the transformative journey of UPHSD Molino through the lens of those who believe in the enduring power of education and healthcare philanthropy.
+                        </p>
+<div class="flex gap-4">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-4 rounded-md font-bold flex items-center gap-2 hover:shadow-md transition-all">
+                                Explore the Timeline
+                                <span class="material-symbols-outlined">arrow_downward</span>
+</button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="aspect-[4/5] bg-surface-container-high rounded-tl-[4rem] rounded-br-[4rem] overflow-hidden shadow-2xl relative">
+<img alt="Institutional Heritage" class="w-full h-full object-cover grayscale mix-blend-multiply opacity-90" data-alt="stately university library hall with wooden study desks and soft lighting coming through arched windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpM9n8YCS4xBmJTbHCVf2y8ifXF-t9xQxs4j6uN1tWWIzXG9Ytzz4XpJ2P6UGq8rikwHNildOgy_9YLA9OY0PJjydS9yRibH_H3rgAx8nE4APLmRnydLZ_AcVAR_W5dU5ma2RzV7CSVF7tIK2iKziXXPfJ62JCWxejqxccXDj7jaXDoJN90hgJgsxIOBNl5Az0pcrLlzC4hbpU3uTyDrfcLip2H4WkgIVc9TVxOgxhpi7eqIZgLLJJGzJf9Q2nipOCTid1C5-NEgON"/>
+<div class="absolute inset-0 bg-primary/10"></div>
+</div>
+<div class="absolute -bottom-8 -left-8 bg-surface-container-lowest p-8 shadow-xl max-w-[240px] rounded-xl border-l-4 border-secondary">
+<p class="font-headline italic text-2xl text-primary mb-2">"Building a legacy of excellence for the next generation."</p>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">— Office of Philanthropy</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content Area: Initiatives & Sidebar -->
+<section class="max-w-screen-2xl mx-auto px-8 py-24">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+<!-- Left Column: Past Initiatives -->
+<div class="lg:col-span-8">
+<div class="mb-12">
+<h2 class="font-headline text-4xl text-primary mb-2">Past Initiatives</h2>
+<p class="text-on-surface-variant font-body">Milestones achieved through collective generosity.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-low group flex flex-col p-6 rounded-md hover:bg-surface-container-lowest transition-all duration-300">
+<div class="aspect-video rounded-tl-xl rounded-md overflow-hidden mb-6">
+<img alt="Library Restoration" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="modern university library interior with large windows and comfortable seating areas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO6CrEcL9zD_oEEQJS683BUl9mdNLOkdmB4ivm9_EuAgo4UqS7BB_VuFubmqeXSRetY1wGa-_lAF3wrNrUM8IcnX8vIjchhkFXArYz-Wd9CCkBx58CLrDop1WUiQa2nP6defJnUUvH8o9enlF9N89nPeo8-V0d7an9Lt2ykRYj0w7_5QfM-NAN4lKcL6_5ua4hYsvftjxbLyGfx9CoLMFH7BFVBefAdFRsZQ0Mq-9B3LjeCBprNEtZo9WFUwJSh3B5JLnbh2f4iqEp"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-2xl text-primary">Library Restoration 2022</h3>
+<span class="flex items-center gap-1 px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-wider rounded">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                                        Goal Reached
+                                    </span>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                                    Reimagined the university library into a digitized learning hub with 50+ high-speed workstations and expanded archival storage.
+                                </p>
+<div class="mt-auto pt-6 border-t border-surface-variant flex justify-between items-center">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant">Amount Raised</p>
+<p class="font-headline text-xl text-primary font-bold">₱4.2M</p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">
+                                        View Full Report <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low group flex flex-col p-6 rounded-md hover:bg-surface-container-lowest transition-all duration-300">
+<div class="aspect-video rounded-tl-xl rounded-md overflow-hidden mb-6">
+<img alt="Medical Mission" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="medical professionals providing checkups in a community health center with warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAF_Wx_63fgArz77AJpn0oSstuD2EC8BIyRViDLQPPHHR5QLAiOAgtChq3rC2EDRrZeMEal19EQIzsUNbs0tFT8YX_ZXUe7Ibzpo3v8aornJCoEzXG4bkCjv8JQQ2_0Y5rnwhH1pnuPsqVTyCsjfHmr3BtL7P0cjoMDUKB2vVFAArNHo1dYgR-k05bKGmtHmSR3ZMky9tqPc00RyuUwvRwei5cugC1ifNAnAHHcKlZwRNlBz5LLWGAooW4tHyP15kHMK6yrtZNQFblP"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-2xl text-primary">Medical Mission 2023</h3>
+<span class="flex items-center gap-1 px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-wider rounded">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                                        Goal Reached
+                                    </span>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                                    Provided free specialized healthcare services and medication to over 1,200 residents in the local Molino community.
+                                </p>
+<div class="mt-auto pt-6 border-t border-surface-variant flex justify-between items-center">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant">Amount Raised</p>
+<p class="font-headline text-xl text-primary font-bold">₱2.8M</p>
+</div>
+<a class="text-primary font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all" href="#">
+                                        View Full Report <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Legacy Milestones Sidebar -->
+<div class="lg:col-span-4">
+<div class="bg-surface-container-high p-8 rounded-md sticky top-28">
+<h2 class="font-headline text-3xl text-primary mb-8 pb-4 border-b border-outline-variant/30">Legacy Milestones</h2>
+<div class="space-y-12 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant/50">
+<!-- Milestone 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-2 w-6 h-6 rounded-full bg-primary border-4 border-surface-container-high z-10"></div>
+<span class="text-xs font-bold text-primary tracking-widest uppercase mb-1 block">2021 — Founders Circle</span>
+<h4 class="font-headline text-xl text-on-surface mb-2 leading-tight">University Endowment Growth</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">The endowment fund surpassed ₱50M, ensuring sustainable scholarships for underprivileged nursing students.</p>
+</div>
+<!-- Milestone 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-2 w-6 h-6 rounded-full bg-secondary z-10 border-4 border-surface-container-high"></div>
+<span class="text-xs font-bold text-primary tracking-widest uppercase mb-1 block">2018 — Research Grant</span>
+<h4 class="font-headline text-xl text-on-surface mb-2 leading-tight">Innovation Hub Inauguration</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Launch of the Multi-disciplinary Research Wing funded entirely by alumni contributions.</p>
+</div>
+<!-- Milestone 3 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-2 w-6 h-6 rounded-full bg-outline-variant z-10 border-4 border-surface-container-high"></div>
+<span class="text-xs font-bold text-primary tracking-widest uppercase mb-1 block">2015 — Community Outreach</span>
+<h4 class="font-headline text-xl text-on-surface mb-2 leading-tight">Foundation Expansion</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Establishment of the UPHSD Charity Foundation focused on basic education access in Molino.</p>
+</div>
+</div>
+<div class="mt-12 p-6 bg-surface-container-lowest rounded shadow-sm border-l-4 border-primary">
+<p class="font-headline text-lg italic text-on-surface">"The best way to predict the future is to create it."</p>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase mt-4 tracking-tighter">Academic Vision 2030</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Success Stories Section -->
+<section class="bg-surface-container-low py-24">
+<div class="max-w-screen-2xl mx-auto px-8">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div class="max-w-2xl">
+<h2 class="font-headline text-5xl text-primary mb-4 italic">Success Stories</h2>
+<p class="text-on-surface-variant font-body text-lg">Direct impact accounts from the individuals whose lives were changed through our philanthropic programs.</p>
+</div>
+<button class="text-primary font-bold underline underline-offset-8 hover:opacity-80 transition-opacity">Read All Articles</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-0 bg-surface-container-lowest shadow-2xl overflow-hidden rounded-xl">
+<!-- Feature Story 1 -->
+<div class="relative group p-10 border-r border-surface-variant/50">
+<div class="aspect-square rounded-full overflow-hidden mb-8 w-32 border-4 border-surface-container-high">
+<img alt="Student Beneficiary" class="w-full h-full object-cover" data-alt="portrait of a confident smiling female college student on campus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnPVreIfc8y7w4igOMCMVa-7FZ6GDQsAlO1mMKE7gAzQAxuWkUVbWofzfc91aPuWwKPvZnsMdrIV-nkGDEMlkOlsAkKm83ZkHDQ333gpw544Z-7lT0aLMeyQ4w59Sjxu9lgVN-q2UmZlfT6vUMdt3o4kgUUmgxsunWLi_nAgarTiMUwecQD-Y812rltR3TMxV3xKyCsQd-aX_0ykAg---bC1vRx_RFzlpfJWSCQQ3PsinlIAGF-bkC9CqaV34GsKRnazuQIipwwZCj"/>
+</div>
+<h3 class="font-headline text-2xl text-primary mb-4">Empowering Future Nurses</h3>
+<p class="text-on-surface-variant text-sm leading-loose mb-8">
+                            "The scholarship didn't just pay my tuition; it gave me the peace of mind to focus on my clinical rotations and truly master my craft."
+                        </p>
+<span class="text-xs font-bold text-on-surface-variant tracking-widest uppercase">— Maria Santos, Class of '23</span>
+</div>
+<!-- Feature Story 2 -->
+<div class="relative group p-10 border-r border-surface-variant/50">
+<div class="aspect-square rounded-full overflow-hidden mb-8 w-32 border-4 border-surface-container-high">
+<img alt="Community Beneficiary" class="w-full h-full object-cover" data-alt="teacher helping young school children in a brightly lit modern classroom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhSV8KTMg3w-6Nict3c4SpA4PmEkFZ1dvOVlY9coVNq8_KaV3olpVtxqSDwAYZ8yTDETHVUtieCa64c1n9B2dURkz0EnJGg_qPsjynXkkRYOb7OAtF1GBmiUlYRANmyg0bQe2Qnj2QK3Y4ujr1dOL621gTSvLDdnRc65fhhXhMJMDcQA8yE4sWcA3qzn18eBTtEMTS4q3clAT7eN2FWQ82uJv5v6s-iFWEOfug1fXJ_9iwdNPDsSzP4lNURaBqGds2GqoMcy2sfAtw"/>
+</div>
+<h3 class="font-headline text-2xl text-primary mb-4">A Brighter Molino</h3>
+<p class="text-on-surface-variant text-sm leading-loose mb-8">
+                            How the foundation's local school outreach program decreased elementary dropout rates by 40% in just two academic cycles.
+                        </p>
+<span class="text-xs font-bold text-on-surface-variant tracking-widest uppercase">— Principal L. Reyes</span>
+</div>
+<!-- Feature Story 3 -->
+<div class="relative group p-10">
+<div class="aspect-square rounded-full overflow-hidden mb-8 w-32 border-4 border-surface-container-high">
+<img alt="Research Beneficiary" class="w-full h-full object-cover" data-alt="hands of a researcher working with medical equipment in a high-tech lab" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMOcsiwivLZ0T4OqYw-d5Pzfcw-Pk0KVl8V3npzMayd4ynjt95udpUG4mttdjUURYGiQDkl6oGmr3YW4z0FXNsEU8MqWatoFGH3W1q6clkXbhET8gbxTf6rFQB3aEmstwWJCllOJbBHwyefesrCWLXYqSIFSB_AaQZ5IkHraeviG8BeTRsTC0GZGaQdq9Qzm6qz-HhZx5pbviqP5Cj8DYDfdrjwLnveg-DDU78t2zxAlZ6_k2uZ5N3w3Kvrmalp8g7jEW6IF9WfmxF"/>
+</div>
+<h3 class="font-headline text-2xl text-primary mb-4">Innovation for All</h3>
+<p class="text-on-surface-variant text-sm leading-loose mb-8">
+                            A breakthrough in sustainable water filtration developed right here at Molino's newly funded research laboratory.
+                        </p>
+<span class="text-xs font-bold text-on-surface-variant tracking-widest uppercase">— Dr. Arnel Gomez</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-24 max-w-4xl mx-auto px-8 text-center">
+<h2 class="font-headline text-4xl text-primary mb-6">Write the Next Chapter</h2>
+<p class="text-on-surface-variant font-body mb-10 text-lg">Your support creates ripples that last generations. Join us in building the heritage of tomorrow.</p>
+<div class="flex flex-wrap justify-center gap-6">
+<button class="editorial-gradient text-white px-10 py-4 rounded-md font-bold text-lg shadow-xl hover:scale-105 transition-transform">Support an Initiative</button>
+<button class="border border-outline text-primary px-10 py-4 rounded-md font-bold text-lg hover:bg-surface-container-high transition-colors">Contact Archivist</button>
+</div>
+</section>
+
+{% include 'donation_modal.html' %}
+</main>
+<!-- Footer -->
+<footer class="bg-stone-100 dark:bg-stone-900 w-full py-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 space-y-6 md:space-y-0 max-w-screen-2xl mx-auto">
+<div class="font-['Newsreader'] text-xl font-semibold text-stone-800 dark:text-stone-200">
+                UPHSD Molino Archive
+            </div>
+
+<div class="text-stone-500 dark:text-stone-400 font-['Public_Sans'] text-sm tracking-wide opacity-80">
+                © 2024 University Philanthropic Anthology. All Rights Reserved.
+            </div>
+</div>
+</footer>
+</body></html>

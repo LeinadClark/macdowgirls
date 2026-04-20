@@ -182,6 +182,14 @@ def admin():
                            updates=updates,
                            milestones=milestones)
 
+@app.route('/archives')
+def archives():
+    return render_template('archives.html')
+
+@app.route('/legal')
+def legal_and_support():
+    return render_template('legal_and_support.html')
+
 @app.route('/logout')
 def logout():
     session.clear()

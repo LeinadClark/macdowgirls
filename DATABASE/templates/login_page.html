@@ -85,6 +85,11 @@
   .institutional-gradient { background: linear-gradient(135deg, #570000 0%, #800000 100%); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #f6f3f2; }
+  ::-webkit-scrollbar-thumb { background: #e2bfb9; border-radius: 4px; }
 </style>
 </head>
 <body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
@@ -312,12 +317,11 @@
 
 <!-- Footer -->
 <footer class="bg-stone-100 flex flex-col md:flex-row justify-between items-center px-12 py-8 w-full border-t border-stone-200/20 mt-auto">
-  <div class="font-serif italic text-lg text-stone-800 mb-4 md:mb-0">Helpers of God</div>
+  <a href="/dashboard" class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-red-900">Helpers of God</a>
   <div class="flex flex-wrap justify-center gap-6">
-    <a class="font-sans text-sm tracking-wide text-stone-500 hover:text-stone-800 transition-opacity" href="#">Student Attribution</a>
-    <a class="font-sans text-sm tracking-wide text-stone-500 hover:text-stone-800 transition-opacity" href="#">Institutional Policy</a>
-    <a class="font-sans text-sm tracking-wide text-stone-500 hover:text-stone-800 transition-opacity" href="#">Privacy</a>
-    <a class="font-sans text-sm tracking-wide text-stone-500 hover:text-stone-800 transition-opacity" href="#">Terms</a>
+      <a href="{{ url_for('legal_and_support') }}#privacy" class="nav-link text-stone-600 font-medium hover:text-red-800 transition-colors">Privacy Policy</a>
+      <a href="{{ url_for('legal_and_support') }}#terms" class="nav-link text-stone-600 font-medium hover:text-red-800 transition-colors">Terms of Service</a>
+      <a href="{{ url_for('legal_and_support') }}#archives" class="nav-link text-stone-600 font-medium hover:text-red-800 transition-colors">Contact Archives</a>
   </div>
   <div class="mt-6 md:mt-0 font-sans text-sm tracking-wide text-stone-500 text-center md:text-right max-w-xs">
     © 2024 University Anthology. Crafted by University Students for the Future of Research.
