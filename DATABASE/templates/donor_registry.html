@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Donor Registry | UPHSD Molino</title>
+  <title>Donor Registry</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:wght@100..900&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700" rel="stylesheet"/>
@@ -14,61 +14,119 @@
       theme: {
         extend: {
           colors: {
-            primary: "#8f0f07",
-            surface: "#fcf9f8",
+            "inverse-primary": "#ffb4a8",
+            "outline-variant": "#e2bfb9",
+            "primary-container": "#800000",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#ffdad4",
+            "surface-dim": "#dcd9d9",
+            "primary": "#570000",
+            "surface-container": "#f0eded",
+            "on-surface-variant": "#5a413d",
+            "surface-bright": "#fcf9f8",
+            "on-surface": "#1b1c1c",
+            "surface-container-high": "#eae7e7",
+            "on-background": "#1b1c1c",
+            "surface-container-low": "#f6f3f2",
+            "surface-tint": "#b22b1d",
+            "surface": "#fcf9f8",
+            // Adding richer maroon variations
+            "maroon": "#570000",
+            "maroon-light": "#7a1a1a",
+            "maroon-dark": "#3d0000",
+            "maroon-soft": "#fef2f2",
           }
         }
       }
     }
   </script>
   <style>
-    body { font-family: 'Public Sans', sans-serif; }
+    body { font-family: 'Public Sans', sans-serif; background-color: #faf8f7; }
     h1, h2, .serif { font-family: 'Newsreader', serif; }
+    
+    /* Custom maroon hover effects */
+    .hover\:maroon-glow:hover {
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 20px -6px rgba(87, 0, 0, 0.2);
+    }
+    .maroon-gradient-bg {
+      background: linear-gradient(135deg, #570000 0%, #800000 100%);
+    }
+    .stat-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -8px rgba(87, 0, 0, 0.15);
+    }
+    .filter-input:focus {
+      border-color: #570000;
+      ring-color: #570000;
+      box-shadow: 0 0 0 2px rgba(87, 0, 0, 0.1);
+    }
+    /* Subtle maroon border for table rows on hover */
+    .registry-row {
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+    .registry-row:hover {
+      background-color: #fef2f2;
+      border-left-color: #570000;
+    }
   </style>
 </head>
 
-<body class="bg-stone-50 text-stone-900 min-h-screen flex flex-col">
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
 
-  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <a href="/dashboard" class="serif italic text-2xl font-bold text-primary">UPHSD Molino</a>
-      </div>
-      <div class="flex items-center gap-8">
-        <a href="/dashboard" class="text-xs font-bold uppercase tracking-widest text-stone-500 hover:text-primary transition-colors">Dashboard</a>
-        <a href="/campaigns" class="text-xs font-bold uppercase tracking-widest text-stone-500 hover:text-primary transition-colors">Campaigns</a>
-        <a href="/donor-registry" class="text-xs font-bold uppercase tracking-widest text-primary border-b-2 border-primary pb-1">Donor Registry</a>
+  <!-- Navigation with maroon accents -->
+  <nav class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 shadow-sm border-b border-stone-100">
+    <div class="flex items-center gap-12">
+      <a href="/dashboard" class="text-2xl font-bold font-['Newsreader'] italic tracking-tight text-maroon">UPHSD Molino</a>
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="/dashboard" class="text-stone-600 font-medium hover:text-maroon transition-colors duration-300">Dashboard</a>
+        <a href="/campaigns" class="text-stone-600 font-medium hover:text-maroon transition-colors duration-300">Campaigns</a>
+        <a href="{{ url_for('donor_registry') }}" class="text-maroon border-b-2 border-maroon pb-1 font-semibold transition-colors duration-300">Donor Registry</a>
         {% if role == 'admin' %}
-        <a href="/admin" class="text-xs font-bold uppercase tracking-widest text-stone-500 hover:text-primary transition-colors">Admin</a>
+        <a href="/admin" class="text-stone-600 font-medium hover:text-maroon transition-colors duration-300">Admin</a>
         {% endif %}
-        <a href="/logout" class="text-xs font-bold uppercase tracking-widest text-stone-400 hover:text-stone-900">Sign Out</a>
       </div>
+    </div>
+    <div class="flex items-center space-x-4">
+    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, {{ session.get('name', 'Perpetualite') }}</span>
+      <a href="/logout" class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-maroon font-medium hover:bg-stone-200 transition-all">Sign Out</a>
+      <a href="/campaigns" class="px-6 py-2 rounded-md bg-gradient-to-br from-maroon to-primary-container text-white font-semibold shadow-md active:scale-95 transition-all hover:shadow-lg hover:shadow-maroon/20">Donate Now</a>
     </div>
   </nav>
 
-  <main class="flex-grow w-full max-w-7xl mx-auto px-6 py-12">
+  <main class="flex-grow w-full max-w-7xl mx-auto px-8 pt-32 pb-16">
     
-    <div class="mb-10">
-      <p class="text-xs uppercase tracking-widest text-stone-400 font-bold mb-2">UPHSD Molino · Institutional Registry</p>
+    <!-- Hero section with maroon decorative elements -->
+    <div class="mb-10 relative">
+      <div class="absolute left-0 top-0 w-24 h-24 bg-maroon/5 rounded-full blur-2xl -z-0"></div>
+      <div class="absolute right-12 bottom-0 w-32 h-32 bg-maroon/3 rounded-full blur-2xl -z-0"></div>
+      <p class="text-xs uppercase tracking-widest text-stone-400 font-bold mb-2 flex items-center gap-2">
+        <span class="w-6 h-px bg-maroon/40 inline-block"></span>
+        UPHSD Molino · Institutional Registry
+      </p>
       <h1 class="text-5xl font-bold text-stone-900 mb-3">Donor Registry</h1>
       <p class="text-stone-500 text-lg serif italic">A complete record of all contributions across every UPHSD Molino initiative.</p>
     </div>
 
-    <!-- Search & Filter Bar -->
+    <!-- Search & Filter Bar with maroon focus rings -->
     <div class="flex flex-wrap gap-3 items-center mb-8">
       <div class="relative flex-1 min-w-[200px]">
         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 text-base">search</span>
         <input type="text" id="searchInput" placeholder="Search by name or initiative…"
-               class="w-full pl-9 pr-4 py-2.5 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-primary text-stone-700"/>
+               class="w-full pl-9 pr-4 py-2.5 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-maroon focus:ring-1 focus:ring-maroon/30 text-stone-700 transition-all filter-input"/>
       </div>
-      <select id="categoryFilter" class="border border-stone-200 rounded-xl px-4 py-2.5 text-sm bg-white text-stone-700 focus:outline-none focus:border-primary">
+      <select id="categoryFilter" class="border border-stone-200 rounded-xl px-4 py-2.5 text-sm bg-white text-stone-700 focus:outline-none focus:border-maroon focus:ring-1 focus:ring-maroon/30 transition-all filter-input">
         <option value="all">All Categories</option>
         <option value="research">Research</option>
         <option value="outreach">Outreach</option>
         <option value="scholarship">Scholarship</option>
         <option value="conservation">Conservation</option>
       </select>
-      <select id="statusFilter" class="border border-stone-200 rounded-xl px-4 py-2.5 text-sm bg-white text-stone-700 focus:outline-none focus:border-primary">
+      <select id="statusFilter" class="border border-stone-200 rounded-xl px-4 py-2.5 text-sm bg-white text-stone-700 focus:outline-none focus:border-maroon focus:ring-1 focus:ring-maroon/30 transition-all filter-input">
         <option value="all">All Statuses</option>
         <option value="success">Verified</option>
         <option value="pending">Pending</option>
@@ -76,32 +134,45 @@
       </select>
     </div>
 
-    <!-- Stats Row -->
+    <!-- Stats Row with maroon accents and card hover -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Total Donations</span>
+      <div class="stat-card bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-maroon/20">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-maroon text-sm">receipt_long</span>
+          Total Donations
+        </span>
         <p class="text-3xl font-bold mt-1 text-stone-900">{{ donations|length }}</p>
       </div>
-      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Total Contributed</span>
-        <p class="text-3xl font-bold mt-1 text-primary">
+      <div class="stat-card bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-maroon/20">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-maroon text-sm">payments</span>
+          Total Contributed
+        </span>
+        <p class="text-3xl font-bold mt-1 text-maroon">
           ₱{{ "{:,.2f}".format(donations | sum(attribute='0.amount')) if donations else '0.00' }}
         </p>
       </div>
-      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Initiatives Supported</span>
+      <div class="stat-card bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-maroon/20">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-maroon text-sm">diversity_3</span>
+          Initiatives Supported
+        </span>
         <p class="text-3xl font-bold mt-1 text-stone-700">
           {{ donations | map(attribute='2.initiative_id') | unique | list | length if donations else 0 }}
         </p>
       </div>
-      <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm">
-        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400">Anonymous Donors</span>
+      <div class="stat-card bg-white p-6 rounded-2xl border border-stone-200 shadow-sm hover:border-maroon/20">
+        <span class="text-[10px] font-bold uppercase tracking-widest text-stone-400 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-maroon text-sm">shield_person</span>
+          Anonymous Donors
+        </span>
         <p class="text-3xl font-bold mt-1 text-stone-500">
           {{ donations | selectattr('0.anonymous', 'equalto', true) | list | length if donations else 0 }}
         </p>
       </div>
     </div>
 
+    <!-- Table Container with maroon top border -->
     <div class="bg-white border border-stone-200 rounded-3xl shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
@@ -119,7 +190,7 @@
           <tbody class="divide-y divide-stone-100">
             {% for donation, user, initiative in donations %}
             {% set is_anon = donation.anonymous if donation.anonymous is defined else false %}
-            <tr class="hover:bg-stone-50/50 transition-colors group registry-row"
+            <tr class="registry-row transition-colors group"
                 data-name="{{ 'anonymous' if is_anon else user.full_name | lower }}"
                 data-initiative="{{ initiative.title | lower }}"
                 data-category="{{ initiative.category }}"
@@ -135,7 +206,7 @@
                     <span class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Donor</span>
                   </div>
                   {% else %}
-                  <div class="w-11 h-11 rounded-full bg-stone-100 flex items-center justify-center text-stone-600 font-bold text-xs border border-stone-200">
+                  <div class="w-11 h-11 rounded-full bg-maroon-soft flex items-center justify-center text-maroon font-bold text-xs border border-maroon/20">
                     {{ user.full_name[:2].upper() }}
                   </div>
                   <div>
@@ -144,7 +215,7 @@
                   </div>
                   {% endif %}
                 </div>
-              </td>
+               </td>
 
               <td class="px-6 py-6">
                 <span class="px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-tighter
@@ -154,25 +225,25 @@
                   {% else %}bg-green-100 text-green-700{% endif %}">
                   {{ initiative.category }}
                 </span>
-              </td>
+               </td>
 
               <td class="px-6 py-6">
                 <span class="text-sm text-stone-700 font-medium">{{ initiative.title }}</span>
-              </td>
+               </td>
 
               <td class="px-6 py-6">
-                <span class="text-sm font-bold text-stone-900">₱{{ "{:,.2f}".format(donation.amount) }}</span>
-              </td>
+                <span class="text-sm font-bold text-maroon">₱{{ "{:,.2f}".format(donation.amount) }}</span>
+               </td>
 
               <td class="px-6 py-6">
                 <span class="text-xs text-stone-500 font-medium">
                   {{ donation.payment_method if donation.payment_method is defined else 'GCash' }}
                 </span>
-              </td>
+               </td>
 
               <td class="px-6 py-6 text-stone-400 text-xs font-medium">
                 {{ donation.created_at.strftime('%b %d, %Y') }}
-              </td>
+               </td>
 
               <td class="px-8 py-6 text-right">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full 
@@ -183,19 +254,19 @@
                   <span class="w-1.5 h-1.5 rounded-full {% if donation.status == 'success' %}bg-green-600{% elif donation.status == 'pending' %}bg-amber-600{% else %}bg-red-600{% endif %}"></span>
                   {% if donation.status == 'success' %}Verified{% elif donation.status == 'pending' %}Pending{% else %}Failed{% endif %}
                 </span>
-              </td>
-            </tr>
+               </td>
+             </tr>
             {% endfor %}
 
             {% if not donations %}
-            <tr>
+             <tr>
               <td colspan="7" class="px-8 py-24 text-center">
                 <div class="flex flex-col items-center gap-2">
                   <span class="material-symbols-outlined text-4xl text-stone-200">database_off</span>
                   <p class="text-stone-400 italic text-sm font-medium">No records found in the institutional registry.</p>
                 </div>
-              </td>
-            </tr>
+               </td>
+             </tr>
             {% endif %}
             <!-- JS filter empty state -->
             <tr id="noFilterResults" class="hidden">
@@ -204,17 +275,31 @@
                   <span class="material-symbols-outlined text-4xl text-stone-200">search_off</span>
                   <p class="text-stone-400 italic text-sm font-medium">No donations match your search or filters.</p>
                 </div>
-              </td>
-            </tr>
+               </td>
+             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Note about anonymity -->
-    <div class="mt-6 flex items-center gap-2 text-xs text-stone-400">
-      <span class="material-symbols-outlined text-sm">info</span>
+    <!-- Note about anonymity with maroon accent -->
+    <div class="mt-6 flex items-center gap-2 text-xs text-stone-400 bg-maroon-soft/30 px-4 py-3 rounded-xl border border-maroon/10">
+      <span class="material-symbols-outlined text-sm text-maroon">info</span>
       <span>Donors who chose to remain anonymous are listed without personal details in accordance with their preference.</span>
+    </div>
+
+    <!-- Heritage quote block with maroon -->
+    <div class="mt-10 pt-6 border-t border-maroon/10 flex justify-between items-center flex-wrap gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-maroon/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-maroon text-sm">auto_stories</span>
+        </div>
+        <p class="text-xs text-stone-500 italic">"Every contribution shapes our shared legacy."</p>
+      </div>
+      <a href="/heritage" class="text-[11px] font-bold text-maroon hover:text-maroon-light uppercase tracking-widest flex items-center gap-1 transition-all">
+        Explore Heritage Archive
+        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
     </div>
 
   </main>
@@ -222,12 +307,12 @@
   <footer class="w-full py-12 px-8 bg-white border-t border-stone-200 mt-20">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
       <div class="flex flex-col items-center md:items-start">
-        <span class="serif italic text-xl font-bold text-stone-900">UPHSD Molino</span>
+        <span class="serif italic text-xl font-bold text-maroon">UPHSD Molino</span>
         <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold mt-1">© 2026 Institutional Heritage</p>
       </div>
       <div class="flex gap-8">
-        <a href="#" class="text-[10px] font-bold text-stone-400 hover:text-primary uppercase tracking-widest">Privacy Policy</a>
-        <a href="#" class="text-[10px] font-bold text-stone-400 hover:text-primary uppercase tracking-widest">Terms of Service</a>
+        <a href="#" class="text-[10px] font-bold text-stone-400 hover:text-maroon uppercase tracking-widest transition-colors">Privacy Policy</a>
+        <a href="#" class="text-[10px] font-bold text-stone-400 hover:text-maroon uppercase tracking-widest transition-colors">Terms of Service</a>
       </div>
     </div>
   </footer>
@@ -255,12 +340,37 @@
       if (show) visible++;
     });
 
-    document.getElementById('noFilterResults').classList.toggle('hidden', visible > 0);
+    const noResultsRow = document.getElementById('noFilterResults');
+    if (noResultsRow) {
+      noResultsRow.classList.toggle('hidden', visible > 0);
+    }
   }
 
-  document.getElementById('searchInput').addEventListener('input', filterTable);
-  document.getElementById('categoryFilter').addEventListener('change', filterTable);
-  document.getElementById('statusFilter').addEventListener('change', filterTable);
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const statusFilter = document.getElementById('statusFilter');
+  
+  if (searchInput) searchInput.addEventListener('input', filterTable);
+  if (categoryFilter) categoryFilter.addEventListener('change', filterTable);
+  if (statusFilter) statusFilter.addEventListener('change', filterTable);
+  
+  // Optional: Add a subtle maroon highlight to the active filter
+  const addFilterHighlight = () => {
+    const selects = document.querySelectorAll('select.filter-input');
+    selects.forEach(select => {
+      if (select.value !== 'all') {
+        select.classList.add('border-maroon', 'bg-maroon-soft');
+      } else {
+        select.classList.remove('border-maroon', 'bg-maroon-soft');
+      }
+    });
+  };
+  
+  if (categoryFilter) categoryFilter.addEventListener('change', addFilterHighlight);
+  if (statusFilter) statusFilter.addEventListener('change', addFilterHighlight);
+  
+  // Initialize
+  addFilterHighlight();
 </script>
 </body>
 </html>

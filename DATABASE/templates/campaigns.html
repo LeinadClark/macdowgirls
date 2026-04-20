@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Campaigns | Kumpas Kalye</title>
+  <title>Campaigns</title>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:wght@100..900&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -113,7 +113,8 @@
       </div>
   </div>
   <div class="flex items-center space-x-4">
-    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, Perpetualite</span>
+    <span class="hidden lg:block text-sm text-on-surface-variant font-medium">Hello, {{ session.get('name', 'Perpetualite') }}</span>
+    <a href="/logout" class="hidden lg:block px-6 py-2 rounded-md bg-stone-100 text-primary font-medium hover:bg-stone-200 transition-all">Sign Out</a>
     <button onclick="openModal(null)"
             class="px-6 py-2 rounded-md bg-gradient-to-br from-primary to-primary-container text-on-primary font-semibold shadow-md active:scale-95 transition-all">
       Donate Now
@@ -696,5 +697,9 @@ document.querySelectorAll(".preset-btn").forEach(btn => {
 loadInitiatives();
 </script>
 </body>
+<<<<<<< HEAD
 </html>
 
+=======
+</html>
+>>>>>>> 22b228978e78e5335d492d64451f9d06bcf694db

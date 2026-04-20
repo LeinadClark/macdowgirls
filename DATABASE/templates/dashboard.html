@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Dashboard | Kumpas Kalye</title>
+<title>Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Public+Sans:wght@100..900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -45,34 +45,78 @@
 </script>
 <style>
   .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-  .editorial-shadow { box-shadow: 0 32px 32px -4px rgba(27, 28, 28, 0.06); }
-  body { font-family: 'Public Sans', sans-serif; background-color: #fcf9f8; color: #1b1c1c; }
+  .editorial-shadow { box-shadow: 0 8px 32px -4px rgba(87,0,0,0.10), 0 1.5px 4px -1px rgba(27,28,28,0.06); }
+  .card-shadow { box-shadow: 0 2px 16px -2px rgba(27,28,28,0.07); }
+  body { font-family: 'Public Sans', sans-serif; background-color: #faf8f7; color: #1b1c1c; }
   h1, h2, h3, .newsreader { font-family: 'Newsreader', serif; }
 
   #petitionModal, #suggestionModal { display: none; }
   #petitionModal.open, #suggestionModal.open { display: flex; }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .fade-up { animation: fadeUp 0.5s ease both; }
+  .fade-up { animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) both; }
 
   #petitionToast { transition: opacity 0.4s ease, transform 0.4s ease; }
   #petitionToast.hidden  { opacity: 0; transform: translateY(20px); pointer-events: none; }
   #petitionToast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
+  /* Milestone connector line */
   .milestone-line { position: relative; }
   .milestone-line::before {
     content: '';
     position: absolute;
     left: 15px;
-    top: 28px;
+    top: 32px;
     bottom: -12px;
     width: 2px;
-    background: #e2bfb9;
+    background: linear-gradient(to bottom, #e2bfb9, transparent);
   }
   .milestone-line:last-child::before { display: none; }
+
+  /* Progress bar shimmer */
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+  .progress-shimmer {
+    background: linear-gradient(90deg, #570000 0%, #b22b1d 50%, #570000 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2.5s infinite linear;
+  }
+
+  /* Hero texture */
+  .hero-pattern {
+    background-image: radial-gradient(circle at 20% 50%, rgba(255,180,168,0.12) 0%, transparent 60%),
+                      radial-gradient(circle at 80% 20%, rgba(255,200,180,0.08) 0%, transparent 50%);
+  }
+
+  /* Stat card hover lift */
+  .stat-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px -4px rgba(87,0,0,0.14); }
+
+  /* Campaign card hover */
+  .campaign-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .campaign-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px -4px rgba(87,0,0,0.12); }
+
+  /* Update item left accent */
+  .update-item { border-left: 3px solid transparent; transition: border-color 0.2s ease, background 0.2s ease; }
+  .update-item:hover { border-left-color: #570000; background: #fdf5f4; }
+
+  /* Sidebar section headers */
+  .sidebar-section-title {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #570000;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #f6f3f2; }
+  ::-webkit-scrollbar-thumb { background: #e2bfb9; border-radius: 4px; }
 </style>
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col">
@@ -97,252 +141,387 @@
   </div>
 </nav>
 
-<main class="pt-28 pb-16 px-8 max-w-7xl mx-auto w-full">
+<main class="pt-20 pb-20 w-full">
 
-  <!-- ── Header ── -->
-  <header class="mb-10 fade-up">
-    <p class="text-xs uppercase tracking-widest text-stone-400 font-bold mb-2">Kumpas Kalye · Community Platform</p>
-    <h1 class="text-5xl font-bold text-primary italic tracking-tight mb-2">Community Dashboard</h1>
-    <p class="text-lg text-on-surface-variant font-body">Track progress, milestones, and updates across all active initiatives.</p>
-  </header>
-
-  <!-- ── Stats Bento Grid ── -->
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-10">
-    {% set total_raised = initiatives | map(attribute='current_amount') | sum %}
-    {% set total_goal   = initiatives | map(attribute='target_amount') | sum %}
-    {% set overall_pct  = ((total_raised / total_goal * 100) | round(1)) if total_goal > 0 else 0 %}
-
-    <div class="bg-surface-container-low p-7 rounded-xl editorial-shadow relative overflow-hidden group fade-up" style="animation-delay:60ms">
-      <div class="absolute top-0 right-0 w-28 h-28 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-110"></div>
-      <p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-2">Total Raised</p>
-      <h3 class="text-3xl font-headline font-bold text-primary">₱{{ "{:,.0f}".format(total_raised) }}</h3>
-      <div class="mt-3 flex items-center text-xs text-stone-500">
-        <span class="material-symbols-outlined text-sm mr-1 text-green-600">trending_up</span>
-        <span>{{ overall_pct }}% of total goal</span>
-      </div>
+  <!-- ── Hero Banner ── -->
+  <div class="hero-pattern bg-gradient-to-br from-[#570000] via-[#6e0a0a] to-[#3d0000] relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none">
+      <!-- Decorative circles -->
+      <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/5"></div>
+      <div class="absolute top-8 right-32 w-48 h-48 rounded-full bg-white/3"></div>
+      <div class="absolute -bottom-16 left-1/3 w-64 h-64 rounded-full bg-white/4"></div>
+      <span class="material-symbols-outlined absolute right-12 bottom-0 text-white/10 select-none" style="font-size:220px;line-height:1;">volunteer_activism</span>
     </div>
-
-    <div class="bg-surface-container-low p-7 rounded-xl editorial-shadow relative overflow-hidden group fade-up" style="animation-delay:120ms">
-      <p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-2">Active Initiatives</p>
-      <h3 class="text-3xl font-headline font-bold text-primary">{{ initiatives | length }}</h3>
-      <p class="mt-3 text-xs text-on-surface-variant italic">Community-powered projects</p>
-    </div>
-
-    <div class="bg-surface-container-low p-7 rounded-xl editorial-shadow relative overflow-hidden group fade-up" style="animation-delay:180ms">
-      <p class="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-2">Target Goal</p>
-      <h3 class="text-3xl font-headline font-bold text-primary">₱{{ "{:,.0f}".format(total_goal) }}</h3>
-      <p class="mt-3 text-xs text-on-surface-variant italic">Across all campaigns</p>
-    </div>
-
-    <div class="bg-primary text-white p-7 rounded-xl editorial-shadow relative overflow-hidden group fade-up" style="animation-delay:240ms">
-      <div class="absolute -bottom-6 -right-6 opacity-10">
-        <span class="material-symbols-outlined text-[100px]">front_hand</span>
-      </div>
-      <p class="text-xs font-label uppercase tracking-widest text-white/60 mb-2">Sign the Petition</p>
-      <p class="text-sm font-body text-white/80 mb-4 leading-relaxed">Voice your support for student-led initiatives.</p>
-      <button onclick="openPetition()"
-              class="px-4 py-2 bg-secondary-container text-on-secondary-container font-bold text-xs uppercase tracking-widest rounded-lg hover:brightness-95 active:scale-95 transition-all">
-        Sign Now
-      </button>
-    </div>
-  </div>
-
-  <!-- New Card for Campaign Suggestion (appears after petition card) -->
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-10">
-    <div class="bg-primary text-white p-7 rounded-xl editorial-shadow relative overflow-hidden group fade-up" style="animation-delay:300ms">
-      <div class="absolute -bottom-6 -right-6 opacity-10">
-        <span class="material-symbols-outlined text-[100px]">lightbulb</span>
-      </div>
-      <p class="text-xs font-label uppercase tracking-widest text-white/60 mb-2">Shape the Future</p>
-      <p class="text-sm font-body text-white/80 mb-4 leading-relaxed">Suggest a new fundraising campaign for our community.</p>
-      <button onclick="openCampaignSuggestionModal()"
-              class="px-4 py-2 bg-secondary-container text-on-secondary-container font-bold text-xs uppercase tracking-widest rounded-lg hover:brightness-95 active:scale-95 transition-all">
-        Suggest Campaign
-      </button>
-    </div>
-  </div>
-
-  <!-- ── Main Grid ── -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-
-    <!-- LEFT: Campaign Progress + Updates -->
-    <div class="lg:col-span-2 space-y-10">
-      <section>
-        <div class="flex justify-between items-baseline border-b border-stone-200 pb-4 mb-6">
-          <h2 class="text-3xl font-headline font-bold text-primary italic">Active Campaigns</h2>
-          <a class="text-primary font-label text-sm uppercase tracking-widest hover:underline" href="/campaigns">View All</a>
+    <div class="relative z-10 max-w-7xl mx-auto px-8 py-14">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <div class="fade-up">
+          <p class="text-[11px] uppercase tracking-[0.2em] text-white/50 font-bold mb-3">Community Platform</p>
+          <h1 class="text-5xl md:text-6xl font-bold italic tracking-tight text-white leading-tight mb-3" style="font-family:'Newsreader',serif;">
+            Community<br/>Dashboard
+          </h1>
+          <p class="text-white/65 text-base max-w-md leading-relaxed">
+            Track progress, milestones, and updates across all active initiatives.
+          </p>
         </div>
-        <div class="space-y-4">
-          {% for init in initiatives %}
-          {% set pct = ((init.current_amount / init.target_amount * 100) | round(1)) if init.target_amount > 0 else 0 %}
-          <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex justify-between items-start mb-3">
-              <div>
-                <span class="text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full
-                  {% if init.category == 'research' %}bg-teal-100 text-teal-700
-                  {% elif init.category == 'scholarship' %}bg-yellow-100 text-yellow-700
-                  {% elif init.category == 'outreach' %}bg-red-100 text-red-700
-                  {% else %}bg-stone-100 text-stone-600{% endif %}">
-                  {{ init.category }}
-                </span>
-                <h4 class="font-['Newsreader'] font-bold text-stone-800 mt-2 text-lg leading-snug">{{ init.title }}</h4>
+        <!-- Quick stats strip -->
+        <div class="fade-up flex gap-6 md:gap-10 flex-shrink-0" style="animation-delay:100ms">
+          {% set total_raised = initiatives | map(attribute='current_amount') | sum %}
+          {% set total_goal   = initiatives | map(attribute='target_amount') | sum %}
+          {% set overall_pct  = ((total_raised / total_goal * 100) | round(1)) if total_goal > 0 else 0 %}
+          <div class="text-center">
+            <p class="text-3xl font-bold text-white" style="font-family:'Newsreader',serif;">{{ overall_pct }}%</p>
+            <p class="text-[10px] uppercase tracking-widest text-white/50 font-bold mt-1">Overall</p>
+          </div>
+          <div class="w-px bg-white/15 self-stretch"></div>
+          <div class="text-center">
+            <p class="text-3xl font-bold text-white" style="font-family:'Newsreader',serif;">{{ initiatives | length }}</p>
+            <p class="text-[10px] uppercase tracking-widest text-white/50 font-bold mt-1">Initiatives</p>
+          </div>
+          <div class="w-px bg-white/15 self-stretch"></div>
+          <div class="text-center">
+            <p class="text-2xl font-bold text-[#fcd400]" style="font-family:'Newsreader',serif;">₱{{ "{:,.0f}".format(total_raised) }}</p>
+            <p class="text-[10px] uppercase tracking-widest text-white/50 font-bold mt-1">Raised</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overall progress bar -->
+      <div class="mt-10 fade-up" style="animation-delay:180ms">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-[10px] text-white/50 uppercase tracking-widest font-bold">Overall Fundraising Progress</span>
+          <span class="text-[10px] text-white/50 uppercase tracking-widest font-bold">Goal: ₱{{ "{:,.0f}".format(total_goal) }}</span>
+        </div>
+        <div class="w-full h-2 bg-white/15 rounded-full overflow-hidden">
+          <div class="h-full rounded-full bg-[#fcd400] transition-all duration-1000" style="width:{{ overall_pct }}%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-8">
+
+    <!-- ── Action Cards Row ── -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10 mb-12 relative z-10">
+
+      <!-- Stat: Total Raised -->
+      <div class="stat-card bg-white rounded-2xl p-6 card-shadow border border-stone-100 fade-up" style="animation-delay:200ms">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-xl">payments</span>
+          </div>
+          <span class="text-[10px] uppercase tracking-widest font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">trending_up</span> {{ overall_pct }}%
+          </span>
+        </div>
+        <p class="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-1">Total Raised</p>
+        <p class="text-3xl font-bold text-primary" style="font-family:'Newsreader',serif;">₱{{ "{:,.0f}".format(total_raised) }}</p>
+        <p class="text-xs text-stone-400 mt-2">of ₱{{ "{:,.0f}".format(total_goal) }} goal</p>
+        <div class="mt-3 h-1.5 bg-stone-100 rounded-full overflow-hidden">
+          <div class="h-full rounded-full progress-shimmer" style="width:{{ overall_pct }}%"></div>
+        </div>
+      </div>
+
+      <!-- CTA: Sign Petition -->
+      <div class="stat-card bg-gradient-to-br from-[#570000] to-[#800000] rounded-2xl p-6 card-shadow relative overflow-hidden fade-up" style="animation-delay:270ms">
+        <div class="absolute -bottom-6 -right-6 opacity-10 pointer-events-none">
+          <span class="material-symbols-outlined text-[100px] text-white">front_hand</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-white text-xl">front_hand</span>
+        </div>
+        <p class="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-1">Community Voice</p>
+        <p class="text-xl font-bold text-white mb-1" style="font-family:'Newsreader',serif;">Sign the Petition</p>
+        <p class="text-xs text-white/65 mb-4 leading-relaxed">Voice your support for student-led initiatives.</p>
+        <button onclick="openPetition()"
+                class="px-4 py-2 bg-[#fcd400] text-[#3d2800] font-bold text-[10px] uppercase tracking-widest rounded-lg hover:brightness-105 active:scale-95 transition-all">
+          Sign Now →
+        </button>
+      </div>
+
+      <!-- CTA: Suggest Campaign -->
+      <div class="stat-card bg-gradient-to-br from-[#6e0a0a] to-[#4a0000] rounded-2xl p-6 card-shadow relative overflow-hidden fade-up" style="animation-delay:340ms">
+        <div class="absolute -bottom-6 -right-6 opacity-10 pointer-events-none">
+          <span class="material-symbols-outlined text-[100px] text-white">lightbulb</span>
+        </div>
+        <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-white text-xl">lightbulb</span>
+        </div>
+        <p class="text-[10px] uppercase tracking-widest text-white/60 font-bold mb-1">Shape the Future</p>
+        <p class="text-xl font-bold text-white mb-1" style="font-family:'Newsreader',serif;">Suggest a Campaign</p>
+        <p class="text-xs text-white/65 mb-4 leading-relaxed">Have an idea? Help us build our next initiative.</p>
+        <button onclick="openCampaignSuggestionModal()"
+                class="px-4 py-2 bg-[#fcd400] text-[#3d2800] font-bold text-[10px] uppercase tracking-widest rounded-lg hover:brightness-105 active:scale-95 transition-all">
+          Suggest Now →
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Main Grid ── -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+      <!-- LEFT: Campaigns + Petitions + Updates -->
+      <div class="lg:col-span-2 space-y-12">
+
+        <!-- Active Campaigns -->
+        <section class="fade-up" style="animation-delay:380ms">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <p class="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-1">Live</p>
+              <h2 class="text-3xl font-bold italic text-stone-900" style="font-family:'Newsreader',serif;">Active Campaigns</h2>
+            </div>
+            <a href="/campaigns"
+               class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-primary hover:text-primary/70 transition-colors border border-primary/20 px-4 py-2 rounded-lg hover:bg-primary/5">
+              View All
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+          <div class="space-y-3">
+            {% for init in initiatives %}
+            {% set pct = ((init.current_amount / init.target_amount * 100) | round(1)) if init.target_amount > 0 else 0 %}
+            <div class="campaign-card bg-white rounded-2xl p-5 border border-stone-100 card-shadow">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex-1 min-w-0 mr-4">
+                  <span class="inline-block text-[10px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full mb-2
+                    {% if init.category == 'research' %}bg-teal-50 text-teal-700 border border-teal-100
+                    {% elif init.category == 'scholarship' %}bg-yellow-50 text-yellow-700 border border-yellow-100
+                    {% elif init.category == 'outreach' %}bg-red-50 text-red-700 border border-red-100
+                    {% else %}bg-emerald-50 text-emerald-700 border border-emerald-100{% endif %}">
+                    {{ init.category }}
+                  </span>
+                  <h4 class="font-bold text-stone-800 text-lg leading-snug" style="font-family:'Newsreader',serif;">{{ init.title }}</h4>
+                </div>
+                <div class="text-right flex-shrink-0">
+                  <span class="text-2xl font-bold {% if pct >= 100 %}text-green-600{% elif pct >= 60 %}text-amber-600{% else %}text-primary{% endif %}"
+                        style="font-family:'Newsreader',serif;">{{ pct }}%</span>
+                </div>
               </div>
-              <span class="text-xl font-bold text-primary ml-4 whitespace-nowrap">{{ pct }}%</span>
+              <div class="w-full h-2 bg-stone-100 rounded-full overflow-hidden mb-3">
+                {% if pct >= 100 %}
+                <div class="h-full bg-green-500 rounded-full" style="width:100%"></div>
+                {% else %}
+                <div class="h-full progress-shimmer rounded-full transition-all" style="width:{{ pct }}%"></div>
+                {% endif %}
+              </div>
+              <div class="flex justify-between items-center">
+                <div>
+                  <span class="text-sm font-bold text-stone-800">₱{{ "{:,.2f}".format(init.current_amount) }}</span>
+                  <span class="text-xs text-stone-400 ml-1">raised</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs text-stone-400">Goal </span>
+                  <span class="text-sm font-bold text-stone-600">₱{{ "{:,.2f}".format(init.target_amount) }}</span>
+                </div>
+              </div>
             </div>
-            <div class="w-full h-2 bg-stone-100 rounded-full overflow-hidden mb-3">
-              <div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full transition-all" style="width:{{ pct }}%"></div>
+            {% else %}
+            <div class="bg-white rounded-2xl p-10 border border-stone-100 text-center card-shadow">
+              <span class="material-symbols-outlined text-4xl text-stone-200 block mb-3">campaign</span>
+              <p class="text-stone-400 italic text-sm">No active campaigns at the moment.</p>
             </div>
-            <div class="flex justify-between text-xs text-stone-500">
-              <span>₱{{ "{:,.2f}".format(init.current_amount) }} raised</span>
-              <span>Goal: ₱{{ "{:,.2f}".format(init.target_amount) }}</span>
-            </div>
+            {% endfor %}
           </div>
-          {% else %}
-          <p class="text-stone-400 italic text-sm">No active campaigns at the moment.</p>
-          {% endfor %}
-        </div>
-      </section>
+        </section>
 
-      <!-- Petition Progress -->
-      <section>
-        <div class="flex justify-between items-baseline border-b border-stone-200 pb-4 mb-6">
-          <h2 class="text-3xl font-headline font-bold text-primary italic">Petition Progress</h2>
-          <button onclick="openPetition()" class="text-primary font-label text-sm uppercase tracking-widest hover:underline flex items-center gap-1">
-            <span class="material-symbols-outlined text-base">front_hand</span> Sign a Petition
-          </button>
-        </div>
-        <div id="petitionProgressList" class="space-y-4">
-          <div class="bg-white p-5 rounded-xl border border-stone-200 animate-pulse">
-            <div class="h-3 bg-stone-100 rounded w-2/3 mb-3"></div>
-            <div class="h-2 bg-stone-100 rounded w-full mb-2"></div>
-            <div class="h-2 bg-stone-100 rounded w-1/2"></div>
+        <!-- Petition Progress -->
+        <section class="fade-up" style="animation-delay:420ms">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <p class="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-1">Signatures</p>
+              <h2 class="text-3xl font-bold italic text-stone-900" style="font-family:'Newsreader',serif;">Petition Progress</h2>
+            </div>
+            <button onclick="openPetition()"
+                    class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-primary border border-primary/20 px-4 py-2 rounded-lg hover:bg-primary/5 transition-colors">
+              <span class="material-symbols-outlined text-sm">front_hand</span>
+              Sign a Petition
+            </button>
           </div>
-        </div>
-      </section>
+          <div id="petitionProgressList" class="space-y-3">
+            <!-- Skeleton loader -->
+            <div class="bg-white rounded-2xl p-5 border border-stone-100 animate-pulse">
+              <div class="h-3 bg-stone-100 rounded-full w-2/3 mb-3"></div>
+              <div class="h-2 bg-stone-100 rounded-full w-full mb-2"></div>
+              <div class="h-2 bg-stone-100 rounded-full w-1/2"></div>
+            </div>
+          </div>
+        </section>
 
-      <!-- Recent Updates Feed -->
-      <section>
-        <div class="flex justify-between items-baseline border-b border-stone-200 pb-4 mb-6">
-          <h2 class="text-3xl font-headline font-bold text-primary italic">Recent Updates</h2>
+        <!-- Recent Updates -->
+        <section class="fade-up" style="animation-delay:460ms">
+          <div class="mb-6">
+            <p class="text-[10px] uppercase tracking-widest text-stone-400 font-bold mb-1">Feed</p>
+            <h2 class="text-3xl font-bold italic text-stone-900" style="font-family:'Newsreader',serif;">Recent Updates</h2>
+          </div>
+          <div class="space-y-1 bg-white rounded-2xl border border-stone-100 card-shadow overflow-hidden">
+
+            <div class="update-item flex gap-4 p-5 border-b border-stone-50">
+              <div class="w-10 h-10 rounded-xl bg-green-50 border border-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-green-600 text-lg">campaign</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1 gap-2">
+                  <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Apr 12, 2026</p>
+                  <span class="text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-100 flex-shrink-0">Outreach</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 mb-1 leading-snug">Kumpas Kalye Street Concert – Phase 1 Complete</p>
+                <p class="text-xs text-stone-500 leading-relaxed">Street musicians performed in 3 barangays, reaching over 200 community members. Donations directed to the campaign fund.</p>
+              </div>
+            </div>
+
+            <div class="update-item flex gap-4 p-5 border-b border-stone-50">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-blue-600 text-lg">science</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1 gap-2">
+                  <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Apr 10, 2026</p>
+                  <span class="text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-100 flex-shrink-0">Research</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 mb-1 leading-snug">Project Dunong – Lab Equipment Procurement Approved</p>
+                <p class="text-xs text-stone-500 leading-relaxed">CS department approved the procurement list for the upgraded research lab. New servers expected by end of April.</p>
+              </div>
+            </div>
+
+            <div class="update-item flex gap-4 p-5">
+              <div class="w-10 h-10 rounded-xl bg-yellow-50 border border-yellow-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-yellow-600 text-lg">school</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1 gap-2">
+                  <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold">Apr 8, 2026</p>
+                  <span class="text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700 border border-yellow-100 flex-shrink-0">Scholarship</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 mb-1 leading-snug">High Honors Scholarship – Goal Fully Met 🎉</p>
+                <p class="text-xs text-stone-500 leading-relaxed">The Perpetualite High Honors Scholarship has reached its ₱200,000 target. Congratulations to all donors!</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="space-y-6 fade-up" style="animation-delay:400ms">
+
+        <!-- Milestones -->
+        <div class="bg-white rounded-2xl border border-stone-100 card-shadow overflow-hidden">
+          <div class="px-6 py-5 border-b border-stone-50 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary text-base">flag</span>
+            </div>
+            <h4 class="sidebar-section-title text-lg">Milestones</h4>
+          </div>
+          <div class="p-6 space-y-5">
+
+            <div class="milestone-line flex gap-3 pb-5">
+              <div class="w-8 h-8 rounded-full bg-green-50 border-2 border-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-green-600 text-sm" style="font-variation-settings:'FILL' 1">check</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="text-[9px] uppercase tracking-widest font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full border border-green-100">Completed</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 leading-snug">₱200,000 Scholarship Fund Raised</p>
+                <p class="text-xs text-stone-400 mt-1">Full tuition for top 5 Perpetualite scholars.</p>
+              </div>
+            </div>
+
+            <div class="milestone-line flex gap-3 pb-5">
+              <div class="w-8 h-8 rounded-full bg-blue-50 border-2 border-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-blue-500 text-sm">hourglass_top</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="text-[9px] uppercase tracking-widest font-bold text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded-full border border-blue-100">In Progress</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 leading-snug">CS Lab Equipment Procurement</p>
+                <p class="text-xs text-stone-400 mt-1">₱121,000 of ₱150,000 — approval cleared.</p>
+              </div>
+            </div>
+
+            <div class="milestone-line flex gap-3 pb-5">
+              <div class="w-8 h-8 rounded-full bg-amber-50 border-2 border-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-amber-500 text-sm">hourglass_top</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="text-[9px] uppercase tracking-widest font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full border border-amber-100">In Progress</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 leading-snug">Kumpas Kalye – Phase 2 Concerts</p>
+                <p class="text-xs text-stone-400 mt-1">5 more barangay performances in May 2026.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <div class="w-8 h-8 rounded-full bg-stone-100 border-2 border-stone-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-stone-300 text-sm">radio_button_unchecked</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-0.5">
+                  <span class="text-[9px] uppercase tracking-widest font-bold text-stone-400 bg-stone-100 px-1.5 py-0.5 rounded-full border border-stone-200">Upcoming</span>
+                </div>
+                <p class="text-sm font-bold text-stone-800 leading-snug">Green Campus Tree Planting Drive</p>
+                <p class="text-xs text-stone-400 mt-1">₱50,000 target by June 2026. 30% funded.</p>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div id="updatesFeed" class="space-y-4">
-          <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex gap-4">
-            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-green-600 text-base">campaign</span>
-            </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-1">Apr 12, 2026 · Outreach</p>
-              <p class="text-sm font-bold text-stone-800 mb-1">Kumpas Kalye Street Concert – Phase 1 Complete</p>
-              <p class="text-sm text-stone-500 leading-relaxed">Our street musicians performed in 3 barangays this week, reaching over 200 community members. Donations from the event were directed to the campaign fund.</p>
-            </div>
-          </div>
-          <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex gap-4">
-            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-blue-600 text-base">science</span>
-            </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-1">Apr 10, 2026 · Research</p>
-              <p class="text-sm font-bold text-stone-800 mb-1">Project Dunong – Lab Equipment Procurement Approved</p>
-              <p class="text-sm text-stone-500 leading-relaxed">The CS department has approved the procurement list for the upgraded research lab. New servers and workstations are expected by end of April.</p>
+
+        <!-- Recent Donors -->
+        <div class="bg-white rounded-2xl border border-stone-100 card-shadow overflow-hidden">
+          <div class="px-6 py-5 border-b border-stone-50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-base">handshake</span>
+              </div>
+              <h4 class="sidebar-section-title text-lg">Recent Donors</h4>
             </div>
           </div>
-          <div class="bg-white p-5 rounded-xl border border-stone-200 shadow-sm flex gap-4">
-            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-yellow-600 text-base">school</span>
+          <div class="p-6">
+            <div class="space-y-3 mb-5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
+                    JO
+                  </div>
+                  <span class="text-sm font-medium text-stone-700">jocelyn</span>
+                </div>
+                <span class="text-sm font-bold text-primary">₱2,000.00</span>
+              </div>
             </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-1">Apr 8, 2026 · Scholarship</p>
-              <p class="text-sm font-bold text-stone-800 mb-1">High Honors Scholarship – Goal Fully Met 🎉</p>
-              <p class="text-sm text-stone-500 leading-relaxed">The Perpetualite High Honors Scholarship has reached its ₱200,000 target. Congratulations to all donors who made this possible!</p>
-            </div>
+            <a href="{{ url_for('donor_registry') }}"
+               class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary/8 text-primary text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all border border-primary/15">
+              <span class="material-symbols-outlined text-sm">favorite</span>
+              View Full Registry
+            </a>
           </div>
         </div>
-      </section>
+
+        <!-- Heritage Block -->
+        <div class="rounded-2xl overflow-hidden relative bg-gradient-to-br from-[#570000] via-[#6e0a0a] to-[#3d0000]">
+          <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute -bottom-10 -right-10 opacity-10">
+              <span class="material-symbols-outlined text-white" style="font-size:160px">school</span>
+            </div>
+            <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          </div>
+          <div class="relative z-10 p-7">
+            <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center mb-4">
+              <span class="material-symbols-outlined text-white text-base">auto_stories</span>
+            </div>
+            <h4 class="text-xl font-bold italic text-white mb-3" style="font-family:'Newsreader',serif;">Institutional Heritage</h4>
+            <p class="text-sm text-white/60 leading-relaxed mb-5">Every contribution becomes a permanent chapter in our university's anthology of excellence.</p>
+            <a href="/heritage"
+               class="inline-flex items-center gap-2 text-[#fcd400] text-xs font-bold uppercase tracking-widest hover:underline transition-all">
+              Read Archive
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+
+      </aside>
     </div>
-
-    <!-- RIGHT SIDEBAR: Milestones + Donor Registry -->
-    <aside class="space-y-8">
-      <!-- Milestones Tracker -->
-      <section class="bg-white border border-stone-200 rounded-xl shadow-sm p-6">
-        <h4 class="font-['Newsreader'] font-bold text-primary text-xl italic mb-5 border-b border-stone-100 pb-3">Milestones</h4>
-        <div class="space-y-5">
-          <div class="milestone-line flex gap-4 pb-5">
-            <div class="w-8 h-8 rounded-full bg-green-100 border-2 border-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-green-600 text-sm" style="font-variation-settings:'FILL' 1">check</span>
-            </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-0.5">Scholarship · Completed</p>
-              <p class="text-sm font-bold text-stone-800">₱200,000 Scholarship Fund Raised</p>
-              <p class="text-xs text-stone-500 mt-1">Full tuition coverage for top 5 Perpetualite scholars.</p>
-            </div>
-          </div>
-          <div class="milestone-line flex gap-4 pb-5">
-            <div class="w-8 h-8 rounded-full bg-blue-100 border-2 border-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-blue-500 text-sm">hourglass_top</span>
-            </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-0.5">Research · In Progress</p>
-              <p class="text-sm font-bold text-stone-800">CS Lab Equipment Procurement</p>
-              <p class="text-xs text-stone-500 mt-1">₱121,000 of ₱150,000 goal. Equipment approval cleared.</p>
-            </div>
-          </div>
-          <div class="milestone-line flex gap-4 pb-5">
-            <div class="w-8 h-8 rounded-full bg-amber-100 border-2 border-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-amber-500 text-sm">hourglass_top</span>
-            </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-0.5">Outreach · In Progress</p>
-              <p class="text-sm font-bold text-stone-800">Kumpas Kalye – Phase 2 Concerts</p>
-              <p class="text-xs text-stone-500 mt-1">5 more barangay performances planned for May 2026.</p>
-            </div>
-          </div>
-          <div class="milestone-line flex gap-4">
-            <div class="w-8 h-8 rounded-full bg-stone-100 border-2 border-stone-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-stone-400 text-sm">radio_button_unchecked</span>
-            </div>
-            <div>
-              <p class="text-xs text-stone-400 uppercase tracking-widest font-bold mb-0.5">Conservation · Upcoming</p>
-              <p class="text-sm font-bold text-stone-800">Green Campus Tree Planting Drive</p>
-              <p class="text-xs text-stone-500 mt-1">Target: ₱50,000 by June 2026. Currently 30% funded.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Recent Donors -->
-      <div class="bg-surface-container-high p-6 rounded-xl border border-stone-200/60 shadow-sm">
-        <div class="flex items-center gap-3 mb-4">
-          <span class="material-symbols-outlined text-primary">handshake</span>
-          <h5 class="font-headline font-bold text-primary text-lg">Recent Donors</h5>
-        </div>
-        <div class="space-y-3 mb-4">
-          <div class="flex justify-between items-center text-sm">
-            <span class="font-medium">jocelyn</span>
-            <span class="text-primary font-bold">₱2,000.00</span>
-          </div>
-        </div>
-        <a href="{{ url_for('donor_registry') }}"
-           class="w-full inline-flex justify-center items-center gap-1 bg-primary/10 text-primary font-semibold text-sm py-2 rounded-md hover:bg-primary hover:text-white transition-all">
-          <span>View Full Registry</span>
-          <span class="material-symbols-outlined text-sm">favorite</span>
-        </a>
-      </div>
-
-      <!-- Heritage Block -->
-      <div class="bg-primary text-on-primary p-8 rounded-xl relative overflow-hidden">
-        <div class="relative z-10">
-          <h4 class="text-xl font-headline italic font-bold mb-4">Institutional Heritage</h4>
-          <p class="text-sm font-body opacity-90 leading-relaxed mb-6">Every contribution becomes a permanent chapter in our university's anthology of excellence.</p>
-          <a class="text-secondary-fixed font-bold text-xs uppercase tracking-widest flex items-center hover:underline" href="/heritage">
-            Read Archive
-            <span class="material-symbols-outlined text-sm ml-2">auto_stories</span>
-          </a>
-        </div>
-        <div class="absolute -bottom-10 -right-10 opacity-10">
-          <span class="material-symbols-outlined text-[160px]">school</span>
-        </div>
-      </div>
-    </aside>
   </div>
 </main>
 
@@ -549,17 +728,17 @@
 </div>
 
 <!-- ── Footer ── -->
-<footer class="w-full py-12 px-8 mt-auto bg-stone-50 border-t border-stone-200">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+<footer class="w-full py-10 px-8 mt-auto bg-white border-t border-stone-100">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
     <div class="flex flex-col items-center md:items-start">
-      <span class="font-['Newsreader'] italic text-2xl font-bold text-stone-900 mb-1">UPHSD Molino</span>
-      <p class="font-['Public_Sans'] text-xs text-stone-500 uppercase tracking-widest">© 2026 Institutional Heritage.</p>
+      <span class="font-['Newsreader'] italic text-xl font-bold text-stone-900">UPHSD Molino</span>
+      <p class="text-[10px] text-stone-400 uppercase tracking-widest font-bold mt-1">© 2026 Institutional Heritage</p>
     </div>
     <div class="flex flex-wrap justify-center gap-8">
-      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Privacy Policy</a>
-      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Terms of Service</a>
-      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">University Site</a>
-      <a class="text-xs text-stone-400 hover:text-red-900 transition-colors uppercase tracking-widest font-semibold" href="#">Contact Archives</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">Privacy Policy</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">Terms of Service</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">University Site</a>
+      <a class="text-[10px] text-stone-400 hover:text-primary transition-colors uppercase tracking-widest font-bold" href="#">Contact Archives</a>
     </div>
   </div>
 </footer>
@@ -928,4 +1107,3 @@ document.getElementById('suggestionForm').addEventListener('submit', async (e) =
 </script>
 </body>
 </html>
-
