@@ -149,7 +149,7 @@ def campaign_detail(initiative_id):
     if 'user_id' not in session:
         return redirect(url_for('login'))
     initiative = Initiative.query.get_or_404(initiative_id)
-    return render_template('campaign_pledge_form.html', initiative=initiative)
+    return redirect(url_for('campaigns'))
 
 @app.route('/donors')
 def donor_registry():

@@ -174,6 +174,16 @@
   </div>
 </main>
 
+<!-- ── IMAGE MODAL ── -->
+<div id="imageModal" class="fixed inset-0 z-[200] opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onclick="closeImageModal()">
+  <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+    <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-white hover:text-stone-300 transition-colors">
+      <span class="material-symbols-outlined text-4xl">close</span>
+    </button>
+    <img id="modalImage" src="" alt="Campaign Full Image" class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl transform scale-95 transition-transform duration-300" />
+  </div>
+</div>
+
 <!-- ── DONATION MODAL ── -->
 <div id="donateModal" class="fixed inset-0 z-[100] items-center justify-center bg-black/50 backdrop-blur-sm p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg relative overflow-hidden flex flex-col" style="max-height:92vh;">
@@ -459,11 +469,23 @@ async function loadInitiatives() {
       INITIATIVES = data.map(d => {
         const end = d.end_date ? new Date(d.end_date) : new Date();
         const days = Math.max(0, Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24)));
+        
+        // Fallback images based on category if the API doesn't provide one
+        let imgUrl = d.image_url || "/static/images/default.jpg";
+        
+        // Use lowercase and trim to ensure matching works regardless of database casing
+        const cat = (d.category || "").toLowerCase().trim();
+        if (!d.image_url && cat === 'scholarship') imgUrl = "/static/images/honors.jpg";
+        if (!d.image_url && cat === 'outreach') imgUrl = "/static/images/music.jpg";
+        if (!d.image_url && cat === 'conservation') imgUrl = "/static/images/building.jpg";
+        if (!d.image_url && cat === 'research') imgUrl = "/static/images/lab.jpg";
+
         return {
           id: d.id, title: d.title, category: d.category || "outreach",
           desc: d.description, raised: parseFloat(d.raised),
           goal: parseFloat(d.goal), daysLeft: d.end_date ? days : 30,
-          detailUrl: `/campaign/${d.id}`
+          detailUrl: `/campaign/${d.id}`,
+          imageUrl: imgUrl
         };
       });
       applyFilter();
@@ -492,7 +514,9 @@ function renderCards(data) {
     return `
     <div class="campaign-card bg-surface-container-lowest rounded-xl editorial-shadow overflow-hidden flex flex-col group" style="animation-delay:${i * 60}ms">
       <div class="relative h-44 flex-shrink-0 bg-surface-container-high flex items-center justify-center overflow-hidden">
-        <span class="material-symbols-outlined text-primary/20 transition-transform group-hover:scale-110 duration-500" style="font-size:96px">${cfg.icon}</span>
+        <a href="${c.detailUrl}" onclick="openImageModal(event, '${c.imageUrl}')" class="w-full h-full block">
+          <img src="${c.imageUrl}" alt="${c.title} Image" class="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+        </a>
         <div class="absolute top-4 left-4">
           <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${cfg.cls}">${cfg.tag}</span>
         </div>
@@ -654,6 +678,24 @@ function showToast(msg) {
     toast.classList.remove("visible");
     setTimeout(() => toast.classList.add("hidden"), 400);
   }, 5000);
+}
+
+/* ── IMAGE MODAL ── */
+function openImageModal(e, imageUrl) {
+  e.preventDefault();
+  const modal = document.getElementById("imageModal");
+  const img = document.getElementById("modalImage");
+  img.src = imageUrl;
+  modal.classList.remove("opacity-0", "pointer-events-none");
+  img.classList.remove("scale-95");
+  img.classList.add("scale-100");
+}
+function closeImageModal() {
+  const modal = document.getElementById("imageModal");
+  const img = document.getElementById("modalImage");
+  modal.classList.add("opacity-0", "pointer-events-none");
+  img.classList.remove("scale-100");
+  img.classList.add("scale-95");
 }
 
 /* ── SUBMIT DONATION ── */
